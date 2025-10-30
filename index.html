@@ -20,19 +20,29 @@
   /* [已還原] 你的天氣區塊 CSS (使用緊湊版) */
   .header {
     background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
-    padding: 24px 32px;
+    padding: 20px 32px; /* [修改] 減少垂直 padding */
     border-radius:24px;
     color:white;
     margin-bottom: 24px;
     box-shadow:0 8px 30px rgba(123,168,163,0.25);
+    
+    /* --- [新功能] 修改為 Flex 排版 --- */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    /* --- [新功能] 結束 --- */
   }
-  .header-top {
-    display:flex;justify-content:space-between;align-items:center;
-    margin-bottom: 20px;
-    gap:20px;
+  
+  /* [刪除] .header-top 已不需要 */
+  
+  .greeting-section {
+      font-weight:700; 
+      font-size: 24px;
+      flex-shrink: 0; /* [修改] 確保 "歡迎" 文字不被壓縮 */
   }
-  .greeting-section {font-weight:700; font-size: 24px;}
   .datetime {margin-top:6px; font-weight:500; font-size:14px; opacity:0.9;}
+  
   .location-selector {
     background:rgba(255 255 255 / 26%);
     border:2px solid rgba(255 255 255 / 38%);
@@ -49,30 +59,35 @@
     border-color:rgba(255 255 255 / 60%);
     outline:none;
   }
+  
+  /* --- [修改] 天氣區塊重排 --- */
   .weather-forecast-horizontal {
     display:grid;
-    gap: 12px;
+    gap: 10px; /* [修改] 縮小 gap */
     grid-template-columns:repeat(7,1fr);
+    flex: 1; /* [新] 讓天氣區塊佔據中間的彈性空間 */
   }
   .weather-day-h {
     background:rgba(255 255 255 / 23%);
     border-radius:14px;
-    padding: 12px 10px 10px;
+    padding: 10px 8px 8px; /* [修改] 縮小 padding */
     border:2px solid rgba(255 255 255 / 12%);
     text-align:center;
   }
-  .weather-date-h {font-size:13px; font-weight:700; margin-bottom:6px;}
-  .weather-emoji-h {font-size:36px; margin-bottom:4px; display:block; user-select:none;}
-  .weather-temp-h {font-size:16px; font-weight:700;}
-  .weather-rain-h {font-size:12px; margin-top:4px; color:#def1f0aa;}
-  .weather-desc-h {font-size:12px; margin-top:1px; color:#d0e2e0cc;}
+  .weather-date-h {font-size:12px; font-weight:700; margin-bottom:4px;}
+  .weather-emoji-h {font-size:28px; margin-bottom:2px; display:block; user-select:none;}
+  .weather-temp-h {font-size:14px; font-weight:700;}
+  .weather-rain-h {font-size:11px; margin-top:3px; color:#def1f0aa;}
+  .weather-desc-h {font-size:11px; margin-top:1px; color:#d0e2e0aa;}
   .weather-loading {
     grid-column:span 7;
     text-align:center;
-    padding:22px 0;
+    padding:10px 0; /* [修改] 縮小 padding */
     color:white;
     font-weight:700;
+    font-size: 14px; /* [修改] 縮小字體 */
   }
+  /* --- [修改] 天氣區塊結束 --- */
  
   /* 搜尋列 (緊湊版) */
   .search-section {
@@ -677,24 +692,24 @@
   <div id="page-home" class="page-content active">
  
     <div class="header">
-      <div class="header-top">
-        <div class="greeting-section">
-          <div class="greeting">您好！歡迎回來 👋</div>
-          <div class="datetime" id="datetime"></div>
-        </div>
-        <select id="locationSelectorMain" class="location-selector" aria-label="選擇城市">
-          <option value="25.0330,121.5654">台北市</option>
-          <option value="24.1477,120.6736">台中市</option>
-          <option value="22.6273,120.3014">高雄市</option>
-          <option value="25.0375,121.4252">新北市</option>
-          <option value="24.8138,120.9675">新竹市</option>
-          <option value="24.9936,121.3010">桃園市</option>
-          <option value="22.9998,120.2269">台南市</option>
-        </select>
+      <div class="greeting-section">
+        <div class="greeting">您好！歡迎回來 👋</div>
+        <div class="datetime" id="datetime"></div>
       </div>
+      
       <div class="weather-forecast-horizontal" id="weatherRow">
         <div class="weather-loading">載入天氣資料中...</div>
       </div>
+      
+      <select id="locationSelectorMain" class="location-selector" aria-label="選擇城市">
+        <option value="25.0330,121.5654">台北市</option>
+        <option value="24.1477,120.6736">台中市</option>
+        <option value="22.6273,120.3014">高雄市</option>
+        <option value="25.0375,121.4252">新北市</option>
+        <option value="24.8138,120.9675">新竹市</option>
+        <option value="24.9936,121.3010">桃園市</option>
+        <option value="22.9998,120.2269">台南市</option>
+      </select>
     </div>
    
     <div class="search-section">
@@ -965,7 +980,8 @@ function updateWeather(sourceSelectorId){
       const tMax = Math.round(d.daily.temperature_2m_max[i]);
       const tMin = Math.round(d.daily.temperature_2m_min[i]);
       const rainProb = d.daily.precipitation_probability_max[i] || 0;
-      html+=`<div class="weather-day-h"><div class="weather-date-h">${dayName}</div><span class="weather-emoji-h">${w.emoji}</span><div class="weather-temp-h">${tMin}° - ${tMax}°</div><div class="weather-rain-h">💧 ${rainProb}%</div><div class="weather-desc-h">${w.desc}</div></div>`;
+      // [修改] 調整 HTML 結構以符合縮小的 CSS
+      html+=`<div class="weather-day-h"><div class="weather-date-h">${dayName}</div><span class="weather-emoji-h">${w.emoji}</span><div class="weather-temp-h">${tMin}°-${tMax}°</div><div class="weather-rain-h">💧${rainProb}%</div><div class="weather-desc-h">${w.desc}</div></div>`;
     }
     targetRow.innerHTML = html;
    
