@@ -16,7 +16,7 @@
     padding-top: 70px; 
   }
   .container {max-width:1400px;margin:0 auto;}
-  
+ 
   /* [已還原] 你的天氣區塊 CSS (使用緊湊版) */
   .header {
     background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
@@ -73,7 +73,7 @@
     color:white;
     font-weight:700;
   }
-  
+ 
   /* 搜尋列 (緊湊版) */
   .search-section {
     display:flex; 
@@ -470,28 +470,28 @@
     position: sticky;
     top: 20px; /* 配合 body 的 padding */
     z-index: 1000;
-    
+   
     background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
     padding: 12px 24px; /* [修改] */
     border-radius: 20px; /* [修改] */
     box-shadow: 0 8px 30px rgba(123, 168, 163, 0.35);
-    
+   
     max-width: 1400px; 
     margin: -50px auto 0 auto;
     top: 20px;
-    
+   
     /* [已還原] 導覽列左右對齊 */
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  
+ 
   .portal-tabs {
     display: flex;
     gap: 10px; /* [修改] */
     justify-content: flex-start; /* [修改] 靠左 */
   }
-  
+ 
   .portal-tab-btn {
     font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
     border-radius: 10px; /* [修改] */
@@ -505,13 +505,13 @@
     transition: background 0.3s ease, border-color 0.3s ease;
     user-select: none;
   }
-  
+ 
   .portal-tab-btn.active, .portal-tab-btn:hover {
     background: white;
     border-color: white;
     color: #7ba8a3; /* 點選後變為主題綠色 */
   }
-  
+ 
   /* [已還原] 導覽列右側資訊 */
   .nav-info-right {
     display: flex;
@@ -534,7 +534,7 @@
   .nav-weather-emoji {
     font-size: 20px; 
   }
-  
+ 
   /* [修改] 首頁 location-selector (在導覽列中) */
   .nav-info-right .location-selector {
     padding: 4px 8px; /* [修改] 更緊湊 */
@@ -546,11 +546,43 @@
     display: none;
     margin-top: 20px; /* [修改] */
   }
-  
+ 
   .page-content.active {
     display: block;
   }
   /* --- [新功能] CSS 結束 --- */
+
+  /* ================================================
+    ▼▼▼ 修改點 1 (CSS)：在這裡加入新的 CSS 規則 ▼▼▼
+    ================================================
+  */
+
+  /* 1. 隱藏原本的七天預報區塊 */
+  .weather-forecast-horizontal {
+      display: none !important; /* 強制隱藏 */
+  }
+
+  /* 2. 讓 "歡迎回來" 和 "小圖示" 可以並排 */
+  .greeting-header-wrapper {
+      display: flex;
+      align-items: center; /* 垂直置中 */
+      flex-wrap: wrap;     /* 換行 */
+      gap: 12px;           /* 文字和圖示區塊的間距 */
+  }
+
+  /* 3. 新增的 "小圖示容器" 樣式 */
+  .mini-forecast-icons {
+      display: flex;
+      gap: 5px; /* 每個小圖示之間的間距 */
+      padding-top: 4px; /* 稍微往下對齊文字 */
+  }
+  
+  /* 4. 新增的 "小圖示" 本身樣式 */
+  .mini-forecast-icon {
+      font-size: 24px; /* 縮小 emoji 尺寸 (原為 36px) */
+      opacity: 0.9;
+      cursor: help; /* 提示使用者可以 hover */
+  }
 
 </style>
 </head>
@@ -565,7 +597,7 @@
         <button class="portal-tab-btn" data-page="map">地圖</button>
         <button class="portal-tab-btn" data-page="work">工作</button>
     </div>
-    
+   
     <div class="nav-info-right">
         <select id="locationSelectorNav" class="location-selector" aria-label="選擇城市">
           <option value="25.0330,121.5654">台北市</option>
@@ -583,11 +615,18 @@
 
 
   <div id="page-home" class="page-content active">
-  
+ 
     <div class="header">
       <div class="header-top">
+        
         <div class="greeting-section">
-          <div class="greeting">您好！歡迎回來 👋</div>
+          <div class="greeting-header-wrapper">
+              <div class="greeting">您好！歡迎回來 👋</div>
+              
+              <div class="mini-forecast-icons" id="mini-forecast-icons">
+                  </div>
+          </div>
+          
           <div class="datetime" id="datetime"></div>
         </div>
         <select id="locationSelectorMain" class="location-selector" aria-label="選擇城市">
@@ -600,11 +639,12 @@
           <option value="22.9998,120.2269">台南市</option>
         </select>
       </div>
+      
       <div class="weather-forecast-horizontal" id="weatherRow">
         <div class="weather-loading">載入天氣資料中...</div>
       </div>
     </div>
-    
+   
     <div class="search-section">
       <input id="searchInput" class="search-input" placeholder="搜尋 Google 或輸入網址..."/>
       <button id="searchBtn" class="search-btn">搜尋</button>
@@ -743,7 +783,7 @@
                 <div class="bookmark-link" onclick="openLink('https://developer.mozilla.org/')">MDN Web Docs</div>
                 <div class="bookmark-link" onclick="openLink('https://stackoverflow.com/')">Stack Overflow</div>
                 <div class="bookmark-link" onclick="openLink('https://codepen.io/')">CodePen</div>
-                
+               
                 <div class="bookmark-category">設計靈感</div>
                 <div class="bookmark-link" onclick="openLink('https://dribbble.com/')">Dribbble</div>
                 <div class="bookmark-link" onclick="openLink('https://www.behance.net/')">Behance</div>
@@ -763,7 +803,8 @@
                 <div class="bookmark-link" onclick="openLink('https://www.books.com.tw/')">博客來</div>
             </div>
         </div>
-  </div> <div id="page-personal" class="page-content">
+  </div> 
+  <div id="page-personal" class="page-content">
       <div class="card">
           <h2>個人 (建置中)</h2>
           <p>此頁面暫時留空。你可以在這裡放你的個人資料或設定。</p>
@@ -780,13 +821,13 @@
 
 
   <div id="page-map" class="page-content">
-       <div class="card">
+        <div class="card">
           <h2>地圖 (建置中)</h2>
           <p>此頁面暫時留空。你可以在這裡建置更完整的地圖功能。</p>
       </div>
   </div>
 
-  
+ 
   <div id="page-work" class="page-content">
       <div class="card">
           <h2>工作 (建置中)</h2>
@@ -794,14 +835,15 @@
       </div>
   </div>
 
-</div> <script>
+</div> 
+<script>
 // [保留] 你的股票 API 金鑰 (Alpha Vantage)
 const ALPHA_VANTAGE_API_KEY = 'K09FCGY2Y90L99V0';
 
-// 日期
+// 日期 (不變)
 function updateDatetime() {
   const now = new Date();
-  
+ 
   // [已還原] 更新首頁的大日期
   const targetMain = document.getElementById('datetime');
   if (targetMain) {
@@ -809,7 +851,7 @@ function updateDatetime() {
         year:'numeric', month:'long', day:'numeric',weekday:'long',hour:'2-digit',minute:'2-digit'
       });
   }
-  
+ 
   // [已還原] 更新導覽列的小日期
   const targetNav = document.getElementById('nav-datetime');
   if (targetNav) {
@@ -819,22 +861,28 @@ function updateDatetime() {
   }
 }
 
-// 天氣呼叫API
+// 天氣呼叫API (不變)
 const weatherCodes = {
   0:{emoji:'☀️',desc:'晴天'},1:{emoji:'🌤️',desc:'晴朗'},2:{emoji:'⛅',desc:'多雲'},3:{emoji:'☁️',desc:'陰天'},
   45:{emoji:'🌫️',desc:'霧'},51:{emoji:'🌦️',desc:'小雨'},55:{emoji:'🌧️',desc:'大雨'},61:{emoji:'🌧️',desc:'小雨'},63:{emoji:'🌧️',desc:'中雨'},
   65:{emoji:'⛈️',desc:'大雨'},80:{emoji:'🌦️',desc:'陣雨'},81:{emoji:'🌧️',desc:'陣雨'},82:{emoji:'⛈️',desc:'大陣雨'},95:{emoji:'⛈️',desc:'雷雨'},
   99:{emoji:'⛈️',desc:'強雷雨'}
 };
+
+// 
+// ====================================================
+// ▼▼▼ 修改點 3 (JavaScript)：修改 updateWeather 函式 ▼▼▼
+// ====================================================
+//
 function updateWeather(sourceSelectorId){
   const selectorNav = document.getElementById('locationSelectorNav');
   const selectorMain = document.getElementById('locationSelectorMain');
   const targetRow = document.getElementById('weatherRow'); 
   const targetNav = document.getElementById('nav-weather'); 
-  
+ 
   if (!selectorNav || !selectorMain || !targetRow || !targetNav) return; 
-  
-  // [新功能] 同步兩個選擇器
+ 
+  // [新功能] 同步兩個選擇器 (不變)
   let v;
   if (sourceSelectorId === 'locationSelectorNav') {
       v = selectorNav.value.split(',');
@@ -849,10 +897,17 @@ function updateWeather(sourceSelectorId){
 
   fetch(`https://api.open-meteo.com/v1/forecast?latitude=${v[0]}&longitude=${v[1]}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia/Taipei&forecast_days=7`)
   .then(r=>r.json()).then(d=>{
-    
+   
     // 1. [已還原] 填入 7 天天氣預報
     let html='';
     const wd=['週日','週一','週二','週三','週四','週五','週六'];
+    
+    // [新增] 抓取新的小圖示容器
+    const miniIconsContainer = document.getElementById('mini-forecast-icons');
+    if (miniIconsContainer) {
+        miniIconsContainer.innerHTML = ''; // 清空
+    }
+
     for(let i=0;i<7;i++){
       const date= new Date (d.daily.time[i]);
       const dayName = i===0 ?'今天':wd[date.getDay()];
@@ -861,11 +916,23 @@ function updateWeather(sourceSelectorId){
       const tMax = Math.round(d.daily.temperature_2m_max[i]);
       const tMin = Math.round(d.daily.temperature_2m_min[i]);
       const rainProb = d.daily.precipitation_probability_max[i] || 0;
+      
+      // [不變] 建立舊的 (隱藏的) HTML，讓程式邏輯保持不變
       html+=`<div class="weather-day-h"><div class="weather-date-h">${dayName}</div><span class="weather-emoji-h">${w.emoji}</span><div class="weather-temp-h">${tMin}° - ${tMax}°</div><div class="weather-rain-h">💧 ${rainProb}%</div><div class="weather-desc-h">${w.desc}</div></div>`;
+
+      // [新增] 建立並附加新的 "小圖示"
+      if (miniIconsContainer) {
+          const miniIcon = document.createElement('span');
+          miniIcon.className = 'mini-forecast-icon'; // 參照 CSS 新增的 class
+          miniIcon.textContent = w.emoji;
+          // 加上 Tooltip 提示，讓使用者 hover 時能看到資訊
+          miniIcon.title = `${dayName}: ${tMin}°-${tMax}°, ${w.desc} (💧 ${rainProb}%)`; 
+          miniIconsContainer.appendChild(miniIcon);
+      }
     }
-    targetRow.innerHTML = html;
-    
-    // 2. [已還原] 填入導覽列當前天氣
+    targetRow.innerHTML = html; // [不變] 照常填入隱藏的區塊
+   
+    // 2. [已還原] 填入導覽列當前天氣 (不變)
     if (d.current_weather) {
         const cw = d.current_weather;
         const w_nav = weatherCodes[cw.weathercode] || { emoji:'🌤️', desc:'多雲'};
@@ -879,8 +946,10 @@ function updateWeather(sourceSelectorId){
     targetNav.innerHTML = '天氣失敗';
   });
 }
+// ▲▲▲ JavaScript 修改結束 ▲▲▲
 
-// 搜尋 (完整保留你原本的程式碼)
+
+// 搜尋 (完整保留你原本的程式碼) (不變)
 document.getElementById('searchBtn').onclick = () => {
   const val=document.getElementById('searchInput').value.trim();
   if(!val) return;
@@ -894,7 +963,7 @@ document.getElementById('searchInput').addEventListener('keypress', e =>{
   if(e.key === 'Enter') document.getElementById('searchBtn').click();
 });
 
-// 地圖 (完整保留你原本的程式碼)
+// 地圖 (完整保留你原本的程式碼) (不變)
 function searchGoogleMaps() {
   const input = document.getElementById('mapSearchInput');
   if (!input) return; 
@@ -907,7 +976,7 @@ function searchGoogleMaps() {
   mapFrame.src = newSrc;
 }
 
-// 新聞 (已修正 CORS)
+// 新聞 (已修正 CORS) (不變)
 const RSS_FEEDS = {
     tw: [
         'https://news.ltn.com.tw/rss/all.xml',       // 自由時報 (首選)
@@ -968,7 +1037,7 @@ function parseRSS(xmlText) {
 async function loadNews(){
   const list = document.getElementById('newsList');
   if (!list) return; 
-  
+ 
   list.innerHTML = '<li class="news-loading">載入新聞中…</li>';
   const refreshBtn = document.getElementById('refreshNewsBtn');
   if (refreshBtn) refreshBtn.disabled = true;
@@ -980,34 +1049,34 @@ async function loadNews(){
       try {
           // [修改] 更換為 allorigins 代理
           const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
-          
+         
           const res = await fetch(proxyUrl);
           if (!res.ok) throw new Error(`代理伺服器錯誤 (狀態: ${res.status})`);
-          
+         
           const data = await res.json(); // allorigins 回傳 JSON
           const xmlText = data.contents;  // 實際的 XML/RSS 內容
-          
+         
           const articles = parseRSS(xmlText);
-          
+         
           if (articles && articles.length > 0) {
               list.innerHTML = ''; 
               articles.forEach(article => {
                   let sourceName = article.source.name;
                   if (sourceName === 'N/A' || !sourceName) {
-                    if (rssUrl.includes('cna.com')) sourceName = '中央通訊社';
-                    else if (rssUrl.includes('ltn.com')) sourceName = '自由時報';
-                    else if (rssUrl.includes('udn.com')) sourceName = '聯合新聞網';
-                    else if (rssUrl.includes('nhk.or.jp')) sourceName = 'NHK';
-                    else if (rssUrl.includes('bbci.co.uk')) sourceName = 'BBC News';
-                    else sourceName = 'RSS 來源';
+                      if (rssUrl.includes('cna.com')) sourceName = '中央通訊社';
+                      else if (rssUrl.includes('ltn.com')) sourceName = '自由時報';
+                      else if (rssUrl.includes('udn.com')) sourceName = '聯合新聞網';
+                      else if (rssUrl.includes('nhk.or.jp')) sourceName = 'NHK';
+                      else if (rssUrl.includes('bbci.co.uk')) sourceName = 'BBC News';
+                      else sourceName = 'RSS 來源';
                   }
                   list.insertAdjacentHTML('beforeend', `
-                    <li class="news-item" onclick="window.open('${article.url}','_blank')">
-                      <div class="news-item-title">${article.title || '無標題'}</div>
-                      <div class="news-item-meta">
-                        <span>${sourceName}</span>
-                      </div>
-                    </li>`);
+                      <li class="news-item" onclick="window.open('${article.url}','_blank')">
+                          <div class="news-item-title">${article.title || '無標題'}</div>
+                          <div class="news-item-meta">
+                              <span>${sourceName}</span>
+                          </div>
+                      </li>`);
               });
               success = true;
               break; 
@@ -1024,7 +1093,7 @@ async function loadNews(){
   if (refreshBtn) refreshBtn.disabled = false;
 }
 
-// 股票區 (已修正 CORS)
+// 股票區 (已修正 CORS) (不變)
 const stockWatchlist = {
   tw: ['2330','2317','2454','2603','0050'],
   us: ['AAPL','GOOGL','TSLA','NVDA','MSFT']
@@ -1039,7 +1108,7 @@ function switchStockMarket(market){
 async function loadStocks(){
   const container = document.getElementById('stocksList');
   if (!container) return; 
-  
+ 
   const watchlist = stockWatchlist[stockCurrentMarket];
   container.innerHTML = '<div class="stocks-loading">載入股票資料中…</div>';
   if(stockCurrentMarket==='tw'){
@@ -1049,11 +1118,11 @@ async function loadStocks(){
         // [修改] 更換為 allorigins 代理
         const twseUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${symbol}.tw&json=1&delay=0`;
         const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(twseUrl)}`;
-        
+       
         const res = await fetch(proxyUrl);
         const jsonData = await res.json(); // allorigins 回傳 JSON
         const data = JSON.parse(jsonData.contents); // 取得內部的 JSON
-        
+       
         if(data.msgArray && data.msgArray.length > 0) {
           const st = data.msgArray[0];
           const price = parseFloat(st.z) || 0;
@@ -1132,13 +1201,13 @@ document.getElementById('stockAddBtn').onclick = () => {
   loadStocks();
 };
 
-// [保留] 你的 openLink 函式
+// [保留] 你的 openLink 函式 (不變)
 function openLink(url) {
     window.open(url, '_blank');
 }
 
 
-// [新功能] 分頁切換的 JS 邏輯
+// [新功能] 分頁切換的 JS 邏輯 (不變)
 function initTabNavigation() {
     const tabs = document.querySelectorAll('.portal-tab-btn');
     const pages = document.querySelectorAll('.page-content');
@@ -1146,11 +1215,11 @@ function initTabNavigation() {
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const pageName = tab.dataset.page; // e.g., "home"
-            
+           
             // 1. 更新按鈕狀態
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
-            
+           
             // 2. 切換頁面內容
             pages.forEach(page => {
                 if (page.id === 'page-' + pageName) {
@@ -1159,21 +1228,21 @@ function initTabNavigation() {
                     page.style.display = 'none';
                 }
             });
-            
+           
             // 3. [修改] 當切換回 "首頁" 時，才執行功能
             if (pageName === 'home') {
                  // 檢查首頁功能是否需要重新載入
                  const weatherRow = document.getElementById('weatherRow');
                  if (!weatherRow || !weatherRow.innerHTML.includes('weather-day-h')) {
-                    updateWeather('locationSelectorNav'); // [修改] 觸發
+                   updateWeather('locationSelectorNav'); // [修改] 觸發
                  }
                  const stockList = document.getElementById('stocksList');
                  if (!stockList || !stockList.innerHTML.includes('stock-item')) {
-                    loadStocks();
+                   loadStocks();
                  }
                  const newsList = document.getElementById('newsList');
                  if (!newsList || !newsList.innerHTML.includes('news-item')) {
-                    loadNews();
+                   loadNews();
                  }
             }
         });
@@ -1181,22 +1250,22 @@ function initTabNavigation() {
 }
 
 
-// --- 程式碼開始執行 ---
+// --- 程式碼開始執行 --- (不變)
 document.addEventListener('DOMContentLoaded', () => {
     // 1. 綁定分頁切換
     initTabNavigation();
-    
+   
     // 2. 初始載入 "首頁" 的所有功能
     updateDatetime();
     updateWeather('locationSelectorNav'); // [修改] 初始載入
     loadStocks();
     loadNews();
-    
+   
     // 3. 綁定首頁上的所有按鈕
     // (天氣/導覽列) [修改] 綁定兩個選擇器
     document.getElementById('locationSelectorNav').onchange = () => updateWeather('locationSelectorNav');
     document.getElementById('locationSelectorMain').onchange = () => updateWeather('locationSelectorMain');
-    
+   
     // (搜尋)
     document.getElementById('searchBtn').onclick = () => {
       const val=document.getElementById('searchInput').value.trim();
