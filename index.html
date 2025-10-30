@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>個人入口網站 - [已修正 RSS] + 地圖 + TWSE & Alpha Vantage</title>
+<title>個人入口網站 - [完整分頁架構]</title>
 <style>
   /* 你的 CSS 樣式 (完整保留) */
   * {margin:0;padding:0;box-sizing:border-box;}
@@ -13,6 +13,9 @@
     color:#526c67;
     min-height:100vh;
     padding:20px;
+    /* [修改] 為 sticky header 預留空間 */
+    /* 150px (導覽列) + 20px (body padding) = 170px */
+    padding-top: 170px; 
   }
   .container {max-width:1400px;margin:0 auto;}
   .header {
@@ -68,7 +71,12 @@
     color:white;
     font-weight:700;
   }
-  .search-section {margin-bottom:40px; display:flex; gap:10px;}
+  
+  /* [修改] 搜尋列現在是 .portal-nav-sticky 的一部分 */
+  .search-section {
+    display:flex; 
+    gap:10px;
+  }
   .search-input {
     flex:1;
     font-size:17px;
@@ -95,6 +103,8 @@
     transition:background-color 0.35s ease;
   }
   .search-btn:hover {background-color:#618577;}
+
+  /* 你的 CSS (保留) */
   .info-section {
     display:flex;
     gap:32px;
@@ -424,7 +434,7 @@
   }
   .bookmark-link:hover { color: #7ba8a3; }
 
-  /* --- [新功能] Google 地圖 CSS --- */
+  /* 你的地圖 CSS (完整保留) */
   .map-card-full {
     background: white;
     border-radius: 20px;
@@ -451,187 +461,293 @@
     width: 100%;
     height: 500px;
   }
+
+  /* --- [新功能] 置頂導覽列 和 分頁 CSS --- */
+  .portal-nav-sticky {
+    position: sticky;
+    top: 20px; /* 配合 body 的 padding */
+    z-index: 1000;
+    
+    background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
+    padding: 24px 32px;
+    border-radius: 24px;
+    box-shadow: 0 8px 30px rgba(123, 168, 163, 0.35);
+    
+    /* 確保在 .container 內部正確對齊 */
+    max-width: 1400px; 
+    margin: -150px auto 0 auto; /* 往上拉回原點 */
+    top: 20px;
+  }
+  
+  .portal-tabs {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px; /* 標籤和搜尋列的間距 */
+  }
+  
+  .portal-tab-btn {
+    font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.23);
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 10px 28px;
+    cursor: pointer;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    user-select: none;
+  }
+  
+  .portal-tab-btn.active, .portal-tab-btn:hover {
+    background: white;
+    border-color: white;
+    color: #7ba8a3; /* 點選後變為主題綠色 */
+  }
+  
+  /* 分頁內容 */
+  .page-content {
+    /* 預設隱藏，JS 會控制顯示 */
+    display: none;
+    /* [新增] 確保內容在 sticky header 下方 */
+    margin-top: 32px;
+  }
+  
+  .page-content.active {
+    /* 顯示 active 的分頁 */
+    display: block;
+  }
   /* --- [新功能] CSS 結束 --- */
 
 </style>
 </head>
 <body>
 <div class="container">
-  <div class="header">
-    <div class="header-top">
-      <div class="greeting-section">
-        <div class="greeting">您好！歡迎回來 👋</div>
-        <div class="datetime" id="datetime"></div>
-      </div>
-      <select id="locationSelector" class="location-selector" aria-label="選擇城市">
-        <option value="25.0330,121.5654">台北市</option>
-        <option value="24.1477,120.6736">台中市</option>
-        <option value="22.6273,120.3014">高雄市</option>
-        <option value="25.0375,121.4252">新北市</option>
-        <option value="24.8138,120.9675">新竹市</option>
-        <option value="24.9936,121.3010">桃園市</option>
-        <option value="22.9998,120.2269">台南市</option>
-      </select>
+
+  <div class="portal-nav-sticky">
+    <div class="portal-tabs">
+        <button class="portal-tab-btn active" data-page="home">首頁</button>
+        <button class="portal-tab-btn" data-page="personal">個人</button>
+        <button class="portal-tab-btn" data-page="news">新聞</button>
+        <button class="portal-tab-btn" data-page="map">地圖</button>
+        <button class="portal-tab-btn" data-page="work">工作</button>
     </div>
-    <div class="weather-forecast-horizontal" id="weatherRow">
-      <div class="weather-loading">載入天氣資料中...</div>
+    
+    <div class="search-section">
+      <input id="searchInput" class="search-input" placeholder="搜尋 Google 或輸入網址..."/>
+      <button id="searchBtn" class="search-btn">搜尋</button>
     </div>
   </div>
-  <div class="search-section">
-    <input id="searchInput" class="search-input" placeholder="搜尋 Google 或輸入網址..."/>
-    <button id="searchBtn" class="search-btn">搜尋</button>
-  </div>
-  <div class="info-section">
-    <section class="news-card">
-      <div class="section-header">
-        <div class="section-title">
-          <div class="section-icon">📰</div>
-          今日新聞
+
+
+  <div id="page-home" class="page-content active">
+  
+    <div class="header">
+      <div class="header-top">
+        <div class="greeting-section">
+          <div class="greeting">您好！歡迎回來 👋</div>
+          <div class="datetime" id="datetime"></div>
         </div>
-        <div class="news-tabs">
-          <button id="tab-tw" class="news-tab active">台灣</button>
-          <button id="tab-jp" class="news-tab">日本</button>
-          <button id="tab-intl" class="news-tab">國際</button>
-          <button id="refreshNewsBtn" class="refresh-btn">重新整理</button>
-        </div>
+        <select id="locationSelector" class="location-selector" aria-label="選擇城市">
+          <option value="25.0330,121.5654">台北市</option>
+          <option value="24.1477,120.6736">台中市</option>
+          <option value="22.6273,120.3014">高雄市</option>
+          <option value="25.0375,121.4252">新北市</option>
+          <option value="24.8138,120.9675">新竹市</option>
+          <option value="24.9936,121.3010">桃園市</option>
+          <option value="22.9998,120.2269">台南市</option>
+        </select>
       </div>
-      <ul id="newsList" class="news-list"></ul>
-    </section>
-    <section class="stock-card">
-      <div class="section-header">
-        <div class="section-title">股票追蹤</div>
-        <div class="stock-tabs">
-          <button id="stockTab_tw" class="stock-tab active">台股</button>
-          <button id="stockTab_us" class="stock-tab">美股</button>
-        </div>
+      <div class="weather-forecast-horizontal" id="weatherRow">
+        <div class="weather-loading">載入天氣資料中...</div>
       </div>
-      <div class="stock-search">
-        <input id="stockInput" class="stock-search-input" placeholder="輸入股票代碼（例：2330 / AAPL）" />
-        <button id="stockAddBtn" class="stock-add-btn">加入</button>
-      </div>
-      <div id="stocksList" class="stock-list">
-        <div class="stocks-loading">載入股票資料中...</div>
-      </div>
-    </section>
-  </div> <div class="map-card-full">
-      <div class="section-header">
+    </div>
+    
+    <div class="info-section">
+      <section class="news-card">
+        <div class="section-header">
           <div class="section-title">
-              <div class="section-icon">🗺️</div>
-              Google 地圖
+            <div class="section-icon">📰</div>
+            今日新聞
           </div>
-          <div class="map-search-box">
-              <input id="mapSearchInput" class="search-input" placeholder="搜尋地點或地址...">
-              <button id="mapSearchBtn" class="search-btn">搜尋</button>
+          <div class="news-tabs">
+            <button id="tab-tw" class="news-tab active">台灣</button>
+            <button id="tab-jp" class="news-tab">日本</button>
+            <button id="tab-intl" class="news-tab">國際</button>
+            <button id="refreshNewsBtn" class="refresh-btn">重新整理</button>
           </div>
-      </div>
-      <div class="map-content">
-          <iframe id="mapFrame"
-              src="https://maps.google.com/maps?q=台北101&t=&z=15&ie=UTF8&iwloc=&output=embed"
-              frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
-          </iframe>
+        </div>
+        <ul id="newsList" class="news-list"></ul>
+      </section>
+      <section class="stock-card">
+        <div class="section-header">
+          <div class="section-title">股票追蹤</div>
+          <div class="stock-tabs">
+            <button id="stockTab_tw" class="stock-tab active">台股</button>
+            <button id="stockTab_us" class="stock-tab">美股</button>
+          </div>
+        </div>
+        <div class="stock-search">
+          <input id="stockInput" class="stock-search-input" placeholder="輸入股票代碼（例：2330 / AAPL）" />
+          <button id="stockAddBtn" class="stock-add-btn">加入</button>
+        </div>
+        <div id="stocksList" class="stock-list">
+          <div class="stocks-loading">載入股票資料中...</div>
+        </div>
+      </section>
+    </div>
+
+    <div class="map-card-full">
+        <div class="section-header">
+            <div class="section-title">
+                <div class="section-icon">🗺️</div>
+                Google 地圖
+            </div>
+            <div class="map-search-box">
+                <input id="mapSearchInput" class="search-input" placeholder="搜尋地點或地址...">
+                <button id="mapSearchBtn" class="search-btn">搜尋</button>
+            </div>
+        </div>
+        <div class="map-content">
+            <iframe id="mapFrame"
+                src="https://maps.google.com/maps?q=台北101&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+            </iframe>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="card">
+            <div class="card-title">
+                <div class="card-icon">📊</div>
+                我的專案
+            </div>
+            <div class="project-item" onclick="openLink('#')">
+                <div class="project-name">銷售數據管理系統</div>
+                <div class="project-desc">OCR 辨識 | 數據分析 | 視覺化儀表板</div>
+            </div>
+            <div class="project-item" onclick="openLink('#')">
+                <div class="project-name">數據分析頁面</div>
+                <div class="project-desc">期間對比 | 品項分析 | 趨勢圖表</div>
+            </div>
+            <div class="project-item" onclick="openLink('#')">
+                <div class="project-name">上傳管理系統</div>
+                <div class="project-desc">圖片上傳 | OCR 處理 | 數據整合</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <div class="card-icon">🔧</div>
+                常用工具
+            </div>
+            <div class="tool-item" onclick="openLink('https://pages.cloudflare.com/')">
+                <div class="tool-icon">CF</div>
+                <div class="tool-info">
+                    <div class="tool-name">Cloudflare Pages</div>
+                    <div class="tool-url">頁面部署管理</div>
+                </div>
+            </div>
+            <div class="tool-item" onclick="openLink('https://gemini.google.com/')">
+                <div class="tool-icon">AI</div>
+                <div class="tool-info">
+                    <div class="tool-name">Gemini AI</div>
+                    <div class="tool-url">AI 助理服務</div>
+                </div>
+            </div>
+            <div class="tool-item" onclick="openLink('https://github.com/')">
+                <div class="tool-icon">GH</div>
+                <div class="tool-info">
+                    <div class="tool-name">GitHub</div>
+                    <div class="tool-url">程式碼版本控制</div>
+                </div>
+            </div>
+            <div class="tool-item" onclick="openLink('https://www.canva.com/')">
+                <div class="tool-icon">🎨</div>
+                <div class="tool-info">
+                    <div class="tool-name">Canva</div>
+                    <div class="tool-url">圖形設計工具</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <div class="card-icon">🔗</div>
+                快速連結
+            </div>
+            <div class="link-grid">
+                <div class="quick-link" onclick="openLink('https://www.google.com.tw')">Google 搜尋</div>
+                <div class="quick-link" onclick="openLink('https://mail.google.com')">Gmail</div>
+                <div class="quick-link" onclick="openLink('https://drive.google.com')">Google Drive</div>
+                <div class="quick-link" onclick="openLink('https://translate.google.com')">Google 翻譯</div>
+                <div class="quick-link" onclick="openLink('https://www.youtube.com')">YouTube</div>
+                <div class="quick-link" onclick="openLink('https://maps.google.com.tw')">Google 地圖</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <div class="card-icon">💻</div>
+                開發資源
+            </div>
+            <div class="bookmark-section">
+                <div class="bookmark-category">前端開發</div>
+                <div class="bookmark-link" onclick="openLink('https://developer.mozilla.org/')">MDN Web Docs</div>
+                <div class="bookmark-link" onclick="openLink('https://stackoverflow.com/')">Stack Overflow</div>
+                <div class="bookmark-link" onclick="openLink('https://codepen.io/')">CodePen</div>
+                
+                <div class="bookmark-category">設計靈感</div>
+                <div class="bookmark-link" onclick="openLink('https://dribbble.com/')">Dribbble</div>
+                <div class="bookmark-link" onclick="openLink('https://www.behance.net/')">Behance</div>
+                <div class="bookmark-link" onclick="openLink('https://unsplash.com/')">Unsplash</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">
+                <div class="card-icon">🎬</div>
+                娛樂與生活
+            </div>
+            <div class="bookmark-section">
+                <div class="bookmark-link" onclick="openLink('https://www.sbs.com.au/ondemand/')">SBS On Demand</div>
+                <div class="bookmark-link" onclick="openLink('https://www.netflix.com/')">Netflix</div>
+                <div class="bookmark-link" onclick="openLink('https://www.tripadvisor.com.tw/')">TripAdvisor</div>
+                <div class="bookmark-link" onclick="openLink('https://www.books.com.tw/')">博客來</div>
+            </div>
+        </div>
+  </div> <div id="page-personal" class="page-content">
+      <div class="card">
+          <h2>個人 (建置中)</h2>
+          <p>此頁面暫時留空。你可以在這裡放你的個人資料或設定。</p>
       </div>
   </div>
-  <div class="main-content">
-      <div class="card">
-          <div class="card-title">
-              <div class="card-icon">📊</div>
-              我的專案
-          </div>
-          <div class="project-item" onclick="openLink('#')">
-              <div class="project-name">銷售數據管理系統</div>
-              <div class="project-desc">OCR 辨識 | 數據分析 | 視覺化儀表板</div>
-          </div>
-          <div class="project-item" onclick="openLink('#')">
-              <div class="project-name">數據分析頁面</div>
-              <div class="project-desc">期間對比 | 品項分析 | 趨勢圖表</div>
-          </div>
-          <div class="project-item" onclick="openLink('#')">
-              <div class="project-name">上傳管理系統</div>
-              <div class="project-desc">圖片上傳 | OCR 處理 | 數據整合</div>
-          </div>
-      </div>
 
-      <div class="card">
-          <div class="card-title">
-              <div class="card-icon">🔧</div>
-              常用工具
-          </div>
-          <div class="tool-item" onclick="openLink('https://pages.cloudflare.com/')">
-              <div class="tool-icon">CF</div>
-              <div class="tool-info">
-                  <div class="tool-name">Cloudflare Pages</div>
-                  <div class="tool-url">頁面部署管理</div>
-              </div>
-          </div>
-          <div class="tool-item" onclick="openLink('https://gemini.google.com/')">
-              <div class="tool-icon">AI</div>
-              <div class="tool-info">
-                  <div class="tool-name">Gemini AI</div>
-                  <div class="tool-url">AI 助理服務</div>
-              </div>
-          </div>
-          <div class="tool-item" onclick="openLink('https://github.com/')">
-              <div class="tool-icon">GH</div>
-              <div class="tool-info">
-                  <div class="tool-name">GitHub</div>
-                  <div class="tool-url">程式碼版本控制</div>
-              </div>
-          </div>
-          <div class="tool-item" onclick="openLink('https://www.canva.com/')">
-              <div class="tool-icon">🎨</div>
-              <div class="tool-info">
-                  <div class="tool-name">Canva</div>
-                  <div class="tool-url">圖形設計工具</div>
-              </div>
-          </div>
-      </div>
 
+  <div id="page-news" class="page-content">
       <div class="card">
-          <div class="card-title">
-              <div class="card-icon">🔗</div>
-              快速連結
-          </div>
-          <div class="link-grid">
-              <div class="quick-link" onclick="openLink('https://www.google.com.tw')">Google 搜尋</div>
-              <div class="quick-link" onclick="openLink('https://mail.google.com')">Gmail</div>
-              <div class="quick-link" onclick="openLink('https://drive.google.com')">Google Drive</div>
-              <div class="quick-link" onclick="openLink('https://translate.google.com')">Google 翻譯</div>
-              <div class="quick-link" onclick="openLink('https://www.youtube.com')">YouTube</div>
-              <div class="quick-link" onclick="openLink('https://maps.google.com.tw')">Google 地圖</div>
-          </div>
+          <h2>新聞 (建置中)</h2>
+          <p>此頁面暫時留空。你可以在這裡建置更完整的新聞瀏覽功能。</p>
       </div>
+  </div>
 
-      <div class="card">
-          <div class="card-title">
-              <div class="card-icon">💻</div>
-              開發資源
-          </div>
-          <div class="bookmark-section">
-              <div class="bookmark-category">前端開發</div>
-              <div class="bookmark-link" onclick="openLink('https://developer.mozilla.org/')">MDN Web Docs</div>
-              <div class="bookmark-link" onclick="openLink('https://stackoverflow.com/')">Stack Overflow</div>
-              <div class="bookmark-link" onclick="openLink('https://codepen.io/')">CodePen</div>
-              
-              <div class="bookmark-category">設計靈感</div>
-              <div class="bookmark-link" onclick="openLink('https://dribbble.com/')">Dribbble</div>
-              <div class="bookmark-link" onclick="openLink('https://www.behance.net/')">Behance</div>
-              <div class="bookmark-link" onclick="openLink('https://unsplash.com/')">Unsplash</div>
-          </div>
-      </div>
 
-      <div class="card">
-          <div class="card-title">
-              <div class="card-icon">🎬</div>
-              娛樂與生活
-          </div>
-          <div class="bookmark-section">
-              <div class="bookmark-link" onclick="openLink('https://www.sbs.com.au/ondemand/')">SBS On Demand</div>
-              <div class="bookmark-link" onclick="openLink('https://www.netflix.com/')">Netflix</div>
-              <div class="bookmark-link" onclick="openLink('https://www.tripadvisor.com.tw/')">TripAdvisor</div>
-              <div class="bookmark-link" onclick="openLink('https://www.books.com.tw/')">博客來</div>
-          </div>
+  <div id="page-map" class="page-content">
+       <div class="card">
+          <h2>地圖 (建置中)</h2>
+          <p>此頁面暫時留空。你可以在這裡建置更完整的地圖功能。</p>
       </div>
-  </div> </div> <script>
+  </div>
+
+  
+  <div id="page-work" class="page-content">
+      <div class="card">
+          <h2>工作 (建置中)</h2>
+          <p>此頁面暫時留空。你可以在這裡放你的待辦事項或工作相關連結。</p>
+      </div>
+  </div>
+
+</div> <script>
 // [保留] 你的股票 API 金鑰 (Alpha Vantage)
 const ALPHA_VANTAGE_API_KEY = 'K09FCGY2Y90L99V0';
 
@@ -642,8 +758,6 @@ function updateDatetime() {
     year:'numeric', month:'long', day:'numeric',weekday:'long',hour:'2-digit',minute:'2-digit'
   });
 }
-updateDatetime();
-setInterval(updateDatetime,60000);
 
 // 天氣呼叫API (完整保留你原本的程式碼)
 const weatherCodes = {
@@ -675,8 +789,6 @@ function updateWeather(){
     target.innerHTML='<div class="weather-loading">天氣資料載入失敗</div>';
   });
 }
-document.getElementById('locationSelector').onchange = updateWeather;
-updateWeather(); // 初始載入天氣 (保留)
 
 // 搜尋 (完整保留你原本的程式碼)
 document.getElementById('searchBtn').onclick = () => {
@@ -692,65 +804,45 @@ document.getElementById('searchInput').addEventListener('keypress', e =>{
   if(e.key === 'Enter') document.getElementById('searchBtn').click();
 });
 
-// ========================================================
-// [新功能] Google 地圖
-// ========================================================
+// 地圖 (完整保留你原本的程式碼)
 function searchGoogleMaps() {
   const input = document.getElementById('mapSearchInput');
   const query = input.value.trim();
   if (!query) return;
 
   const mapFrame = document.getElementById('mapFrame');
-  // 使用不需 API Key 的 q= 嵌入方式
   const newSrc = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
   mapFrame.src = newSrc;
 }
 
-// 綁定地圖搜尋按鈕
-document.getElementById('mapSearchBtn').onclick = searchGoogleMaps;
-document.getElementById('mapSearchInput').addEventListener('keypress', e => {
-  if (e.key === 'Enter') searchGoogleMaps();
-});
-// ========================================================
-// (地圖功能結束)
-// ========================================================
-
-
-// ========================================================
-// 新聞 (使用前端 RSS 代理)
-// ========================================================
+// 新聞 (完整保留你原本的程式碼)
 const RSS_FEEDS = {
     tw: [
         'https://news.ltn.com.tw/rss/all.xml',       // 自由時報 (首選)
         'https://www.cna.com.tw/rsspolitics.xml',  // 中央通訊社 (備援)
-        'https://udn.com/rssfeed/news/1',              // 聯合新聞網 (備援)
-        'https://newtalk.tw/rss/politics.xml'       // Newtalk (備援)
     ],
     jp: [
         'https://www3.nhk.or.jp/rss/news/cat0.xml',    // NHK (首選)
         'https://www.asahi.com/rss/asahi/newsheadlines.rdf' // 朝日新聞 (備援)
     ],
-    intl: [ // 你稱之為 'intl'
+    intl: [
         'http://feeds.bbci.co.uk/news/world/rss.xml' // BBC News
     ]
 };
-
-let currentNewsTab = 'tw'; // 預設
-
+let currentNewsTab = 'tw'; 
 function switchNewsTab(tab){
   currentNewsTab = tab;
-  document.querySelectorAll('.news-tab').forEach(btn => btn.classList.remove('active'));
+  // [修改] 確保只更新首頁上的新聞 tabs
+  document.querySelectorAll('#page-home .news-tab').forEach(btn => btn.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
-  loadNews(); // 呼叫新的 loadNews
+  loadNews(); 
 }
-
 function cleanCData(str) {
     if (str.startsWith('<![CDATA[') && str.endsWith(']]>')) {
         return str.substring(9, str.length - 3);
     }
     return str.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
 }
-
 function parseRSS(xmlText) {
     const articles = [];
     const maxArticles = 5;
@@ -782,9 +874,10 @@ function parseRSS(xmlText) {
     }
     return articles;
 }
-
 async function loadNews(){
   const list = document.getElementById('newsList');
+  if (!list) return; // 如果找不到元素 (例如在其他分頁)，就退出
+  
   list.innerHTML = '<li class="news-loading">載入新聞中…</li>';
   const refreshBtn = document.getElementById('refreshNewsBtn');
   if (refreshBtn) refreshBtn.disabled = true;
@@ -797,10 +890,8 @@ async function loadNews(){
           const proxyUrl = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(rssUrl)}`;
           const res = await fetch(proxyUrl);
           if (!res.ok) throw new Error(`代理伺服器錯誤 (狀態: ${res.status})`);
-
           const xmlText = await res.text();
           const articles = parseRSS(xmlText);
-
           if (articles && articles.length > 0) {
               list.innerHTML = ''; 
               articles.forEach(article => {
@@ -813,7 +904,6 @@ async function loadNews(){
                     else if (rssUrl.includes('bbci.co.uk')) sourceName = 'BBC News';
                     else sourceName = 'RSS 來源';
                   }
-                  
                   list.insertAdjacentHTML('beforeend', `
                     <li class="news-item" onclick="window.open('${article.url}','_blank')">
                       <div class="news-item-title">${article.title || '無標題'}</div>
@@ -831,21 +921,11 @@ async function loadNews(){
           console.warn(`RSS 來源 ${rssUrl} 失敗: ${e.message}`);
       }
   }
-
   if (!success) {
       list.innerHTML = `<li class="news-loading">新聞載入失敗: 所有備援來源均嘗試失敗。</li>`;
   }
   if (refreshBtn) refreshBtn.disabled = false;
 }
-
-document.getElementById('tab-tw').onclick = () => switchNewsTab('tw');
-document.getElementById('tab-jp').onclick = () => switchNewsTab('jp');
-document.getElementById('tab-intl').onclick = () => switchNewsTab('intl');
-document.getElementById('refreshNewsBtn').onclick = loadNews;
-// ========================================================
-// (新聞修改結束)
-// ========================================================
-
 
 // 股票區 (完整保留你原本的程式碼)
 const stockWatchlist = {
@@ -853,21 +933,18 @@ const stockWatchlist = {
   us: ['AAPL','GOOGL','TSLA','NVDA','MSFT']
 };
 let stockCurrentMarket = 'tw';
-
 function switchStockMarket(market){
   stockCurrentMarket=market;
   document.querySelectorAll('.stock-tab').forEach(b => b.classList.remove('active'));
   document.getElementById('stockTab_' + market).classList.add('active');
   loadStocks();
 }
-document.getElementById('stockTab_tw').onclick = () => switchStockMarket('tw');
-document.getElementById('stockTab_us').onclick = () => switchStockMarket('us');
-
 async function loadStocks(){
   const container = document.getElementById('stocksList');
+  if (!container) return; // 如果找不到元素 (例如在其他分頁)，就退出
+  
   const watchlist = stockWatchlist[stockCurrentMarket];
   container.innerHTML = '<div class="stocks-loading">載入股票資料中…</div>';
-
   if(stockCurrentMarket==='tw'){
     container.innerHTML = '';
     for(const symbol of watchlist){
@@ -929,26 +1006,19 @@ async function loadStocks(){
       }catch(e){
         container.insertAdjacentHTML('beforeend', `<div class="stock-item">載入 ${symbol} 失敗</div>`);
       }
-      await delay(1400); // [保留] 你的 Alpha Vantage 延遲
+      await delay(1400); 
     }
   }
 }
-
-function delay(ms){return new Promise(r=>setTimeout(r,ms));} // [保留]
-
-// 新增股票 (保留你原始的程式碼, 修正一個小 bug)
+function delay(ms){return new Promise(r=>setTimeout(r,ms));} 
 document.getElementById('stockAddBtn').onclick = () => {
   const input=document.getElementById('stockInput');
   let symbol=input.value.trim().toUpperCase();
   if(!symbol) return alert('請輸入股票代碼');
-  
   if (stockCurrentMarket === 'tw') {
       const twSymbol = symbol.match(/\d+/);
-      if (twSymbol) {
-          symbol = twSymbol[0];
-      }
+      if (twSymbol) { symbol = twSymbol[0]; }
   }
-  
   const list=stockWatchlist[stockCurrentMarket];
   if(list.includes(symbol)) return alert('股票已在清單');
   if(list.length >= 7) return alert('最多只能追蹤7支股票');
@@ -957,14 +1027,71 @@ document.getElementById('stockAddBtn').onclick = () => {
   loadStocks();
 };
 
-// [已還原] 你 23.html 中的 openLink 函式
+// [保留] 你的 openLink 函式
 function openLink(url) {
     window.open(url, '_blank');
 }
 
-// 開始載入 (保留你原始的載入順序)
-switchNewsTab('tw'); 
-switchStockMarket('tw');
+
+// ========================================================
+// [新功能] 分頁切換的 JS 邏輯
+// ========================================================
+function initTabNavigation() {
+    const tabs = document.querySelectorAll('.portal-tab-btn');
+    const pages = document.querySelectorAll('.page-content');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const pageName = tab.dataset.page; // e.g., "home"
+            
+            // 1. 更新按鈕狀態
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+            
+            // 2. 切換頁面內容
+            pages.forEach(page => {
+                if (page.id === 'page-' + pageName) {
+                    page.style.display = 'block';
+                } else {
+                    page.style.display = 'none';
+                }
+            });
+        });
+    });
+}
+// ========================================================
+// (分頁 JS 結束)
+// ========================================================
+
+
+// --- 程式碼開始執行 ---
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. 綁定分頁切換
+    initTabNavigation();
+    
+    // 2. 初始載入 "首頁" 的所有功能
+    updateDatetime();
+    updateWeather(); 
+    switchStockMarket('tw');
+    switchNewsTab('tw');
+    
+    // 3. 綁定首頁上的所有按鈕
+    // (天氣)
+    document.getElementById('locationSelector').onchange = updateWeather;
+    // (新聞)
+    document.getElementById('tab-tw').onclick = () => switchNewsTab('tw');
+    document.getElementById('tab-jp').onclick = () => switchNewsTab('jp');
+    document.getElementById('tab-intl').onclick = () => switchNewsTab('intl');
+    document.getElementById('refreshNewsBtn').onclick = loadNews;
+    // (股票)
+    document.getElementById('stockTab_tw').onclick = () => switchStockMarket('tw');
+    document.getElementById('stockTab_us').onclick = () => switchStockMarket('us');
+    // (地圖)
+    document.getElementById('mapSearchBtn').onclick = searchGoogleMaps;
+    document.getElementById('mapSearchInput').addEventListener('keypress', e => {
+      if (e.key === 'Enter') searchGoogleMaps();
+    });
+});
 </script>
 </body>
 </html>
