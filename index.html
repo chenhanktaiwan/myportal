@@ -1098,14 +1098,12 @@ async function loadNews(){
 
   for (const rssUrl of urlsToTry) {
       try {
-          // [修改] 更換為 allorigins 代理
-          const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
+          // const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(rssUrl)}`;
          
           const res = await fetch(proxyUrl);
           if (!res.ok) throw new Error(`代理伺服器錯誤 (狀態: ${res.status})`);
          
-          const data = await res.json(); // allorigins 回傳 JSON
-          const xmlText = data.contents;  // 實際的 XML/RSS 內容
+          // const xmlText = await res.text(); 
          
           const articles = parseRSS(xmlText);
          
@@ -1166,13 +1164,12 @@ async function loadStocks(){
     container.innerHTML = '';
     for(const symbol of watchlist){
       try{
-        // [修改] 更換為 allorigins 代理
-        const twseUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${symbol}.tw&json=1&delay=0`;
-        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(twseUrl)}`;
+        // const twseUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${symbol}.tw&json=1&delay=0`;
+        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(twseUrl)}`;
        
         const res = await fetch(proxyUrl);
-        const jsonData = await res.json(); // allorigins 回傳 JSON
-        const data = JSON.parse(jsonData.contents); // 取得內部的 JSON
+        // const textData = await res.text();
+        const data = JSON.parse(textData); 
        
         if(data.msgArray && data.msgArray.length > 0) {
           const st = data.msgArray[0];
