@@ -1,11 +1,7 @@
 /* * =================================
  * Cloudflare Function (後端)
  * 檔名: /functions/api/get-news.js
- *
- * [已修改] 
- * - 使用您指定的 RSS 網址 (CNA, NHK, Nippon.com)
- * - 繞過所有第三方 API (不再使用 rss2json 或 Google News)
- * - 在後端手動解析 XML
+ * * 功能: 讀取您指定的 RSS (CNA, NHK)
  * =================================
  */
 
@@ -15,7 +11,7 @@ export async function onRequest(context) {
     const url = new URL(context.request.url);
     const category = url.searchParams.get('category') || 'tw'; // 預設為 'tw'
 
-    // 2. [修改] 使用您提供的 RSS Feeds 網址
+    // 2. [修改] 使用您指定的 RSS Feeds 網址
     const RSS_FEEDS = {
         tw: 'https://www.cna.com.tw/rsspolitics.xml',  // 中央通訊社 (政治)
         jp: 'https://www3.nhk.or.jp/rss/news/cat0.xml',    // NHK WORLD-JAPAN
