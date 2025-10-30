@@ -328,7 +328,7 @@
     color:#50766e;
   }
 
-  /* [已還原] 你 23.html 中被我遺漏的 CSS */
+  /* 你的 CSS 樣式 (完整保留) */
   .main-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -650,8 +650,26 @@ document.getElementById('searchInput').addEventListener('keypress', e =>{
 });
 
 // ========================================================
-// 新聞 (已修改為呼叫後端 RSS)
+// 新聞 (已修改為前端抓取 RSS)
 // ========================================================
+
+// [修改] 我們不再需要後端，所以使用你提供的 RSS 列表
+const RSS_FEEDS = {
+    tw: [
+        'https://news.ltn.com.tw/rss/all.xml',       // 自由時報 (首選)
+        'https://www.cna.com.tw/rsspolitics.xml',  // 中央通訊社 (備援)
+        'https://udn.com/rssfeed/news/1',              // 聯合新聞網 (備援)
+        'https://newtalk.tw/rss/politics.xml'       // Newtalk (備援)
+    ],
+    jp: [
+        'https://www3.nhk.or.jp/rss/news/cat0.xml',    // NHK (首選)
+        'https://www.asahi.com/rss/asahi/newsheadlines.rdf' // 朝日新聞 (備援)
+    ],
+    intl: [ // 你稱之為 'intl'
+        'http://feeds.bbci.co.uk/news/world/rss.xml' // BBC News
+    ]
+};
+
 let currentNewsTab = 'tw'; // 預設
 
 // [保留] 你的切換函式
@@ -662,57 +680,134 @@ function switchNewsTab(tab){
   loadNews(); // 呼叫新的 loadNews
 }
 
-// [修改] loadNews 函式，改為呼叫我們的 /api/get-news
+// 輔助函式：清理 CDATA
+function cleanCData(str) {
+    if (str.startsWith('<![CDATA[') && str.endsWith(']]>')) {
+        return str.substring(9, str.length - 3);
+    }
+    return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+}
+
+// 輔助函式：解析 XML (在前端)
+function parseRSS(xmlText) {
+    const articles = [];
+    const maxArticles = 5;
+    
+    // 嘗試 <item>...</item>
+    let items = [...xmlText.matchAll(/<item>([\s\S]*?)<\/item>/g)];
+    
+    // 備用方案: .rdf 格式 <item ...> ... </item>
+    if (items.length === 0) {
+         items.push(...xmlText.matchAll(/<item [^>]+>([\s\S]*?)<\/item>/g));
+    }
+    
+    // 備用方案: .rdf 格式 <item ... /> (例如 Asahi)
+    if (items.length === 0) {
+         items.push(...xmlText.matchAll(/<item[^>]+rdf:about="([^"]+)"[\s\S]*?<title>([\s\S]*?)<\/title>[\s\S]*?<\/item>/g));
+         
+         // 處理 Asahi 的特殊格式
+         for (let i = 0; i < items.length && i < maxArticles; i++) {
+             const link = items[i][1];
+             const title = cleanCData(items[i][2]);
+             articles.push({
+                 title: title,
+                 url: link,
+                 source: { name: '朝日新聞' }
+             });
+         }
+         return articles; // Asahi 格式不同，提早回傳
+    }
+
+    // 標準 <item> 解析
+    for (let i = 0; i < items.length && i < maxArticles; i++) {
+        const itemContent = items[i][1];
+        
+        const titleMatch = itemContent.match(/<title>([\s\S]*?)<\/title>/);
+        const title = titleMatch ? cleanCData(titleMatch[1]) : '無標題';
+        
+        const linkMatch = itemContent.match(/<link>([\s\S]*?)<\/link>/);
+        const link = linkMatch ? (linkMatch[1] || '#') : '#';
+
+        const sourceMatch = itemContent.match(/<source [^>]+>([\s\S]*?)<\/source>/);
+        let sourceName = sourceMatch ? cleanCData(sourceMatch[1]) : null;
+        if (!sourceName) {
+             const creatorMatch = itemContent.match(/<dc:creator>([\s\S]*?)<\/dc:creator>/);
+             sourceName = creatorMatch ? cleanCData(creatorMatch[1]) : 'N/A';
+        }
+        
+        articles.push({
+            title: title,
+            url: link.trim(), // 清理 link
+            source: { name: sourceName }
+        });
+    }
+    return articles;
+}
+
+// [修改] loadNews 函式，改為在前端呼叫 CORS 代理
 async function loadNews(){
   const list = document.getElementById('newsList');
   list.innerHTML = '<li class="news-loading">載入新聞中…</li>';
   const refreshBtn = document.getElementById('refreshNewsBtn');
   if (refreshBtn) refreshBtn.disabled = true;
 
-  try{
-    // 'intl' tab 對應到後端的 'world' category
-    const apiCategory = (currentNewsTab === 'intl') ? 'world' : currentNewsTab;
-    
-    // ** 呼叫後端 /api/get-news **
-    const res = await fetch(`/api/get-news?category=${apiCategory}`);
-    
-    if (!res.ok) {
-        let errorMsg = '新聞伺服器回應錯誤';
-        try {
-            const errData = await res.json();
-            errorMsg = errData.message || errorMsg;
-        } catch(e) {
-            // response 不是 JSON, Lý do là máy chủ không phản hồi JSON
-        }
-        throw new Error(errorMsg);
-    }
+  // 取得 RSS 列表
+  const urlsToTry = RSS_FEEDS[currentNewsTab] || RSS_FEEDS['tw'];
 
-    const data = await res.json();
+  let success = false;
 
-    // [修改] 使用新的資料結構 (來自後端)
-    if(data.status === 'ok' && data.articles && data.articles.length > 0){
-      list.innerHTML = '';
-      data.articles.forEach(article => {
-        // 使用你原始 HTML/CSS 的 class 和結構
-        list.insertAdjacentHTML('beforeend', `
-          <li class="news-item" onclick="window.open('${article.url}','_blank')">
-            <div class="news-item-title">${article.title || '無標題'}</div>
-            <div class="news-item-meta">
-              <span>${article.source.name || '來源未知'}</span>
-              </div>
-          </li>`);
-      });
-    } else if (data.status === 'error') {
-        throw new Error(data.message);
-    } else {
-      list.innerHTML = '<li class="news-loading">目前無法取得新聞</li>';
-    }
-  } catch(e) {
-    list.innerHTML = `<li class="news-loading">新聞載入失敗: ${e.message}</li>`;
-    console.error(e);
-  } finally {
-    if (refreshBtn) refreshBtn.disabled = false;
+  for (const rssUrl of urlsToTry) {
+      try {
+          // ** 使用 api.codetabs.com (你的股票功能也在用) 來代理**
+          const proxyUrl = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(rssUrl)}`;
+          
+          const res = await fetch(proxyUrl);
+          
+          if (!res.ok) {
+              throw new Error(`代理伺服器錯誤 (狀態: ${res.status})`);
+          }
+
+          const xmlText = await res.text();
+          const articles = parseRSS(xmlText);
+
+          if (articles && articles.length > 0) {
+              list.innerHTML = ''; // 成功，清空列表
+              articles.forEach(article => {
+                  
+                  // 手動指定來源 (因為解析很困難)
+                  let sourceName = 'RSS 來源';
+                  if (rssUrl.includes('cna.com')) sourceName = '中央通訊社';
+                  if (rssUrl.includes('ltn.com')) sourceName = '自由時報';
+                  if (rssUrl.includes('udn.com')) sourceName = '聯合新聞網';
+                  if (rssUrl.includes('nhk.or.jp')) sourceName = 'NHK';
+                  if (rssUrl.includes('bbci.co.uk')) sourceName = 'BBC News';
+                  
+                  list.insertAdjacentHTML('beforeend', `
+                    <li class="news-item" onclick="window.open('${article.url}','_blank')">
+                      <div class="news-item-title">${article.title || '無標題'}</div>
+                      <div class="news-item-meta">
+                        <span>${sourceName}</span>
+                      </div>
+                    </li>`);
+              });
+              success = true;
+              break; // 成功，跳出迴圈
+          } else {
+              // 抓到了，但是是空的
+              throw new Error('RSS 內容為空或無法解析');
+          }
+      } catch(e) {
+          console.warn(`RSS 來源 ${rssUrl} 失敗: ${e.message}`);
+          // 失敗，迴圈會繼續嘗試下一個
+      }
   }
+
+  // 迴圈跑完後
+  if (!success) {
+      list.innerHTML = `<li class="news-loading">新聞載入失敗: 所有備援來源均嘗試失敗。</li>`;
+  }
+
+  if (refreshBtn) refreshBtn.disabled = false;
 }
 
 // [保留] 你的按鈕綁定事件
@@ -820,7 +915,6 @@ document.getElementById('stockAddBtn').onclick = () => {
   let symbol=input.value.trim().toUpperCase();
   if(!symbol) return alert('請輸入股票代碼');
   
-  // [修正] 確保台股代碼只取數字
   if (stockCurrentMarket === 'tw') {
       const twSymbol = symbol.match(/\d+/);
       if (twSymbol) {
