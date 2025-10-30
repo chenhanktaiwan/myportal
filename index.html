@@ -1233,6 +1233,8 @@ async function loadStocks(){
   }
 }
 function delay(ms){return new Promise(r=>setTimeout(r,ms));} 
+
+// [已修正] 移除 'stockAddBtn.onclick' 內的 'twseUrlrl' 錯字 (這個函式內根本不需要這個變數)
 document.getElementById('stockAddBtn').onclick = () => {
   const input=document.getElementById('stockInput');
   let symbol=input.value.trim().toUpperCase();
@@ -1461,6 +1463,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // (股票)
     document.getElementById('stockTab_tw').onclick = () => switchStockMarket('tw');
     document.getElementById('stockTab_us').onclick = () => switchStockMarket('us');
+    
+    // [已修正] 移除 'stockAddBtn.onclick' 內的 'twseUrlrl' 錯字 (這個函式內根本不需要這個變數)
     document.getElementById('stockAddBtn').onclick = () => {
       const input=document.getElementById('stockInput');
       let symbol=input.value.trim().toUpperCase();
