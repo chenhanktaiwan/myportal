@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>個人入口網站 - [完整分頁架構]</title>
+<title>個人入口網站 - [分頁架構 v2]</title>
 <style>
   /* 你的 CSS 樣式 (完整保留) */
   * {margin:0;padding:0;box-sizing:border-box;}
@@ -13,9 +13,8 @@
     color:#526c67;
     min-height:100vh;
     padding:20px;
-    /* [修改] 為 sticky header 預留空間 */
-    /* 150px (導覽列) + 20px (body padding) = 170px */
-    padding-top: 170px; 
+    /* [修改] 為 "僅有標籤" 的 sticky header 預留空間 */
+    padding-top: 90px; 
   }
   .container {max-width:1400px;margin:0 auto;}
   .header {
@@ -72,10 +71,11 @@
     font-weight:700;
   }
   
-  /* [修改] 搜尋列現在是 .portal-nav-sticky 的一部分 */
+  /* [修改] 搜尋列現在回到 "首頁" 內容中 */
   .search-section {
     display:flex; 
     gap:10px;
+    margin-bottom: 32px; /* [還原] 與下方 info-section 的間距 */
   }
   .search-input {
     flex:1;
@@ -469,20 +469,20 @@
     z-index: 1000;
     
     background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
-    padding: 24px 32px;
+    padding: 20px 32px; /* [修改] 減少上下 padding */
     border-radius: 24px;
     box-shadow: 0 8px 30px rgba(123, 168, 163, 0.35);
     
-    /* 確保在 .container 內部正確對齊 */
+    /* [修改] 調整 margin-top 以配合 body padding-top */
     max-width: 1400px; 
-    margin: -150px auto 0 auto; /* 往上拉回原點 */
+    margin: -70px auto 0 auto; /* 往上拉回原點 (90 - 20) */
     top: 20px;
   }
   
   .portal-tabs {
     display: flex;
     gap: 16px;
-    margin-bottom: 20px; /* 標籤和搜尋列的間距 */
+    /* [移除] margin-bottom (因為搜尋列已移除) */
   }
   
   .portal-tab-btn {
@@ -532,11 +532,6 @@
         <button class="portal-tab-btn" data-page="map">地圖</button>
         <button class="portal-tab-btn" data-page="work">工作</button>
     </div>
-    
-    <div class="search-section">
-      <input id="searchInput" class="search-input" placeholder="搜尋 Google 或輸入網址..."/>
-      <button id="searchBtn" class="search-btn">搜尋</button>
-    </div>
   </div>
 
 
@@ -563,6 +558,11 @@
       </div>
     </div>
     
+    <div class="search-section">
+      <input id="searchInput" class="search-input" placeholder="搜尋 Google 或輸入網址..."/>
+      <button id="searchBtn" class="search-btn">搜尋</button>
+    </div>
+
     <div class="info-section">
       <section class="news-card">
         <div class="section-header">
@@ -1056,6 +1056,25 @@ function initTabNavigation() {
                     page.style.display = 'none';
                 }
             });
+            
+            // [修改] 當切換回 "首頁" 時，重新載入功能
+            // 這樣可以確保 weather/stocks/news 總是最新的
+            // 並且不會在背景分頁執行
+            if (pageName === 'home') {
+                 // 檢查是否需要重新載入
+                 const weatherRow = document.getElementById('weatherRow');
+                 if (!weatherRow.innerHTML || !weatherRow.innerHTML.includes('weather-day-h')) {
+                    updateWeather();
+                 }
+                 const stockList = document.getElementById('stocksList');
+                 if (!stockList.innerHTML || !stockList.innerHTML.includes('stock-item')) {
+                    loadStocks();
+                 }
+                 const newsList = document.getElementById('newsList');
+                 if (!newsList.innerHTML || !newsList.innerHTML.includes('news-item')) {
+                    loadNews();
+                 }
+            }
         });
     });
 }
@@ -1072,8 +1091,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. 初始載入 "首頁" 的所有功能
     updateDatetime();
     updateWeather(); 
-    switchStockMarket('tw');
-    switchNewsTab('tw');
+    loadStocks(); // [修改] 配合你的原始程式碼，使用 loadStocks()
+    loadNews();   // [修改] 配合你的原始程式碼，使用 loadNews()
     
     // 3. 綁定首頁上的所有按鈕
     // (天氣)
