@@ -481,14 +481,16 @@
     margin: -50px auto 0 auto;
     top: 20px;
     
-    /* [修改] 移除 flex (因為天氣和日期已移回首頁) */
+    /* [已還原] 導覽列左右對齊 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   
   .portal-tabs {
     display: flex;
     gap: 10px; /* [修改] */
-    /* [新功能] 讓 tab 置中 */
-    justify-content: center;
+    justify-content: flex-start; /* [修改] 靠左 */
   }
   
   .portal-tab-btn {
@@ -511,8 +513,29 @@
     color: #7ba8a3; /* 點選後變為主題綠色 */
   }
   
-  /* [已刪除] .nav-info-right (已移回首頁) */
-  
+  /* [已還原] 導覽列右側資訊 */
+  .nav-info-right {
+    display: flex;
+    align-items: center;
+    gap: 16px; 
+    color: white;
+  }
+  .nav-datetime {
+    font-size: 13px; 
+    font-weight: 500;
+    opacity: 0.9;
+  }
+  .nav-weather {
+    font-size: 14px; 
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .nav-weather-emoji {
+    font-size: 20px; 
+  }
+
   /* 分頁內容 */
   .page-content {
     display: none;
@@ -537,6 +560,20 @@
         <button class="portal-tab-btn" data-page="map">地圖</button>
         <button class="portal-tab-btn" data-page="work">工作</button>
     </div>
+    
+    <div class="nav-info-right">
+        <select id="locationSelector" class="location-selector" aria-label="選擇城市">
+          <option value="25.0330,121.5654">台北市</option>
+          <option value="24.1477,120.6736">台中市</option>
+          <option value="22.6273,120.3014">高雄市</option>
+          <option value="25.0375,121.4252">新北市</option>
+          <option value="24.8138,120.9675">新竹市</option>
+          <option value="24.9936,121.3010">桃園市</option>
+          <option value="22.9998,120.2269">台南市</option>
+        </select>
+        <div id="nav-weather" class="nav-weather">--°</div>
+        <div id="nav-datetime" class="nav-datetime">載入中...</div>
+    </div>
   </div>
 
 
@@ -548,16 +585,7 @@
           <div class="greeting">您好！歡迎回來 👋</div>
           <div class="datetime" id="datetime"></div>
         </div>
-        <select id="locationSelector" class="location-selector" aria-label="選擇城市">
-          <option value="25.0330,121.5654">台北市</option>
-          <option value="24.1477,120.6736">台中市</option>
-          <option value="22.6273,120.3014">高雄市</option>
-          <option value="25.0375,121.4252">新北市</option>
-          <option value="24.8138,120.9675">新竹市</option>
-          <option value="24.9936,121.3010">桃園市</option>
-          <option value="22.9998,120.2269">台南市</option>
-        </select>
-      </div>
+        </div>
       <div class="weather-forecast-horizontal" id="weatherRow">
         <div class="weather-loading">載入天氣資料中...</div>
       </div>
@@ -756,18 +784,28 @@
 // [保留] 你的股票 API 金鑰 (Alpha Vantage)
 const ALPHA_VANTAGE_API_KEY = 'K09FCGY2Y90L99V0';
 
-// 日期 (完整保留你原本的程式碼)
+// 日期
 function updateDatetime() {
   const now = new Date();
-  const target = document.getElementById('datetime');
-  if (!target) return; // [修改] 確保元素存在
   
-  target.textContent = now.toLocaleDateString('zh-TW',{
-    year:'numeric', month:'long', day:'numeric',weekday:'long',hour:'2-digit',minute:'2-digit'
-  });
+  // [已還原] 更新首頁的大日期
+  const targetMain = document.getElementById('datetime');
+  if (targetMain) {
+      targetMain.textContent = now.toLocaleDateString('zh-TW',{
+        year:'numeric', month:'long', day:'numeric',weekday:'long',hour:'2-digit',minute:'2-digit'
+      });
+  }
+  
+  // [已還原] 更新導覽列的小日期
+  const targetNav = document.getElementById('nav-datetime');
+  if (targetNav) {
+      targetNav.textContent = now.toLocaleDateString('zh-TW', {
+        month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'
+      });
+  }
 }
 
-// 天氣呼叫API (完整保留你原本的程式碼)
+// 天氣呼叫API
 const weatherCodes = {
   0:{emoji:'☀️',desc:'晴天'},1:{emoji:'🌤️',desc:'晴朗'},2:{emoji:'⛅',desc:'多雲'},3:{emoji:'☁️',desc:'陰天'},
   45:{emoji:'🌫️',desc:'霧'},51:{emoji:'🌦️',desc:'小雨'},55:{emoji:'🌧️',desc:'大雨'},61:{emoji:'🌧️',desc:'小雨'},63:{emoji:'🌧️',desc:'中雨'},
@@ -776,13 +814,20 @@ const weatherCodes = {
 };
 function updateWeather(){
   const selector = document.getElementById('locationSelector');
-  const target = document.getElementById('weatherRow');
-  if (!selector || !target) return; // [修改] 確保元素存在
+  const targetRow = document.getElementById('weatherRow'); // [已還原] 7 天預報
+  const targetNav = document.getElementById('nav-weather'); // [已還原] 導覽列天氣
   
-  const v=selector.value.split(',');
-  target.innerHTML='<div class="weather-loading">載入天氣資料中...</div>';
-  fetch(`https://api.open-meteo.com/v1/forecast?latitude=${v[0]}&longitude=${v[1]}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia/Taipei&forecast_days=7`)
+  if (!selector || !targetRow || !targetNav) return; 
+  
+  const v = selector.value.split(',');
+  targetRow.innerHTML = '<div class="weather-loading">載入天氣資料中...</div>';
+  targetNav.innerHTML = '...'; 
+
+  // [修改] 一次 API 呼叫同時取得 current (導覽列) 和 daily (首頁)
+  fetch(`https://api.open-meteo.com/v1/forecast?latitude=${v[0]}&longitude=${v[1]}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia/Taipei&forecast_days=7`)
   .then(r=>r.json()).then(d=>{
+    
+    // 1. [已還原] 填入 7 天天氣預報
     let html='';
     const wd=['週日','週一','週二','週三','週四','週五','週六'];
     for(let i=0;i<7;i++){
@@ -795,9 +840,20 @@ function updateWeather(){
       const rainProb = d.daily.precipitation_probability_max[i] || 0;
       html+=`<div class="weather-day-h"><div class="weather-date-h">${dayName}</div><span class="weather-emoji-h">${w.emoji}</span><div class="weather-temp-h">${tMin}° - ${tMax}°</div><div class="weather-rain-h">💧 ${rainProb}%</div><div class="weather-desc-h">${w.desc}</div></div>`;
     }
-    target.innerHTML=html;
+    targetRow.innerHTML = html;
+    
+    // 2. [已還原] 填入導覽列當前天氣
+    if (d.current_weather) {
+        const cw = d.current_weather;
+        const w_nav = weatherCodes[cw.weathercode] || { emoji:'🌤️', desc:'多雲'};
+        const tMax_nav = Math.round(d.daily.temperature_2m_max[0]);
+        const tMin_nav = Math.round(d.daily.temperature_2m_min[0]);
+        targetNav.innerHTML = `<span class="nav-weather-emoji">${w_nav.emoji}</span> ${Math.round(cw.temperature)}° <span style="font-weight:400;opacity:0.8;">(${tMin_nav}°-${tMax_nav}°)</span>`;
+    }
+
   }).catch(() => {
-    target.innerHTML='<div class="weather-loading">天氣資料載入失敗</div>';
+    targetRow.innerHTML='<div class="weather-loading">天氣資料載入失敗</div>';
+    targetNav.innerHTML = '天氣失敗';
   });
 }
 
@@ -1059,9 +1115,7 @@ function openLink(url) {
 }
 
 
-// ========================================================
 // [新功能] 分頁切換的 JS 邏輯
-// ========================================================
 function initTabNavigation() {
     const tabs = document.querySelectorAll('.portal-tab-btn');
     const pages = document.querySelectorAll('.page-content');
@@ -1102,9 +1156,6 @@ function initTabNavigation() {
         });
     });
 }
-// ========================================================
-// (分頁 JS 結束)
-// ========================================================
 
 
 // --- 程式碼開始執行 ---
@@ -1118,8 +1169,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadStocks();
     loadNews();
     
-    // 3. 綁定首頁上的所有按鈕
-    // (天氣)
+    // 3. 綁定首頁上的所有按鈕 (及導覽列)
+    // (天氣/導覽列)
     document.getElementById('locationSelector').onchange = updateWeather;
     // (搜尋)
     document.getElementById('searchBtn').onclick = () => {
