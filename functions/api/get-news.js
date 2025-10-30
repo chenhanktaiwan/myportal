@@ -3,9 +3,9 @@
  * 檔名: /functions/api/get-news.js
  *
  * [已修改] 
- * - 繞過 rss2json.com，改為直接抓取 Google News RSS (XML)
- * - 在後端手動解析 XML，轉換為 JSON
- * - 不再有第三方服務依賴，更穩定
+ * - 使用您指定的 RSS 網址 (CNA, NHK, Nippon.com)
+ * - 繞過所有第三方 API (不再使用 rss2json 或 Google News)
+ * - 在後端手動解析 XML
  * =================================
  */
 
@@ -15,38 +15,42 @@ export async function onRequest(context) {
     const url = new URL(context.request.url);
     const category = url.searchParams.get('category') || 'tw'; // 預設為 'tw'
 
-    // 2. 定義 Google News RSS Feeds 網址
+    // 2. [修改] 使用您提供的 RSS Feeds 網址
     const RSS_FEEDS = {
-        tw: 'https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRXdvSkwyMHZNRGczTWpVMU5TRUtGZ0poWjJVb0FBUAE?hl=zh-TW&gl=TW&ceid=TW:zh-Hant',
-        jp: 'https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRXdvSkwyMHZNRGczTWpZc05TRUtGZ0poWjJVb0FBUAE?hl=ja&gl=JP&ceid=JP:ja',
-        world: 'https://news.google.com/rss/topics/CAAqJggKIiBDQkFTRXdvSkwyMHZNRGcyZWhjU05TRUtGZ0poWjJVb0FBUAE?hl=en-US&gl=US&ceid=US:en'
+        tw: 'https://www.cna.com.tw/rsspolitics.xml',  // 中央通訊社 (政治)
+        jp: 'https://www3.nhk.or.jp/rss/news/cat0.xml',    // NHK WORLD-JAPAN
+        world: 'https://www.nippon.com/rss/news.xml'      // nippon.com (國際/多語言)
     };
 
     const rssUrl = RSS_FEEDS[category] || RSS_FEEDS['tw'];
 
     try {
-        // 3. [修改] 直接抓取 Google News 的 RSS (XML)
+        // 3. 直接抓取 RSS (XML)
         const response = await fetch(rssUrl, {
             headers: {
-                // 偽裝成瀏覽器，避免被 Google News 封鎖
+                // 偽裝成瀏覽器，避免被 RSS 伺服器封鎖
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
             },
             cf: {
-                cacheTtl: 1800 // 同樣快取 30 分鐘
+                cacheTtl: 1800 // 快取 30 分鐘
             }
         });
 
         if (!response.ok) {
-            throw new Error(`抓取 Google News RSS 失敗, 狀態: ${response.status}`);
+            throw new Error(`抓取 RSS 失敗, 狀態: ${response.status} - ${response.statusText}`);
         }
 
         // 取得 XML 純文字
         const xmlText = await response.text();
 
-        // 4. [修改] 手動解析 XML
-        //    這會尋找 <item>...</item> 區塊
+        // 4. 手動解析 XML (尋找 <item>...</item> 區塊)
         const items = [...xmlText.matchAll(/<item>([\s\S]*?)<\/item>/g)];
         
+        // (備用方案: 處理 .rdf 格式，它使用 <item ...> ... </item>)
+        if (items.length === 0) {
+             items.push(...xmlText.matchAll(/<item [^>]+>([\s\S]*?)<\/item>/g));
+        }
+
         const articles = [];
         const maxArticles = 5; // 只取前 5 筆
 
@@ -61,12 +65,12 @@ export async function onRequest(context) {
             const linkMatch = itemContent.match(/<link>([\s\S]*?)<\/link>/);
             const link = linkMatch ? linkMatch[1] : '#';
 
-            // 抓取 <source ...>...</source> 或 <dc:creator>...</dc:creator> (作者)
+            // 抓取 <source> 或 <dc:creator> (作者)
             const sourceMatch = itemContent.match(/<source [^>]+>([\s\S]*?)<\/source>/);
-            let sourceName = sourceMatch ? sourceMatch[1] : null;
+            let sourceName = sourceMatch ? cleanCData(sourceMatch[1]) : null;
             if (!sourceName) {
                  const creatorMatch = itemContent.match(/<dc:creator>([\s\S]*?)<\/dc:creator>/);
-                 sourceName = creatorMatch ? creatorMatch[1] : 'Google News';
+                 sourceName = creatorMatch ? cleanCData(creatorMatch[1]) : 'N/A';
             }
             
             articles.push({
@@ -78,7 +82,7 @@ export async function onRequest(context) {
             });
         }
         
-        // 5. 建立與前端 app.js 相容的最終 JSON 物件
+        // 5. 建立與前端 app.js 相容的 JSON 物件
         const finalResponse = {
             status: 'ok',
             totalResults: articles.length,
@@ -108,5 +112,6 @@ function cleanCData(str) {
     if (str.startsWith('<![CDATA[') && str.endsWith(']]>')) {
         return str.substring(9, str.length - 3);
     }
-    return str;
+    // 也要清理 XML 轉義字元
+    return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
 }
