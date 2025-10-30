@@ -288,7 +288,7 @@
     border-radius:12px;
     padding: 10px 20px;  
     cursor:pointer;
-    font-size: 14px;  
+    font-size: 14px;s
     font-weight:700;
     color:white;
     border:none;
@@ -391,7 +391,7 @@
     padding: 12px 16px;  
     cursor: pointer;
     transition: background 0.3s, box-shadow 0.3s;
-  }
+s }
   .project-item:hover {
     background: #e6f0ee;
     box-shadow: 0 4px 12px #b8cac7;
@@ -448,7 +448,7 @@
     border-left: 3px solid #cce3db;
     font-weight: 600;
     color: #3a6259;
-  Setting   cursor: pointer;
+  s cursor: pointer;
   }
   .bookmark-link:hover { color: #7ba8a3; }
 
@@ -498,7 +498,7 @@
     /* [已還原] 導覽列左右對齊 */
     display: flex;
     justify-content: space-between;
-    align-items: center;
+  s align-items: center;
   }
  
   .portal-tabs {
@@ -649,7 +649,7 @@
   .shortcut-add-btn .shortcut-icon-add {
       font-size: 32px;
       font-weight: 300;
-  }
+s }
  
   .shortcut-add-btn:hover .shortcut-icon {
       background: #e6f0ee;
@@ -682,7 +682,7 @@
           <option value="24.8138,120.9675">新竹市</option>
           <option value="24.9936,121.3010">桃園市</option>
           <option value="22.9998,120.2269">台南市</option>
-        </select>
+s     </select>
         <div id="nav-weather" class="nav-weather">--°</div>
         <div id="nav-datetime" class="nav-datetime">載入中...</div>
     </div>
@@ -742,7 +742,7 @@
           </div>
         </div>
         <div class="stock-search">
-          <input id="stockInput" class="stock-search-input" placeholder="輸入股票代碼（例：2330 / AAPL）" />
+s         <input id="stockInput" class="stock-search-input" placeholder="輸入股票代碼（例：2330 / AAPL）" />
           <button id="stockAddBtn" class="stock-add-btn">加入</button>
         </div>
         <div id="stocksList" class="stock-list">
@@ -758,13 +758,13 @@
                 Google 地圖
             </div>
             <div class="map-search-box">
-Indented                 <input id="mapSearchInput" class="search-input" placeholder="搜尋地點或地址...">
+                <input id="mapSearchInput" class="search-input" placeholder="搜尋地點或地址...">
                 <button id="mapSearchBtn" class="search-btn">搜尋</button>
             </div>
         </div>
         <div class="map-content">
-            <iframe id="mapFrame"
-                src="http://googleusercontent.com/maps.google.com/8"
+                        <iframe id="mapFrame"
+                src="https://maps.google.com/maps?q=Taipei&t=&z=13&ie=UTF8&iwloc=&output=embed"
                 frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
             </iframe>
         </div>
@@ -806,7 +806,7 @@ Indented                 <input id="mapSearchInput" class="search-input"
                 <div class="tool-icon">AI</div>
                 <div class="tool-info">
                     <div class="tool-name">Gemini AI</div>
-section                 <div class="tool-url">AI 助理服務</div>
+                    <div class="tool-url">AI 助理服務</div>
                 </div>
             </div>
             <div class="tool-item" onclick="openLink('https://github.com/')">
@@ -814,7 +814,7 @@ section                 <div class="tool-url">AI 助理服務</div>
                 <div class="tool-info">
                     <div class="tool-name">GitHub</div>
                     <div class="tool-url">程式碼版本控制</div>
-                </div>
+s             </div>
             </div>
             <div class="tool-item" onclick="openLink('https://www.canva.com/')">
                 <div class="tool-icon">🎨</div>
@@ -836,7 +836,7 @@ section                 <div class="tool-url">AI 助理服務</div>
                 <div class="quick-link" onclick="openLink('https://drive.google.com')">Google Drive</div>
                 <div class="quick-link" onclick="openLink('https://translate.google.com')">Google 翻譯</div>
                 <div class="quick-link" onclick="openLink('https://www.youtube.com')">YouTube</div>
-                <div class="quick-link" onclick="openLink('http://googleusercontent.com/maps.google.com/9')">Google 地圖</div>
+                <div class="quick-link" onclick="openLink('https://maps.google.com.tw')">Google 地圖</div>
             </div>
         </div>
 
@@ -860,7 +860,7 @@ section                 <div class="tool-url">AI 助理服務</div>
 
         <div class="card">
             <div class="card-title">
-A             <div class="card-icon">🎬</div>
+                <div class="card-icon">🎬</div>
                 娛樂與生活
             </div>
             <div class="bookmark-section">
@@ -890,7 +890,7 @@ A             <div class="card-icon">🎬</div>
   <div id="page-map" class="page-content">
         <div class="card">
           <h2>地圖 (建置中)</h2>
-section           <p>此頁面暫時留空。你可以在這裡建置更完整的地圖功能。</p>
+          <p>此頁面暫時留空。你可以在這裡建置更完整的地圖功能。</p>
       </div>
   </div>
 
@@ -943,7 +943,7 @@ function updateDatetime() {
 const weatherCodes = {
   0:{emoji:'☀️',desc:'晴天'},1:{emoji:'🌤️',desc:'晴朗'},2:{emoji:'⛅',desc:'多雲'},3:{emoji:'☁️',desc:'陰天'},
   45:{emoji:'🌫️',desc:'霧'},51:{emoji:'🌦️',desc:'小雨'},55:{emoji:'🌧️',desc:'大雨'},61:{emoji:'🌧️',desc:'小雨'},63:{emoji:'🌧️',desc:'中雨'},
-  65:{emoji:'⛈️',desc:'大雨'},80:{emoji:'🌦️',desc:'陣雨'},81:{emoji:'🌧️',desc:'陣雨'},82:{emoji:'⛈️',desc:'大陣雨'},95:{emoji:'⛈️',desc:'雷雨'},
+s 65:{emoji:'⛈️',desc:'大雨'},80:{emoji:'🌦️',desc:'陣雨'},81:{emoji:'🌧️',desc:'陣雨'},82:{emoji:'⛈️',desc:'大陣雨'},95:{emoji:'⛈️',desc:'雷雨'},
   99:{emoji:'⛈️',desc:'強雷雨'}
 };
 function updateWeather(sourceSelectorId){
@@ -990,7 +990,7 @@ function updateWeather(sourceSelectorId){
     if (d.current_weather) {
         const cw = d.current_weather;
         const w_nav = weatherCodes[cw.weathercode] || { emoji:'🌤️', desc:'多雲'};
-Indented         const tMax_nav = Math.round(d.daily.temperature_2m_max[0]);
+        const tMax_nav = Math.round(d.daily.temperature_2m_max[0]);
         const tMin_nav = Math.round(d.daily.temperature_2m_min[0]);
         targetNav.innerHTML = `<span class="nav-weather-emoji">${w_nav.emoji}</span> ${Math.round(cw.temperature)}° <span style="font-weight:400;opacity:0.8;">(${tMin_nav}°-${tMax_nav}°)</span>`;
     }
@@ -1024,8 +1024,8 @@ function searchGoogleMaps() {
 
   const mapFrame = document.getElementById('mapFrame');
   if (!mapFrame) return;
-  // [!!! 修正 !!!] 還原這一行，並修正樣板字串錯誤
-  const newSrc = `https://maps.google.com.tw0${encodeURIComponent(query)}&t=&z=15&ie=UTF8&iwloc=&output=embed`; 
+  // [!!! 修正 !!!] 修正為可運作的 Google Maps 搜尋 URL
+  const newSrc = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&t=&z=15&ie=UTF8&iwloc=&output=embed`; 
   mapFrame.src = newSrc;
 }
 
@@ -1122,7 +1122,7 @@ async function loadNews(){
                       else if (rssUrl.includes('nhk.or.jp')) sourceName = 'NHK';
                       else if (rssUrl.includes('bbci.co.uk')) sourceName = 'BBC News';
                       else sourceName = 'RSS 來源';
-  Indented           }
+                  }
                   list.insertAdjacentHTML('beforeend', `
                       <li class="news-item" onclick="window.open('${article.url}','_blank')">
                           <div class="news-item-title">${article.title || '無標題'}</div>
@@ -1135,7 +1135,7 @@ async function loadNews(){
               break; 
           } else {
               throw new Error('RSS 內容為空或無法解析');
-          }
+s       }
       } catch(e) {
           console.warn(`RSS 来源 ${rssUrl} 失敗: ${e.message}`);
       }
@@ -1188,7 +1188,7 @@ async function loadStocks(){
             <div class="stock-item">
               <div class="stock-info">
                 <div class="stock-symbol">${symbol}</div>
-type               <div class="stock-name">${st.n||symbol}</div>
+                <div class="stock-name">${st.n||symbol}</div>
               </div>
               <div class="stock-price-info">
                 <div class="stock-price ${c}">$${price.toFixed(2)}</div>
@@ -1225,7 +1225,7 @@ type               <div class="stock-name">${st.n||symbol}</div>
               </div>
               <div class="stock-price-info">
                 <div class="stock-price ${c}">$${price.toFixed(2)}</div>
-                <div class="stock-change ${c}">${change>0?'+':''}${change.toFixed(2)} (${changePercent>0?'+':''}${changePercent.toFixed(2)}%)</div>
+source               <div class="stock-change ${c}">${change>0?'+':''}${change.toFixed(2)} (${changePercent>0?'+':''}${changePercent.toFixed(2)}%)</div>
               </div>
             </div>`);
         } else {
@@ -1297,7 +1297,7 @@ function renderWorkShortcuts() {
     // 1. 渲染儲存的捷徑
     workShortcuts.forEach((shortcut, index) => {
         // 我們使用 Google 的服務來自動抓取網站的 favicon
-        const faviconUrl = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${shortcut.url}&size=64`;
+s       const faviconUrl = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${shortcut.url}&size=64`;
        
         // 如果圖示載入失敗，顯示名稱的第一個字
         const fallbackInitial = (shortcut.name[0] || '?').toUpperCase();
@@ -1309,7 +1309,7 @@ function renderWorkShortcuts() {
                
                 <div class="shortcut-icon">
                     <img 
-                        src="${faviconUrl}"s
+                        src="${faviconUrl}" 
                         alt="${shortcut.name} icon"
                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
                     >
@@ -1364,7 +1364,7 @@ function addWorkShortcut() {
  * 移除指定 index 的捷徑
  */
 function removeWorkShortcut(index) {
-Indented   if (!workShortcuts[index]) return; // 安全檢查
+    if (!workShortcuts[index]) return; // 安全檢查
    
     const name = workShortcuts[index].name;
     if (confirm(`您確定要刪除 "${name}" 這個捷徑嗎？`)) {
@@ -1392,10 +1392,10 @@ function initTabNavigation() {
             tab.classList.add('active');
            
             // 2. 切換頁面內容
-          V pages.forEach(page => {
+            pages.forEach(page => {
                 if (page.id === 'page-' + pageName) {
                     // [!!! 修正 !!!] 還原這一行
-                    page.classList.add('active'); 
+                    page.classList.add('active');s
                 } else {
                     // [!!! 修正 !!!] 還原這一行
                     page.classList.remove('active'); 
@@ -1403,7 +1403,7 @@ function initTabNavigation() {
             });
            
             // 3. [修改] 當切換回 "首頁" 時，才執行功能
-            if (pageName === 'home') {
+s           if (pageName === 'home') {
                  // 檢查首頁功能是否需要重新載入
                  const weatherRow = document.getElementById('weatherRow');
                  if (!weatherRow || !weatherRow.innerHTML.includes('weather-day-h')) {
@@ -1414,17 +1414,17 @@ function initTabNavigation() {
                    loadStocks();
                  }
                  const newsList = document.getElementById('newsList');
-Indented                  if (!newsList || !newsList.innerHTML.includes('news-item')) {
+s                 if (!newsList || !newsList.innerHTML.includes('news-item')) {
                    loadNews();
                  }
             }
             // [新增] 當切換到 "工作" 頁時，載入捷徑
-s           else if (pageName === 'work') {
+            else if (pageName === 'work') {
                  // 檢查是否已載入 (避免重複載入)
                  const grid = document.getElementById('workShortcutGrid');
                  if (grid && grid.innerHTML.trim() === '') {
                     loadWorkShortcuts();
-                V
+                 }
             }
         });
     });
@@ -1442,7 +1442,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadStocks();
     loadNews();
    
-section     // [註] loadWorkShortcuts() 不在這裡呼叫，
+s   // [註] loadWorkShortcuts() 不在這裡呼叫，
     // 改為在 initTabNavigation() 中點擊分頁時才呼叫
    
     // 3. 綁定首頁上的所有按鈕
@@ -1452,8 +1452,8 @@ section     // [註] loadWorkShortcuts() 不在這裡呼叫，
    
     // (搜尋)
     document.getElementById('searchBtn').onclick = () => {
-  ci   const val=document.getElementById('searchInput').value.trim();
-      if(!val) return;
+      const val=document.getElementById('searchInput').value.trim();
+s     if(!val) return;
       if(val.includes('.') && !val.includes(' ')) {
         window.open(val.startsWith('http') ? val : 'https://' + val, '_blank');
       } else {
@@ -1461,8 +1461,8 @@ section     // [註] loadWorkShortcuts() 不在這裡呼叫，
       }
     };
     document.getElementById('searchInput').addEventListener('keypress', e =>{
-    img src= if(e.key === 'Enter') document.getElementById('searchBtn').click();
-    });
+      if(e.key === 'Enter') document.getElementById('searchBtn').click();
+style   });
     // (新聞)
     document.getElementById('tab-tw').onclick = () => switchNewsTab('tw');
     document.getElementById('tab-jp').onclick = () => switchNewsTab('jp');
@@ -1471,13 +1471,13 @@ section     // [註] loadWorkShortcuts() 不在這裡呼叫，
     // (股票)
     document.getElementById('stockTab_tw').onclick = () => switchStockMarket('tw');
     document.getElementById('stockTab_us').onclick = () => switchStockMarket('us');
-section     
+    
     // [已修正] 移除 'stockAddBtn.onclick' 內的 'twseUrlrl' 錯字 (這個函式內根本不需要這個變數)
-    document.getElementById('stockAddBtn').onclick = () => {
+s   document.getElementById('stockAddBtn').onclick = () => {
       const input=document.getElementById('stockInput');
       let symbol=input.value.trim().toUpperCase();
       if(!symbol) return alert('請輸入股票代碼');
-      if (stockCurrentMarket === 'tw') {
+s     if (stockCurrentMarket === 'tw') {
           const twSymbol = symbol.match(/\d+/);
           if (twSymbol) { symbol = twSymbol[0]; }
       }
@@ -1490,7 +1490,7 @@ section     
     };
     // (地圖)
     document.getElementById('mapSearchBtn').onclick = searchGoogleMaps;
-description     document.getElementById('mapSearchInput').addEventListener('keypress', e => {
+    document.getElementById('mapSearchInput').addEventListener('keypress', e => {
       if (e.key === 'Enter') searchGoogleMaps();
     });
 });
