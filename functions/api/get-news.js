@@ -1,17 +1,20 @@
 /* * =================================
  * Cloudflare Function (後端)
  * 檔名: /functions/api/get-news.js
+ *
+ * [已修改] 
+ * - 改為呼叫 GNews.io API
+ * - 讀取新的 GNEWS_API_KEY 環境變數
  * =================================
  */
 
 export async function onRequest(context) {
     
-    // 1. 從 Cloudflare 的「環境變數」中安全地讀取金鑰
-    //    (這就是您要在 Cloudflare 網站上設定的地方)
-    const API_KEY = context.env.NEWS_API_KEY;
+    // 1. [修改] 從 Cloudflare 讀取 GNews 的金鑰
+    const API_KEY = context.env.GNEWS_API_KEY;
 
     if (!API_KEY) {
-        const errorResponse = { status: 'error', message: 'API 金鑰未在伺服器上設定。' };
+        const errorResponse = { status: 'error', message: 'GNews API 金鑰未在伺服器上設定。' };
         return new Response(JSON.stringify(errorResponse), { 
             status: 500, 
             headers: { 'Content-Type': 'application/json' } 
@@ -22,49 +25,51 @@ export async function onRequest(context) {
     const url = new URL(context.request.url);
     const category = url.searchParams.get('category') || 'tw'; // 預設為 'tw'
 
-    // 3. 根據類別建立真實的 News API 網址
-    const BASE_URL = 'https://newsapi.org/v2/top-headlines';
-    const PAGE_SIZE = 5; // 只抓 5 則
+    // 3. [修改] 根據類別建立 GNews API 網址
+    //    GNews 使用 'token' 作為金鑰參數
+    //    GNews 使用 'lang' 和 'country' 來篩選
+    //    GNews 使用 'topic=headlines' 來取得頭條
+    //    GNews 使用 'max=5' 來限制數量
+    const BASE_URL = 'https://gnews.io/api/v4/top-headlines';
+    const MAX_ARTICLES = 5;
     let realApiUrl;
 
     switch (category) {
         case 'jp':
-            realApiUrl = `${BASE_URL}?country=jp&pageSize=${PAGE_SIZE}&apiKey=${API_KEY}`;
+            realApiUrl = `${BASE_URL}?topic=headlines&lang=ja&country=jp&max=${MAX_ARTICLES}&token=${API_KEY}`;
             break;
         case 'world':
-            // 免費方案的替代方案：使用美國頭條作為 "國際"
-            realApiUrl = `${BASE_URL}?country=us&pageSize=${PAGE_SIZE}&apiKey=${API_KEY}`;
+            realApiUrl = `${BASE_URL}?topic=headlines&lang=en&max=${MAX_ARTICLES}&token=${API_KEY}`;
             break;
         case 'tw':
         default:
-            realApiUrl = `${BASE_URL}?country=tw&pageSize=${PAGE_SIZE}&apiKey=${API_KEY}`;
+            // GNews 的 'zh-Hant' 似乎比 'country=tw' 更穩定
+            realApiUrl = `${BASE_URL}?topic=headlines&lang=zh-Hant&max=${MAX_ARTICLES}&token=${API_KEY}`;
             break;
     }
 
     try {
-        // 4. (關鍵) 從「伺服器」呼叫 News API
-        // 我們添加 'User-Agent'，因為 News API 會要求伺服器請求提供
+        // 4. (關鍵) 從「伺服器」呼叫 GNews API
+        //    (GNews 不需要 'User-Agent' 標頭)
         const newsResponse = await fetch(realApiUrl, {
-            headers: {
-                'User-Agent': 'cloudflare-function-news-widget-v1' // News API 需要這個
-            },
             // Cloudflare 專屬：快取此 API 呼叫 30 分鐘 (1800 秒)
-            // 這能大幅節省您的 API 額度
+            // GNews 的免費方案有請求限制，快取非常重要！
             cf: {
                 cacheTtl: 1800 
             }
         });
 
-        // 檢查 News API 是否回傳錯誤
+        // 檢查 GNews API 是否回傳錯誤
         if (!newsResponse.ok) {
             const errorData = await newsResponse.json();
-            throw new Error(errorData.message || 'News API 請求失敗');
+            throw new Error(errorData.message || 'GNews API 請求失敗');
         }
 
-        // 取得 News API 的 JSON 資料
+        // 取得 GNews API 的 JSON 資料
         const data = await newsResponse.json();
 
-        // 5. 將 News API 的資料原封不動地傳回給前端
+        // 5. 將 GNews API 的資料原封不動地傳回給前端
+        //    (幸運的是, GNews 和 NewsAPI 格式幾乎相同, 都有 'articles' 陣列)
         return new Response(JSON.stringify(data), {
             headers: { 
                 'Content-Type': 'application/json',
