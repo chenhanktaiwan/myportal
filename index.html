@@ -327,6 +327,102 @@
   .stock-neutral {
     color:#50766e;
   }
+
+  /* [新增] 你 23.html 中被我遺漏的 CSS */
+  .main-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 32px;
+    margin-top: 32px;
+  }
+  .card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px #a2b8b36e;
+    padding: 28px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .card-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 20px;
+    color: #578f89;
+    border-bottom: 2px solid #e0ebea;
+    padding-bottom: 12px;
+  }
+  .card-icon {
+    font-size: 18px;
+  }
+  .project-item {
+    background: #f1f7f5;
+    border-radius: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .project-item:hover {
+    background: #e6f0ee;
+    box-shadow: 0 4px 12px #b8cac7;
+  }
+  .project-name { font-weight: 700; color: #3a6259; margin-bottom: 6px; }
+  .project-desc { font-size: 14px; color: #58716b; }
+  .tool-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #f1f7f5;
+    padding: 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .tool-item:hover { background: #e6f0ee; }
+  .tool-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: #cce3db;
+    color: #3e7e72;
+    font-weight: 700;
+  }
+  .tool-info { flex: 1; }
+  .tool-name { font-weight: 700; color: #3a6259; }
+  .tool-url { font-size: 14px; color: #58716b; }
+  .link-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .quick-link {
+    background: #f1f7f5;
+    padding: 14px 18px;
+    border-radius: 12px;
+    font-weight: 600;
+    color: #3a6259;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .quick-link:hover { background: #e6f0ee; }
+  .bookmark-section { display: flex; flex-direction: column; gap: 10px; }
+  .bookmark-category {
+    font-weight: 700;
+    color: #3e7e72;
+    margin-top: 8px;
+  }
+  .bookmark-link {
+    padding-left: 12px;
+    border-left: 3px solid #cce3db;
+    font-weight: 600;
+    color: #3a6259;
+    cursor: pointer;
+  }
+  .bookmark-link:hover { color: #7ba8a3; }
 </style>
 </head>
 <body>
@@ -388,10 +484,111 @@
       </div>
     </section>
   </div>
+
+  <div class="main-content">
+      <div class="card">
+          <div class="card-title">
+              <div class="card-icon">📊</div>
+              我的專案
+          </div>
+          <div class="project-item" onclick="openLink('#')">
+              <div class="project-name">銷售數據管理系統</div>
+              <div class="project-desc">OCR 辨識 | 數據分析 | 視覺化儀表板</div>
+          </div>
+          <div class="project-item" onclick="openLink('#')">
+              <div class="project-name">數據分析頁面</div>
+              <div class="project-desc">期間對比 | 品項分析 | 趨勢圖表</div>
+          </div>
+          <div class="project-item" onclick="openLink('#')">
+              <div class="project-name">上傳管理系統</div>
+              <div class="project-desc">圖片上傳 | OCR 處理 | 數據整合</div>
+          </div>
+      </div>
+
+      <div class="card">
+          <div class="card-title">
+              <div class="card-icon">🔧</div>
+              常用工具
+          </div>
+          <div class="tool-item" onclick="openLink('https://pages.cloudflare.com/')">
+              <div class="tool-icon">CF</div>
+              <div class="tool-info">
+                  <div class="tool-name">Cloudflare Pages</div>
+                  <div class="tool-url">頁面部署管理</div>
+              </div>
+          </div>
+          <div class="tool-item" onclick="openLink('https://gemini.google.com/')">
+              <div class="tool-icon">AI</div>
+              <div class="tool-info">
+                  <div class="tool-name">Gemini AI</div>
+                  <div class="tool-url">AI 助理服務</div>
+              </div>
+          </div>
+          <div class="tool-item" onclick="openLink('https://github.com/')">
+              <div class="tool-icon">GH</div>
+              <div class="tool-info">
+                  <div class="tool-name">GitHub</div>
+                  <div class="tool-url">程式碼版本控制</div>
+              </div>
+          </div>
+          <div class="tool-item" onclick="openLink('https://www.canva.com/')">
+              <div class="tool-icon">🎨</div>
+              <div class="tool-info">
+                  <div class="tool-name">Canva</div>
+                  <div class="tool-url">圖形設計工具</div>
+              </div>
+          </div>
+      </div>
+
+      <div class="card">
+          <div class="card-title">
+              <div class="card-icon">🔗</div>
+              快速連結
+          </div>
+          <div class="link-grid">
+              <div class="quick-link" onclick="openLink('https://www.google.com.tw')">Google 搜尋</div>
+              <div class="quick-link" onclick="openLink('https://mail.google.com')">Gmail</div>
+              <div class="quick-link" onclick="openLink('https://drive.google.com')">Google Drive</div>
+              <div class="quick-link" onclick="openLink('https://translate.google.com')">Google 翻譯</div>
+              <div class="quick-link" onclick="openLink('https://www.youtube.com')">YouTube</div>
+              <div class="quick-link" onclick="openLink('https://maps.google.com.tw')">Google 地圖</div>
+          </div>
+      </div>
+
+      <div class="card">
+          <div class="card-title">
+              <div class="card-icon">💻</div>
+              開發資源
+          </div>
+          <div class="bookmark-section">
+              <div class="bookmark-category">前端開發</div>
+              <div class="bookmark-link" onclick="openLink('https://developer.mozilla.org/')">MDN Web Docs</div>
+              <div class="bookmark-link" onclick="openLink('https://stackoverflow.com/')">Stack Overflow</div>
+              <div class="bookmark-link" onclick="openLink('https://codepen.io/')">CodePen</div>
+              
+              <div class="bookmark-category">設計靈感</div>
+              <div class="bookmark-link" onclick="openLink('https://dribbble.com/')">Dribbble</div>
+              <div class="bookmark-link" onclick="openLink('https://www.behance.net/')">Behance</div>
+              <div class="bookmark-link" onclick="openLink('https://unsplash.com/')">Unsplash</div>
+          </div>
+      </div>
+
+      <div class="card">
+          <div class="card-title">
+              <div class="card-icon">🎬</div>
+              娛樂與生活
+          </div>
+          <div class="bookmark-section">
+              <div class="bookmark-link" onclick="openLink('https://www.sbs.com.au/ondemand/')">SBS On Demand</div>
+              <div class="bookmark-link" onclick="openLink('https://www.netflix.com/')">Netflix</div>
+              <div class="bookmark-link" onclick="openLink('https://www.tripadvisor.com.tw/')">TripAdvisor</div>
+              <div class="bookmark-link" onclick="openLink('https://www.books.com.tw/')">博客來</div>
+          </div>
+      </div>
+  </div>
 </div>
 
 <script>
-// [修改] 移除了 NEWS_API_KEY
 // [保留] 你的股票 API 金鑰 (Alpha Vantage)
 const ALPHA_VANTAGE_API_KEY = 'K09FCGY2Y90L99V0';
 
@@ -480,8 +677,14 @@ async function loadNews(){
     const res = await fetch(`/api/get-news?category=${apiCategory}`);
     
     if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.message || '新聞伺服器回應錯誤');
+        let errorMsg = '新聞伺服器回應錯誤';
+        try {
+            const errData = await res.json();
+            errorMsg = errData.message || errorMsg;
+        } catch(e) {
+            // response 不是 JSON, 保持原樣
+        }
+        throw new Error(errorMsg);
     }
 
     const data = await res.json();
@@ -499,6 +702,8 @@ async function loadNews(){
               </div>
           </li>`);
       });
+    } else if (data.status === 'error') {
+        throw new Error(data.message);
     } else {
       list.innerHTML = '<li class="news-loading">目前無法取得新聞</li>';
     }
@@ -609,16 +814,17 @@ async function loadStocks(){
 
 function delay(ms){return new Promise(r=>setTimeout(r,ms));} // [保留]
 
-// 新增股票 (完整保留你原本的程式碼)
+// 新增股票 (保留你原始的程式碼)
 document.getElementById('stockAddBtn').onclick = () => {
   const input=document.getElementById('stockInput');
   let symbol=input.value.trim().toUpperCase();
   if(!symbol) return alert('請輸入股票代碼');
   
-  // [修正] 你的原始碼中，台股代碼會被加上 .TW，這在 API 呼叫時會出錯
-  // 我把它改為只取數字
   if (stockCurrentMarket === 'tw') {
-      symbol = symbol.match(/\d+/)[0] || symbol;
+      const twSymbol = symbol.match(/\d+/);
+      if (twSymbol) {
+          symbol = twSymbol[0];
+      }
   }
   
   const list=stockWatchlist[stockCurrentMarket];
@@ -628,6 +834,11 @@ document.getElementById('stockAddBtn').onclick = () => {
   input.value = '';
   loadStocks();
 };
+
+// [新增] 你 23.html 中的 openLink 函式
+function openLink(url) {
+    window.open(url, '_blank');
+}
 
 // 開始載入 (保留你原始的載入順序)
 switchNewsTab('tw'); // [修改] 確保新聞功能被正確初始化
