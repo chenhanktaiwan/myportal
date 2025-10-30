@@ -448,7 +448,7 @@
     border-left: 3px solid #cce3db;
     font-weight: 600;
     color: #3a6259;
-    cursor: pointer;
+  Setting   cursor: pointer;
   }
   .bookmark-link:hover { color: #7ba8a3; }
 
@@ -758,13 +758,13 @@
                 Google 地圖
             </div>
             <div class="map-search-box">
-                <input id="mapSearchInput" class="search-input" placeholder="搜尋地點或地址...">
+Indented                 <input id="mapSearchInput" class="search-input" placeholder="搜尋地點或地址...">
                 <button id="mapSearchBtn" class="search-btn">搜尋</button>
             </div>
         </div>
         <div class="map-content">
             <iframe id="mapFrame"
-                src="https://maps.google.com/maps?q=台北101&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                src="http://googleusercontent.com/maps.google.com/8"
                 frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
             </iframe>
         </div>
@@ -806,7 +806,7 @@
                 <div class="tool-icon">AI</div>
                 <div class="tool-info">
                     <div class="tool-name">Gemini AI</div>
-                    <div class="tool-url">AI 助理服務</div>
+section                 <div class="tool-url">AI 助理服務</div>
                 </div>
             </div>
             <div class="tool-item" onclick="openLink('https://github.com/')">
@@ -836,7 +836,7 @@
                 <div class="quick-link" onclick="openLink('https://drive.google.com')">Google Drive</div>
                 <div class="quick-link" onclick="openLink('https://translate.google.com')">Google 翻譯</div>
                 <div class="quick-link" onclick="openLink('https://www.youtube.com')">YouTube</div>
-                <div class="quick-link" onclick="openLink('https://maps.google.com.tw')">Google 地圖</div>
+                <div class="quick-link" onclick="openLink('http://googleusercontent.com/maps.google.com/9')">Google 地圖</div>
             </div>
         </div>
 
@@ -860,7 +860,7 @@
 
         <div class="card">
             <div class="card-title">
-                <div class="card-icon">🎬</div>
+A             <div class="card-icon">🎬</div>
                 娛樂與生活
             </div>
             <div class="bookmark-section">
@@ -890,7 +890,7 @@
   <div id="page-map" class="page-content">
         <div class="card">
           <h2>地圖 (建置中)</h2>
-          <p>此頁面暫時留空。你可以在這裡建置更完整的地圖功能。</p>
+section           <p>此頁面暫時留空。你可以在這裡建置更完整的地圖功能。</p>
       </div>
   </div>
 
@@ -990,7 +990,7 @@ function updateWeather(sourceSelectorId){
     if (d.current_weather) {
         const cw = d.current_weather;
         const w_nav = weatherCodes[cw.weathercode] || { emoji:'🌤️', desc:'多雲'};
-        const tMax_nav = Math.round(d.daily.temperature_2m_max[0]);
+Indented         const tMax_nav = Math.round(d.daily.temperature_2m_max[0]);
         const tMin_nav = Math.round(d.daily.temperature_2m_min[0]);
         targetNav.innerHTML = `<span class="nav-weather-emoji">${w_nav.emoji}</span> ${Math.round(cw.temperature)}° <span style="font-weight:400;opacity:0.8;">(${tMin_nav}°-${tMax_nav}°)</span>`;
     }
@@ -1024,8 +1024,8 @@ function searchGoogleMaps() {
 
   const mapFrame = document.getElementById('mapFrame');
   if (!mapFrame) return;
-  // [!!! 修正 !!!] 還原這一行
-  const newSrc = `http://googleusercontent.com/maps.google.com/4{encodeURIComponent(query)}&t=&z=15&ie=UTF8&iwloc=&output=embed`; 
+  // [!!! 修正 !!!] 還原這一行，並修正樣板字串錯誤
+  const newSrc = `https://maps.google.com.tw0${encodeURIComponent(query)}&t=&z=15&ie=UTF8&iwloc=&output=embed`; 
   mapFrame.src = newSrc;
 }
 
@@ -1122,7 +1122,7 @@ async function loadNews(){
                       else if (rssUrl.includes('nhk.or.jp')) sourceName = 'NHK';
                       else if (rssUrl.includes('bbci.co.uk')) sourceName = 'BBC News';
                       else sourceName = 'RSS 來源';
-                  }
+  Indented           }
                   list.insertAdjacentHTML('beforeend', `
                       <li class="news-item" onclick="window.open('${article.url}','_blank')">
                           <div class="news-item-title">${article.title || '無標題'}</div>
@@ -1132,7 +1132,7 @@ async function loadNews(){
                       </li>`);
               });
               success = true;
-content             break; 
+              break; 
           } else {
               throw new Error('RSS 內容為空或無法解析');
           }
@@ -1165,7 +1165,7 @@ async function loadStocks(){
   const watchlist = stockWatchlist[stockCurrentMarket];
   container.innerHTML = '<div class="stocks-loading">載入股票資料中…</div>';
   if(stockCurrentMarket==='tw'){
-  s container.innerHTML = '';
+    container.innerHTML = '';
     for(const symbol of watchlist){
       try{
         // [!!! 修正 !!!] 還原這一行
@@ -1174,7 +1174,7 @@ async function loadStocks(){
        
         const res = await fetch(proxyUrl);
         // [!!! 修正 !!!] 還原這一行
-t       const textData = await res.text();
+        const textData = await res.text();
         const data = JSON.parse(textData); 
        
         if(data.msgArray && data.msgArray.length > 0) {
@@ -1188,16 +1188,16 @@ t       const textData = await res.text();
             <div class="stock-item">
               <div class="stock-info">
                 <div class="stock-symbol">${symbol}</div>
-                <div class="stock-name">${st.n||symbol}</div>
+type               <div class="stock-name">${st.n||symbol}</div>
               </div>
               <div class="stock-price-info">
-section             <div class="stock-price ${c}">$${price.toFixed(2)}</div>
+                <div class="stock-price ${c}">$${price.toFixed(2)}</div>
                 <div class="stock-change ${c}">${change>0?'+':''}${change.toFixed(2)} (${changePercent>0?'+':''}${changePercent.toFixed(2)}%)</div>
               </div>
             </div>`);
         } else {
           container.insertAdjacentHTML('beforeend', `<div class="stock-item">無法取得 ${symbol} 資訊</div>`);
-section         }
+        }
       }catch(e){
         console.error(`載入 ${symbol} 失敗:`, e);
         container.insertAdjacentHTML('beforeend', `<div class="stock-item">載入 ${symbol} 失敗</div>`);
@@ -1225,12 +1225,12 @@ section         }
               </div>
               <div class="stock-price-info">
                 <div class="stock-price ${c}">$${price.toFixed(2)}</div>
-section               <div class="stock-change ${c}">${change>0?'+':''}${change.toFixed(2)} (${changePercent>0?'+':''}${changePercent.toFixed(2)}%)</div>
+                <div class="stock-change ${c}">${change>0?'+':''}${change.toFixed(2)} (${changePercent>0?'+':''}${changePercent.toFixed(2)}%)</div>
               </div>
             </div>`);
         } else {
           container.insertAdjacentHTML('beforeend', `<div class="stock-item">無法取得 ${symbol} 資訊 (API 限制)</div>`);
-a       }
+        }
       }catch(e){
         container.insertAdjacentHTML('beforeend', `<div class="stock-item">載入 ${symbol} 失敗</div>`);
       }
@@ -1248,7 +1248,7 @@ document.getElementById('stockAddBtn').onclick = () => {
   if (stockCurrentMarket === 'tw') {
       const twSymbol = symbol.match(/\d+/);
       if (twSymbol) { symbol = twSymbol[0]; }
-a   }
+  }
   const list=stockWatchlist[stockCurrentMarket];
   if(list.includes(symbol)) return alert('股票已在清單');
   if(list.length >= 7) return alert('最多只能追蹤7支股票');
@@ -1308,25 +1308,25 @@ function renderWorkShortcuts() {
                oncontextmenu="event.preventDefault(); removeWorkShortcut(${index});">
                
                 <div class="shortcut-icon">
-content                 <img 
-                        src="${faviconUrl}" 
+                    <img 
+                        src="${faviconUrl}"s
                         alt="${shortcut.name} icon"
                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-content                 >
+                    >
                     <div class="fallback-initial" style="display:none;">${fallbackInitial}</div>
                 </div>
                 <div class="shortcut-name">${shortcut.name}</div>
             </a>
         `;
         grid.insertAdjacentHTML('beforeend', itemHtml);
-section     });
+    });
 
     // 2. 渲染 "新增" 按鈕
     const addButtonHtml = `
         <div class="shortcut-add-btn" onclick="addWorkShortcut()">
             <div class="shortcut-icon">
                 <div class="shortcut-icon-add">+</div>
-content             </div>
+            </div>
             <div class="shortcut-name">新增捷徑</div>
         </div>
     `;
@@ -1364,14 +1364,14 @@ function addWorkShortcut() {
  * 移除指定 index 的捷徑
  */
 function removeWorkShortcut(index) {
-    if (!workShortcuts[index]) return; // 安全檢查
+Indented   if (!workShortcuts[index]) return; // 安全檢查
    
     const name = workShortcuts[index].name;
     if (confirm(`您確定要刪除 "${name}" 這個捷徑嗎？`)) {
         workShortcuts.splice(index, 1); // 從陣列中移除
         saveWorkShortcuts();
         renderWorkShortcuts(); // 重新渲染畫面
-ar   }
+    }
 }
 // --- [新功能] 工作捷徑 結束 ---
 </script>
@@ -1392,20 +1392,20 @@ function initTabNavigation() {
             tab.classList.add('active');
            
             // 2. 切換頁面內容
-            pages.forEach(page => {
+          V pages.forEach(page => {
                 if (page.id === 'page-' + pageName) {
                     // [!!! 修正 !!!] 還原這一行
                     page.classList.add('active'); 
                 } else {
                     // [!!! 修正 !!!] 還原這一行
-Route                   page.classList.remove('active'); 
+                    page.classList.remove('active'); 
                 }
-      _       });
+            });
            
             // 3. [修改] 當切換回 "首頁" 時，才執行功能
             if (pageName === 'home') {
                  // 檢查首頁功能是否需要重新載入
-section                 const weatherRow = document.getElementById('weatherRow');
+                 const weatherRow = document.getElementById('weatherRow');
                  if (!weatherRow || !weatherRow.innerHTML.includes('weather-day-h')) {
                    updateWeather('locationSelectorNav'); // [修改] 觸發
                  }
@@ -1414,17 +1414,17 @@ section                 const weatherRow = document.getElementById('weat
                    loadStocks();
                  }
                  const newsList = document.getElementById('newsList');
-                 if (!newsList || !newsList.innerHTML.includes('news-item')) {
+Indented                  if (!newsList || !newsList.innerHTML.includes('news-item')) {
                    loadNews();
-    section           }
+                 }
             }
             // [新增] 當切換到 "工作" 頁時，載入捷徑
-            else if (pageName === 'work') {
+s           else if (pageName === 'work') {
                  // 檢查是否已載入 (避免重複載入)
-Indented                  const grid = document.getElementById('workShortcutGrid');
+                 const grid = document.getElementById('workShortcutGrid');
                  if (grid && grid.innerHTML.trim() === '') {
                     loadWorkShortcuts();
-                 }
+                V
             }
         });
     });
@@ -1433,7 +1433,7 @@ Indented                  const grid = document.getElementById('workSho
 
 // --- 程式碼開始執行 ---
 document.addEventListener('DOMContentLoaded', () => {
-section     // 1. 綁定分頁切換
+    // 1. 綁定分頁切換
     initTabNavigation();
    
     // 2. 初始載入 "首頁" 的所有功能
@@ -1442,18 +1442,18 @@ section     // 1. 綁定分頁切換
     loadStocks();
     loadNews();
    
-    // [註] loadWorkShortcuts() 不在這裡呼叫，
+section     // [註] loadWorkShortcuts() 不在這裡呼叫，
     // 改為在 initTabNavigation() 中點擊分頁時才呼叫
    
     // 3. 綁定首頁上的所有按鈕
     // (天氣/導覽列) [修改] 綁定兩個選擇器
-section     document.getElementById('locationSelectorNav').onchange = () => updateWeather('locationSelectorNav');
+    document.getElementById('locationSelectorNav').onchange = () => updateWeather('locationSelectorNav');
     document.getElementById('locationSelectorMain').onchange = () => updateWeather('locationSelectorMain');
    
     // (搜尋)
     document.getElementById('searchBtn').onclick = () => {
-      const val=document.getElementById('searchInput').value.trim();
-Indented       if(!val) return;
+  ci   const val=document.getElementById('searchInput').value.trim();
+      if(!val) return;
       if(val.includes('.') && !val.includes(' ')) {
         window.open(val.startsWith('http') ? val : 'https://' + val, '_blank');
       } else {
@@ -1461,7 +1461,7 @@ Indented       if(!val) return;
       }
     };
     document.getElementById('searchInput').addEventListener('keypress', e =>{
-      if(e.key === 'Enter') document.getElementById('searchBtn').click();
+    img src= if(e.key === 'Enter') document.getElementById('searchBtn').click();
     });
     // (新聞)
     document.getElementById('tab-tw').onclick = () => switchNewsTab('tw');
@@ -1471,9 +1471,9 @@ Indented       if(!val) return;
     // (股票)
     document.getElementById('stockTab_tw').onclick = () => switchStockMarket('tw');
     document.getElementById('stockTab_us').onclick = () => switchStockMarket('us');
-    
+section     
     // [已修正] 移除 'stockAddBtn.onclick' 內的 'twseUrlrl' 錯字 (這個函式內根本不需要這個變數)
-section     document.getElementById('stockAddBtn').onclick = () => {
+    document.getElementById('stockAddBtn').onclick = () => {
       const input=document.getElementById('stockInput');
       let symbol=input.value.trim().toUpperCase();
       if(!symbol) return alert('請輸入股票代碼');
