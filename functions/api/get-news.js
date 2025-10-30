@@ -2,6 +2,7 @@
  * Cloudflare Function (後端)
  * 檔名: /functions/api/get-news.js
  * * 功能: 讀取您指定的 RSS (CNA, NHK)
+ * * [修正]: 將 'world' 來源從 nippon.com 更換為 BBC News
  * =================================
  */
 
@@ -9,13 +10,14 @@ export async function onRequest(context) {
     
     // 1. 從前端請求的 URL 中獲取 'category' 參數 (tw, jp, world)
     const url = new URL(context.request.url);
-    const category = url.searchParams.get('category') || 'tw'; // 預設為 'tw'
+    // 前端傳 'intl' 時，我們在前端已將其對應為 'world'
+    const category = url.searchParams.get('category') || 'tw'; 
 
-    // 2. [修改] 使用您指定的 RSS Feeds 網址
+    // 2. [修改] 更新 'world' 的 RSS Feed 網址
     const RSS_FEEDS = {
         tw: 'https://www.cna.com.tw/rsspolitics.xml',  // 中央通訊社 (政治)
         jp: 'https://www3.nhk.or.jp/rss/news/cat0.xml',    // NHK WORLD-JAPAN
-        world: 'https://www.nippon.com/rss/news.xml'      // nippon.com (國際/多語言)
+        world: 'http://feeds.bbci.co.uk/news/world/rss.xml' // [修正] 改為 BBC News
     };
 
     const rssUrl = RSS_FEEDS[category] || RSS_FEEDS['tw'];
@@ -40,9 +42,10 @@ export async function onRequest(context) {
         const xmlText = await response.text();
 
         // 4. 手動解析 XML (尋找 <item>...</item> 區塊)
+        // (BBC 和 NHK/CNA 都使用 <item> 標籤)
         const items = [...xmlText.matchAll(/<item>([\s\S]*?)<\/item>/g)];
         
-        // (備用方案: 處理 .rdf 格式，它使用 <item ...> ... </item>)
+        // (備用方案: 處理 .rdf 格式)
         if (items.length === 0) {
              items.push(...xmlText.matchAll(/<item [^>]+>([\s\S]*?)<\/item>/g));
         }
@@ -62,12 +65,9 @@ export async function onRequest(context) {
             const link = linkMatch ? linkMatch[1] : '#';
 
             // 抓取 <source> 或 <dc:creator> (作者)
-            const sourceMatch = itemContent.match(/<source [^>]+>([\s\S]*?)<\/source>/);
-            let sourceName = sourceMatch ? cleanCData(sourceMatch[1]) : null;
-            if (!sourceName) {
-                 const creatorMatch = itemContent.match(/<dc:creator>([\s\S]*?)<\/dc:creator>/);
-                 sourceName = creatorMatch ? cleanCData(creatorMatch[1]) : 'N/A';
-            }
+            let sourceName = 'BBC News'; // 預設為 BBC (因為 BBC RSS 裡沒有作者欄位)
+            if (category === 'tw') sourceName = '中央通訊社';
+            if (category === 'jp') sourceName = 'NHK';
             
             articles.push({
                 title: title,
