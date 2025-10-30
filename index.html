@@ -20,18 +20,28 @@
   /* [已還原] 你的天氣區塊 CSS (使用緊湊版) */
   .header {
     background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
-    padding: 24px 32px;
+    /* [修改] 調整 padding 以容納新版面 */
+    padding: 20px 32px; 
     border-radius:24px;
     color:white;
     margin-bottom: 24px;
     box-shadow:0 8px 30px rgba(123,168,163,0.25);
   }
   .header-top {
-    display:flex;justify-content:space-between;align-items:center;
-    margin-bottom: 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    /* [修改] 移除 margin-bottom 因為 7 天預報已移入 */
+    margin-bottom: 0; 
     gap:20px;
   }
-  .greeting-section {font-weight:700; font-size: 24px;}
+  .greeting-section {
+    font-weight:700; 
+    font-size: 24px;
+    /* [修改] 確保歡迎詞不會被過度壓縮 */
+    flex-shrink: 0; 
+    min-width: 250px;
+  }
   .datetime {margin-top:6px; font-weight:500; font-size:14px; opacity:0.9;}
   .location-selector {
     background:rgba(255 255 255 / 26%);
@@ -43,29 +53,57 @@
     cursor:pointer;
     backdrop-filter:blur(12px);
     transition:background 0.3s,border 0.3s;
+    /* [修改] 確保選擇器不會被壓縮 */
+    flex-shrink: 0; 
   }
   .location-selector:hover, .location-selector:focus {
     background:rgba(255 255 255 / 34%);
     border-color:rgba(255 255 255 / 60%);
     outline:none;
   }
+  
+  /* [修改] 7 天預報的新樣式 */
   .weather-forecast-horizontal {
     display:grid;
-    gap: 12px;
+    gap: 8px; /* (原 12px) */
     grid-template-columns:repeat(7,1fr);
+    /* [修改] 讓它填滿中間空間 */
+    flex: 1;
+    margin: 0 20px;
   }
   .weather-day-h {
     background:rgba(255 255 255 / 23%);
-    border-radius:14px;
-    padding: 12px 10px 10px;
+    border-radius:12px; /* (原 14px) */
+    padding: 10px 5px; /* (原 12px 10px 10px) */
     border:2px solid rgba(255 255 255 / 12%);
     text-align:center;
+    min-width: 0; /* 允許 grid 縮小 */
   }
-  .weather-date-h {font-size:13px; font-weight:700; margin-bottom:6px;}
-  .weather-emoji-h {font-size:36px; margin-bottom:4px; display:block; user-select:none;}
-  .weather-temp-h {font-size:16px; font-weight:700;}
-  .weather-rain-h {font-size:12px; margin-top:4px; color:#def1f0aa;}
-  .weather-desc-h {font-size:12px; margin-top:1px; color:#d0e2e0cc;}
+  .weather-date-h {
+    font-size:12px; /* (原 13px) */
+    font-weight:700; 
+    margin-bottom:4px; /* (原 6px) */
+  }
+  .weather-emoji-h {
+    font-size:28px; /* (原 36px) */
+    margin-bottom:2px; /* (原 4px) */
+    display:block; 
+    user-select:none;
+  }
+  .weather-temp-h {
+    font-size:14px; /* (原 16px) */
+    font-weight:700;
+  }
+  .weather-rain-h {
+    font-size:11px; /* (原 12px) */
+    margin-top:2px; /* (原 4px) */
+    color:#def1f0aa;
+    opacity: 0.9;
+  }
+  /* [修改] 隱藏文字描述以節省空間 */
+  .weather-desc-h {
+    display: none;
+  }
   .weather-loading {
     grid-column:span 7;
     text-align:center;
@@ -107,7 +145,7 @@
   }
   .search-btn:hover {background-color:#618577;}
 
-  /* 卡片區 (緊湊版) */
+  /* 卡片區 (緊湊版) (不變) */
   .info-section {
     display:flex;
     gap: 20px; 
@@ -216,7 +254,7 @@
     justify-content:space-between;
   }
   .news-loading {text-align:center;padding:20px;color:#7a9794;font-weight:600;}
-  /* 股票卡 (緊湊版) */
+  /* 股票卡 (緊湊版) (不變) */
   .stock-card {
     flex-basis:360px; 
     background:white;
@@ -341,7 +379,7 @@
     color:#50766e;
   }
 
-  /* 你的 CSS 樣式 (已修改為 "緊湊" 版本) */
+  /* 你的 CSS 樣式 (已修改為 "緊湊" 版本) (不變) */
   .main-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
@@ -437,7 +475,7 @@
   }
   .bookmark-link:hover { color: #7ba8a3; }
 
-  /* 地圖 CSS (緊湊版) */
+  /* 地圖 CSS (緊湊版) (不變) */
   .map-card-full {
     background: white;
     border-radius: 20px;
@@ -465,7 +503,7 @@
     height: 350px; 
   }
 
-  /* --- [新功能] 置頂導覽列 和 分頁 CSS (緊湊版) --- */
+  /* --- [新功能] 置頂導覽列 和 分頁 CSS (緊湊版) --- (不變) */
   .portal-nav-sticky {
     position: sticky;
     top: 20px; /* 配合 body 的 padding */
@@ -553,36 +591,10 @@
   /* --- [新功能] CSS 結束 --- */
 
   /* ================================================
-    ▼▼▼ 修改點 1 (CSS)：在這裡加入新的 CSS 規則 ▼▼▼
+    ▼▼▼ [還原] 移除上次修改的 mini-icon 樣式 ▼▼▼
     ================================================
+    (這裡現在是空的，因為新的樣式已經合併到上面的 CSS 規則中)
   */
-
-  /* 1. 隱藏原本的七天預報區塊 */
-  .weather-forecast-horizontal {
-      display: none !important; /* 強制隱藏 */
-  }
-
-  /* 2. 讓 "歡迎回來" 和 "小圖示" 可以並排 */
-  .greeting-header-wrapper {
-      display: flex;
-      align-items: center; /* 垂直置中 */
-      flex-wrap: wrap;     /* 換行 */
-      gap: 12px;           /* 文字和圖示區塊的間距 */
-  }
-
-  /* 3. 新增的 "小圖示容器" 樣式 */
-  .mini-forecast-icons {
-      display: flex;
-      gap: 5px; /* 每個小圖示之間的間距 */
-      padding-top: 4px; /* 稍微往下對齊文字 */
-  }
-  
-  /* 4. 新增的 "小圖示" 本身樣式 */
-  .mini-forecast-icon {
-      font-size: 24px; /* 縮小 emoji 尺寸 (原為 36px) */
-      opacity: 0.9;
-      cursor: help; /* 提示使用者可以 hover */
-  }
 
 </style>
 </head>
@@ -620,15 +632,14 @@
       <div class="header-top">
         
         <div class="greeting-section">
-          <div class="greeting-header-wrapper">
-              <div class="greeting">您好！歡迎回來 👋</div>
-              
-              <div class="mini-forecast-icons" id="mini-forecast-icons">
-                  </div>
-          </div>
-          
+          <div class="greeting">您好！歡迎回來 👋</div>
           <div class="datetime" id="datetime"></div>
         </div>
+        
+        <div class="weather-forecast-horizontal" id="weatherRow">
+          <div class="weather-loading">載入天氣資料中...</div>
+        </div>
+
         <select id="locationSelectorMain" class="location-selector" aria-label="選擇城市">
           <option value="25.0330,121.5654">台北市</option>
           <option value="24.1477,120.6736">台中市</option>
@@ -639,11 +650,7 @@
           <option value="22.9998,120.2269">台南市</option>
         </select>
       </div>
-      
-      <div class="weather-forecast-horizontal" id="weatherRow">
-        <div class="weather-loading">載入天氣資料中...</div>
       </div>
-    </div>
    
     <div class="search-section">
       <input id="searchInput" class="search-input" placeholder="搜尋 Google 或輸入網址..."/>
@@ -871,7 +878,8 @@ const weatherCodes = {
 
 // 
 // ====================================================
-// ▼▼▼ 修改點 3 (JavaScript)：修改 updateWeather 函式 ▼▼▼
+// ▼▼▼ 修改點 2 (JavaScript)：還原 updateWeather 函式 ▼▼▼
+// (移除了上次新增的 miniIconsContainer 相關邏輯)
 // ====================================================
 //
 function updateWeather(sourceSelectorId){
@@ -902,11 +910,7 @@ function updateWeather(sourceSelectorId){
     let html='';
     const wd=['週日','週一','週二','週三','週四','週五','週六'];
     
-    // [新增] 抓取新的小圖示容器
-    const miniIconsContainer = document.getElementById('mini-forecast-icons');
-    if (miniIconsContainer) {
-        miniIconsContainer.innerHTML = ''; // 清空
-    }
+    // [還原] 移除 miniIconsContainer 相關邏輯
 
     for(let i=0;i<7;i++){
       const date= new Date (d.daily.time[i]);
@@ -917,20 +921,12 @@ function updateWeather(sourceSelectorId){
       const tMin = Math.round(d.daily.temperature_2m_min[i]);
       const rainProb = d.daily.precipitation_probability_max[i] || 0;
       
-      // [不變] 建立舊的 (隱藏的) HTML，讓程式邏輯保持不變
+      // [還原] 只保留你原始的 html 建立邏輯
       html+=`<div class="weather-day-h"><div class="weather-date-h">${dayName}</div><span class="weather-emoji-h">${w.emoji}</span><div class="weather-temp-h">${tMin}° - ${tMax}°</div><div class="weather-rain-h">💧 ${rainProb}%</div><div class="weather-desc-h">${w.desc}</div></div>`;
 
-      // [新增] 建立並附加新的 "小圖示"
-      if (miniIconsContainer) {
-          const miniIcon = document.createElement('span');
-          miniIcon.className = 'mini-forecast-icon'; // 參照 CSS 新增的 class
-          miniIcon.textContent = w.emoji;
-          // 加上 Tooltip 提示，讓使用者 hover 時能看到資訊
-          miniIcon.title = `${dayName}: ${tMin}°-${tMax}°, ${w.desc} (💧 ${rainProb}%)`; 
-          miniIconsContainer.appendChild(miniIcon);
-      }
+      // [還原] 移除 miniIcon 相關邏輯
     }
-    targetRow.innerHTML = html; // [不變] 照常填入隱藏的區塊
+    targetRow.innerHTML = html; // [不變] 照常填入 (現在可見的) 區塊
    
     // 2. [已還原] 填入導覽列當前天氣 (不變)
     if (d.current_weather) {
