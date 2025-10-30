@@ -535,6 +535,12 @@
   .nav-weather-emoji {
     font-size: 20px; 
   }
+  
+  /* [修改] 首頁 location-selector (在導覽列中) */
+  .nav-info-right .location-selector {
+    padding: 4px 8px; /* [修改] 更緊湊 */
+    font-size: 13px;
+  }
 
   /* 分頁內容 */
   .page-content {
@@ -562,7 +568,7 @@
     </div>
     
     <div class="nav-info-right">
-        <select id="locationSelector" class="location-selector" aria-label="選擇城市">
+        <select id="locationSelectorNav" class="location-selector" aria-label="選擇城市">
           <option value="25.0330,121.5654">台北市</option>
           <option value="24.1477,120.6736">台中市</option>
           <option value="22.6273,120.3014">高雄市</option>
@@ -585,7 +591,16 @@
           <div class="greeting">您好！歡迎回來 👋</div>
           <div class="datetime" id="datetime"></div>
         </div>
-        </div>
+        <select id="locationSelectorMain" class="location-selector" aria-label="選擇城市">
+          <option value="25.0330,121.5654">台北市</option>
+          <option value="24.1477,120.6736">台中市</option>
+          <option value="22.6273,120.3014">高雄市</option>
+          <option value="25.0375,121.4252">新北市</option>
+          <option value="24.8138,120.9675">新竹市</option>
+          <option value="24.9936,121.3010">桃園市</option>
+          <option value="22.9998,120.2269">台南市</option>
+        </select>
+      </div>
       <div class="weather-forecast-horizontal" id="weatherRow">
         <div class="weather-loading">載入天氣資料中...</div>
       </div>
@@ -812,18 +827,27 @@ const weatherCodes = {
   65:{emoji:'⛈️',desc:'大雨'},80:{emoji:'🌦️',desc:'陣雨'},81:{emoji:'🌧️',desc:'陣雨'},82:{emoji:'⛈️',desc:'大陣雨'},95:{emoji:'⛈️',desc:'雷雨'},
   99:{emoji:'⛈️',desc:'強雷雨'}
 };
-function updateWeather(){
-  const selector = document.getElementById('locationSelector');
-  const targetRow = document.getElementById('weatherRow'); // [已還原] 7 天預報
-  const targetNav = document.getElementById('nav-weather'); // [已還原] 導覽列天氣
+function updateWeather(sourceSelectorId){
+  const selectorNav = document.getElementById('locationSelectorNav');
+  const selectorMain = document.getElementById('locationSelectorMain');
+  const targetRow = document.getElementById('weatherRow'); 
+  const targetNav = document.getElementById('nav-weather'); 
   
-  if (!selector || !targetRow || !targetNav) return; 
+  if (!selectorNav || !selectorMain || !targetRow || !targetNav) return; 
   
-  const v = selector.value.split(',');
+  // [新功能] 同步兩個選擇器
+  let v;
+  if (sourceSelectorId === 'locationSelectorNav') {
+      v = selectorNav.value.split(',');
+      selectorMain.value = selectorNav.value; // 同步
+  } else {
+      v = selectorMain.value.split(',');
+      selectorNav.value = selectorMain.value; // 同步
+  }
+
   targetRow.innerHTML = '<div class="weather-loading">載入天氣資料中...</div>';
   targetNav.innerHTML = '...'; 
 
-  // [修改] 一次 API 呼叫同時取得 current (導覽列) 和 daily (首頁)
   fetch(`https://api.open-meteo.com/v1/forecast?latitude=${v[0]}&longitude=${v[1]}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia/Taipei&forecast_days=7`)
   .then(r=>r.json()).then(d=>{
     
@@ -1142,7 +1166,7 @@ function initTabNavigation() {
                  // 檢查首頁功能是否需要重新載入
                  const weatherRow = document.getElementById('weatherRow');
                  if (!weatherRow || !weatherRow.innerHTML.includes('weather-day-h')) {
-                    updateWeather();
+                    updateWeather('locationSelectorNav'); // [修改] 觸發
                  }
                  const stockList = document.getElementById('stocksList');
                  if (!stockList || !stockList.innerHTML.includes('stock-item')) {
@@ -1165,13 +1189,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // 2. 初始載入 "首頁" 的所有功能
     updateDatetime();
-    updateWeather(); 
+    updateWeather('locationSelectorNav'); // [修改] 初始載入
     loadStocks();
     loadNews();
     
-    // 3. 綁定首頁上的所有按鈕 (及導覽列)
-    // (天氣/導覽列)
-    document.getElementById('locationSelector').onchange = updateWeather;
+    // 3. 綁定首頁上的所有按鈕
+    // (天氣/導覽列) [修改] 綁定兩個選擇器
+    document.getElementById('locationSelectorNav').onchange = () => updateWeather('locationSelectorNav');
+    document.getElementById('locationSelectorMain').onchange = () => updateWeather('locationSelectorMain');
+    
     // (搜尋)
     document.getElementById('searchBtn').onclick = () => {
       const val=document.getElementById('searchInput').value.trim();
