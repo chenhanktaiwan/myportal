@@ -734,4 +734,68 @@ body {
         width: 100%;
         justify-content: space-between;
     }
+
+}
+/* =================================
+    Work Dashboard Styles
+==================================== */
+/* 這些是 "快捷列" 功能所需的樣式 */
+
+/* 快捷連結的容器 */
+#quick-links-container {
+  display: flex;
+  flex-wrap: wrap; /* 換行 */
+  gap: 10px; /* 連結之間的間距 */
+  padding-top: 10px;
+}
+
+/* 單個快捷連結的樣式 (藥丸按鈕) */
+.quick-link-item {
+  background-color: #f0f0f0; /* 淺灰色背景 (配合你的 .project-item) */
+  border: 1px solid #ddd;
+  border-radius: 20px; /* 圓角 */
+  padding: 5px 12px;
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.quick-link-item:hover {
+  background-color: #e6f0ee; /* 配合你的 :hover 顏色 */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+}
+
+/* 連結文字 */
+.quick-link-item a {
+  text-decoration: none;
+  color: #3a6259; /* 配合你的 .project-name 顏色 */
+  font-weight: 600; /* 配合你的 .quick-link 顏色 */
+  margin-right: 8px;
+}
+.quick-link-item a:hover {
+    color: #578f89;
+}
+
+/* 刪除按鈕 (x) */
+.quick-link-item .delete-link {
+  background: #ccc;
+  color: #fff;
+  border: none;
+  border-radius: 50%; /* 圓形 */
+  width: 18px;
+  height: 18px;
+  font-size: 0.8rem;
+  line-height: 18px; /* 讓 "x" 垂直置中 */
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0.7;
+}
+
+.quick-link-item .delete-link:hover {
+  background: #e2646a; /* 你的 .stock-up 紅色 */
+  opacity: 1;
 }
