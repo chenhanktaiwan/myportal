@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>個人入口網站 - [分頁架構 v2]</title>
+<title>個人入口網站 - [緊湊版 v1]</title>
 <style>
-  /* 你的 CSS 樣式 (完整保留) */
+  /* 你的 CSS 樣式 (已修改為 "緊湊" 版本) */
   * {margin:0;padding:0;box-sizing:border-box;}
   body {
     font-family:'Microsoft JhengHei','PingFang TC',sans-serif;
@@ -13,30 +13,36 @@
     color:#526c67;
     min-height:100vh;
     padding:20px;
-    /* [修改] 為 "僅有標籤" 的 sticky header 預留空間 */
-    padding-top: 90px; 
+    /* [修改] 為 "僅有標籤" 的 sticky header 預留空間 (減少) */
+    padding-top: 70px; 
   }
   .container {max-width:1400px;margin:0 auto;}
   .header {
     background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
-    padding:32px 48px;
+    /* [修改] 減少 padding 和 margin */
+    padding: 24px 32px;
     border-radius:24px;
     color:white;
-    margin-bottom:32px;
+    margin-bottom: 24px;
     box-shadow:0 8px 30px rgba(123,168,163,0.25);
   }
   .header-top {
-    display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;gap:20px;
+    display:flex;justify-content:space-between;align-items:center;
+    /* [修改] 減少 margin */
+    margin-bottom: 20px;
+    gap:20px;
   }
-  .greeting-section {font-weight:700; font-size:28px;}
-  .datetime {margin-top:6px; font-weight:500; font-size:15px; opacity:0.9;}
+  /* [修改] 減少字體 */
+  .greeting-section {font-weight:700; font-size: 24px;}
+  .datetime {margin-top:6px; font-weight:500; font-size:14px; opacity:0.9;}
   .location-selector {
     background:rgba(255 255 255 / 26%);
     border:2px solid rgba(255 255 255 / 38%);
     border-radius:12px;
     font-size:14px;
     color:white;
-    padding:9px 20px;
+    /* [修改] 減少 padding */
+    padding: 7px 16px;
     cursor:pointer;
     backdrop-filter:blur(12px);
     transition:background 0.3s,border 0.3s;
@@ -48,20 +54,22 @@
   }
   .weather-forecast-horizontal {
     display:grid;
-    gap:18px;
+    /* [修改] 減少 gap */
+    gap: 12px;
     grid-template-columns:repeat(7,1fr);
   }
   .weather-day-h {
     background:rgba(255 255 255 / 23%);
     border-radius:14px;
-    padding:18px 15px 15px;
+    /* [修改] 減少 padding */
+    padding: 12px 10px 10px;
     border:2px solid rgba(255 255 255 / 12%);
     text-align:center;
   }
-  .weather-date-h {font-size:13px; font-weight:700; margin-bottom:8px;}
-  .weather-emoji-h {font-size:40px; margin-bottom:6px; display:block; user-select:none;}
-  .weather-temp-h {font-size:17px; font-weight:700;}
-  .weather-rain-h {font-size:13px; margin-top:5px; color:#def1f0aa;}
+  .weather-date-h {font-size:13px; font-weight:700; margin-bottom:6px;}
+  .weather-emoji-h {font-size:36px; margin-bottom:4px; display:block; user-select:none;}
+  .weather-temp-h {font-size:16px; font-weight:700;}
+  .weather-rain-h {font-size:12px; margin-top:4px; color:#def1f0aa;}
   .weather-desc-h {font-size:12px; margin-top:1px; color:#d0e2e0cc;}
   .weather-loading {
     grid-column:span 7;
@@ -71,17 +79,18 @@
     font-weight:700;
   }
   
-  /* [修改] 搜尋列現在回到 "首頁" 內容中 */
+  /* [修改] 搜尋列間距 */
   .search-section {
     display:flex; 
     gap:10px;
-    margin-bottom: 32px; /* [還原] 與下方 info-section 的間距 */
+    margin-bottom: 24px; /* [修改] 減少 */
   }
   .search-input {
     flex:1;
-    font-size:17px;
+    /* [修改] 減少字體和 padding */
+    font-size: 15px;
     border-radius:16px;
-    padding:14px 20px;
+    padding: 12px 18px;
     border:2px solid #a3bbb9;
     transition:all 0.3s ease;
     font-weight:400;
@@ -96,10 +105,11 @@
     border-radius:16px;
     border:none;
     color:white;
-    font-size:17px;
+    /* [修改] 減少字體和 padding */
+    font-size: 15px;
     font-weight:700;
     cursor:pointer;
-    padding:14px 32px;
+    padding: 12px 24px;
     transition:background-color 0.35s ease;
   }
   .search-btn:hover {background-color:#618577;}
@@ -107,7 +117,8 @@
   /* 你的 CSS (保留) */
   .info-section {
     display:flex;
-    gap:32px;
+    /* [修改] 減少 gap */
+    gap: 24px;
     flex-wrap:wrap;
   }
   .news-card {
@@ -117,7 +128,8 @@
     background:white;
     border-radius:20px;
     box-shadow:0 8px 32px #a6b7b68e;
-    padding:28px 38px;
+    /* [修改] 減少 padding */
+    padding: 20px 24px;
   }
   .section-header {
     display:flex;
@@ -131,7 +143,8 @@
     display:flex;
     gap:8px;
     font-weight:700;
-    font-size:22px;
+    /* [修改] 減少字體 */
+    font-size: 20px;
     color:#578f89;
     align-items:center;
   }
@@ -139,24 +152,26 @@
     background:linear-gradient(135deg,#7ba8a3,#9dbfbb);
     border-radius:8px;
     color:white;
-    width:36px;
-    height:36px;
+    /* [修改] 縮小圖示 */
+    width: 32px;
+    height: 32px;
     display:grid;
     place-items:center;
     font-weight:900;
-    font-size:18px;
+    font-size: 16px;
   }
   .news-tabs {
     display:flex;
-    gap:14px;
+    gap:10px; /* [修改] 減少 */
   }
   .news-tab {
     border-radius:12px;
     background:#f3fbfb;
     color:#578f89;
     font-weight:600;
-    font-size:16px;
-    padding:8px 23px;
+    /* [修改] 減少字體和 padding */
+    font-size: 14px;
+    padding: 6px 18px;
     border:2px solid #cee2df;
     cursor:pointer;
     transition:background-color 0.3s ease,border-color 0.3s ease;
@@ -173,9 +188,10 @@
     color:white;
     border:none;
     border-radius:12px;
-    padding:8px 22px;
+    /* [修改] 減少字體和 padding */
+    padding: 6px 18px;
     cursor:pointer;
-    font-size:16px;
+    font-size: 14px;
     transition:background-color 0.3s ease;
   }
   .refresh-btn:disabled {opacity:0.5; cursor:not-allowed;}
@@ -187,10 +203,11 @@
   }
   .news-item {
     border-left:4px solid #86b4a9;
-    margin-bottom:11px;
+    margin-bottom: 8px; /* [修改] 減少 */
     background:#f1f7f5;
     border-radius:12px;
-    padding:14px 20px;
+    /* [修改] 減少 padding */
+    padding: 12px 16px;
     font-weight:600;
     color:#3a6259;
     cursor:pointer;
@@ -213,16 +230,17 @@
     justify-content:space-between;
   }
   .news-loading {text-align:center;padding:20px;color:#7a9794;font-weight:600;}
-  /* 股票卡 (你的 CSS 樣式，完整保留) */
+  /* 股票卡 (你的 CSS 樣式) */
   .stock-card {
     flex-basis:380px;
     background:white;
     border-radius:20px;
-    padding:28px 26px;
+    /* [修改] 減少 padding 和 gap */
+    padding: 20px 24px;
     box-shadow:0 8px 30px #a2b8b39e;
     display:flex;
     flex-direction:column;
-    gap:20px;
+    gap: 16px;
   }
   .stock-tabs {
     display:flex;
@@ -230,11 +248,12 @@
     margin-top:4px;
   }
   .stock-tab {
-    padding:8px 30px;
+    /* [修改] 減少 padding 和字體 */
+    padding: 7px 24px;
     border-radius:12px;
     border:2px solid #a6cdc5;
     background:#ccede9;
-    font-size:18px;
+    font-size: 16px;
     font-weight:700;
     color:#3e7e72;
     cursor:pointer;
@@ -251,9 +270,10 @@
     gap:11px;
   }
   .stock-search-input {
-    padding:14px 18px;
+    /* [修改] 減少 padding 和字體 */
+    padding: 12px 16px;
     border-radius:16px;
-    font-size:17px;
+    font-size: 15px;
     font-weight:600;
     border:2px solid #a1d1c4;
     background:#dbece8;
@@ -268,9 +288,10 @@
   .stock-add-btn {
     background:#7ba8a3;
     border-radius:18px;
-    padding:14px 28px;
+    /* [修改] 減少 padding 和字體 */
+    padding: 12px 24px;
     cursor:pointer;
-    font-size:1.05rem;
+    font-size: 15px;
     font-weight:700;
     color:white;
     border:none;
@@ -284,12 +305,13 @@
     overflow-y:auto;
     display:flex;
     flex-direction:column;
-    gap:13px;
+    gap: 10px; /* [修改] 減少 */
   }
   .stock-item {
     background:#cee3db;
     border-radius:14px;
-    padding:16px 20px;
+    /* [修改] 減少 padding */
+    padding: 12px 16px;
     display:flex;
     justify-content:space-between;
     align-items:center;
@@ -306,12 +328,12 @@
   .stock-info {
     display:flex;
     flex-direction:column;
-    gap:6px;
+    gap: 4px; /* [修改] 減少 */
     text-align:left;
-    min-width:8.4rem;
+    min-width: 6rem; /* [修改] 減少 */
   }
   .stock-symbol {
-    font-size:1.35rem;
+    font-size: 1.15rem; /* [修改] 減少 */
   }
   .stock-name {
     font-weight:400;
@@ -323,10 +345,10 @@
     min-width:7rem;
   }
   .stock-price {
-    font-size:1.45rem;
+    font-size: 1.25rem; /* [修改] 減少 */
   }
   .stock-change {
-    font-size:1rem;
+    font-size: 0.9rem; /* [修改] 減少 */
   }
   .stock-up {
     color:#e2646a;
@@ -342,35 +364,39 @@
   .main-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 32px;
-    margin-top: 32px;
+    /* [修改] 減少 gap 和 margin */
+    gap: 24px;
+    margin-top: 24px;
   }
   .card {
     background: white;
     border-radius: 20px;
     box-shadow: 0 8px 30px #a2b8b36e;
-    padding: 28px 26px;
+    /* [修改] 減少 padding 和 gap */
+    padding: 20px 24px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 12px;
   }
   .card-title {
     display: flex;
     align-items: center;
     gap: 12px;
     font-weight: 700;
-    font-size: 20px;
+    /* [修改] 減少字體 */
+    font-size: 18px;
     color: #578f89;
     border-bottom: 2px solid #e0ebea;
-    padding-bottom: 12px;
+    padding-bottom: 10px; /* [修改] 減少 */
   }
   .card-icon {
-    font-size: 18px;
+    font-size: 16px; /* [修改] 減少 */
   }
   .project-item {
     background: #f1f7f5;
     border-radius: 12px;
-    padding: 16px 20px;
+    /* [修改] 減少 padding */
+    padding: 12px 16px;
     cursor: pointer;
     transition: background 0.3s, box-shadow 0.3s;
   }
@@ -385,15 +411,16 @@
     align-items: center;
     gap: 16px;
     background: #f1f7f5;
-    padding: 16px;
+    /* [修改] 減少 padding */
+    padding: 12px;
     border-radius: 12px;
     cursor: pointer;
     transition: background 0.3s;
   }
   .tool-item:hover { background: #e6f0ee; }
   .tool-icon {
-    width: 48px;
-    height: 48px;
+    width: 40px; /* [修改] 減少 */
+    height: 40px; /* [修改] 減少 */
     border-radius: 10px;
     display: grid;
     place-items: center;
@@ -407,11 +434,12 @@
   .link-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    gap: 10px; /* [修改] 減少 */
   }
   .quick-link {
     background: #f1f7f5;
-    padding: 14px 18px;
+    /* [修改] 減少 padding */
+    padding: 10px 14px;
     border-radius: 12px;
     font-weight: 600;
     color: #3a6259;
@@ -419,7 +447,7 @@
     transition: background 0.3s;
   }
   .quick-link:hover { background: #e6f0ee; }
-  .bookmark-section { display: flex; flex-direction: column; gap: 10px; }
+  .bookmark-section { display: flex; flex-direction: column; gap: 8px; } /* [修改] 減少 */
   .bookmark-category {
     font-weight: 700;
     color: #3e7e72;
@@ -434,32 +462,34 @@
   }
   .bookmark-link:hover { color: #7ba8a3; }
 
-  /* 你的地圖 CSS (完整保留) */
+  /* 你的地圖 CSS */
   .map-card-full {
     background: white;
     border-radius: 20px;
     box-shadow: 0 8px 32px #a6b7b68e;
-    padding: 28px 38px;
-    margin-top: 32px; /* 與上方 info-section 的間距 */
+    /* [修改] 減少 padding 和 margin */
+    padding: 20px 24px;
+    margin-top: 24px;
   }
   .map-card-full .section-header {
-    gap: 20px; /* 標題和搜尋框的間距 */
+    gap: 20px; 
   }
   .map-search-box {
     display: flex;
-    flex: 1; /* 自動填滿剩餘空間 */
+    flex: 1; 
     gap: 10px;
-    min-width: 250px; /* 確保在小螢幕不會太窄 */
-    max-width: 600px; /* 限制最大寬度 */
+    min-width: 250px; 
+    max-width: 600px; 
   }
   .map-content {
-    margin-top: 20px;
+    margin-top: 16px; /* [修改] 減少 */
   }
   .map-content iframe {
     border-radius: 12px;
-    border: 2px solid #cee2df; /* 配合主題的邊框 */
+    border: 2px solid #cee2df; 
     width: 100%;
-    height: 500px;
+    /* [修改] 減少高度 */
+    height: 400px;
   }
 
   /* --- [新功能] 置頂導覽列 和 分頁 CSS --- */
@@ -469,20 +499,20 @@
     z-index: 1000;
     
     background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
-    padding: 20px 32px; /* [修改] 減少上下 padding */
+    /* [修改] 減少 padding */
+    padding: 12px 24px;
     border-radius: 24px;
     box-shadow: 0 8px 30px rgba(123, 168, 163, 0.35);
     
-    /* [修改] 調整 margin-top 以配合 body padding-top */
     max-width: 1400px; 
-    margin: -70px auto 0 auto; /* 往上拉回原點 (90 - 20) */
+    /* [修改] 調整 margin-top 以配合新的 body padding-top */
+    margin: -50px auto 0 auto;
     top: 20px;
   }
   
   .portal-tabs {
     display: flex;
-    gap: 16px;
-    /* [移除] margin-bottom (因為搜尋列已移除) */
+    gap: 10px; /* [修改] 減少 */
   }
   
   .portal-tab-btn {
@@ -492,8 +522,9 @@
     border: 2px solid rgba(255, 255, 255, 0.12);
     color: white;
     font-weight: 700;
-    font-size: 18px;
-    padding: 10px 28px;
+    /* [修改] 減少字體和 padding */
+    font-size: 16px;
+    padding: 8px 20px;
     cursor: pointer;
     transition: background 0.3s ease, border-color 0.3s ease;
     user-select: none;
@@ -507,14 +538,12 @@
   
   /* 分頁內容 */
   .page-content {
-    /* 預設隱藏，JS 會控制顯示 */
     display: none;
-    /* [新增] 確保內容在 sticky header 下方 */
-    margin-top: 32px;
+    /* [修改] 減少 margin-top */
+    margin-top: 24px;
   }
   
   .page-content.active {
-    /* 顯示 active 的分頁 */
     display: block;
   }
   /* --- [新功能] CSS 結束 --- */
@@ -611,7 +640,8 @@
         <div class="map-content">
             <iframe id="mapFrame"
                 src="https://maps.google.com/maps?q=台北101&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+                frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
+                height="400px">
             </iframe>
         </div>
     </div>
@@ -832,7 +862,6 @@ const RSS_FEEDS = {
 let currentNewsTab = 'tw'; 
 function switchNewsTab(tab){
   currentNewsTab = tab;
-  // [修改] 確保只更新首頁上的新聞 tabs
   document.querySelectorAll('#page-home .news-tab').forEach(btn => btn.classList.remove('active'));
   document.getElementById('tab-'+tab).classList.add('active');
   loadNews(); 
@@ -876,7 +905,7 @@ function parseRSS(xmlText) {
 }
 async function loadNews(){
   const list = document.getElementById('newsList');
-  if (!list) return; // 如果找不到元素 (例如在其他分頁)，就退出
+  if (!list) return; 
   
   list.innerHTML = '<li class="news-loading">載入新聞中…</li>';
   const refreshBtn = document.getElementById('refreshNewsBtn');
@@ -941,7 +970,7 @@ function switchStockMarket(market){
 }
 async function loadStocks(){
   const container = document.getElementById('stocksList');
-  if (!container) return; // 如果找不到元素 (例如在其他分頁)，就退出
+  if (!container) return; 
   
   const watchlist = stockWatchlist[stockCurrentMarket];
   container.innerHTML = '<div class="stocks-loading">載入股票資料中…</div>';
@@ -1057,21 +1086,19 @@ function initTabNavigation() {
                 }
             });
             
-            // [修改] 當切換回 "首頁" 時，重新載入功能
-            // 這樣可以確保 weather/stocks/news 總是最新的
-            // 並且不會在背景分頁執行
+            // 3. [修改] 當切換回 "首頁" 時，才執行功能
             if (pageName === 'home') {
-                 // 檢查是否需要重新載入
+                 // 檢查首頁功能是否需要重新載入
                  const weatherRow = document.getElementById('weatherRow');
-                 if (!weatherRow.innerHTML || !weatherRow.innerHTML.includes('weather-day-h')) {
+                 if (!weatherRow || !weatherRow.innerHTML.includes('weather-day-h')) {
                     updateWeather();
                  }
                  const stockList = document.getElementById('stocksList');
-                 if (!stockList.innerHTML || !stockList.innerHTML.includes('stock-item')) {
+                 if (!stockList || !stockList.innerHTML.includes('stock-item')) {
                     loadStocks();
                  }
                  const newsList = document.getElementById('newsList');
-                 if (!newsList.innerHTML || !newsList.innerHTML.includes('news-item')) {
+                 if (!newsList || !newsList.innerHTML.includes('news-item')) {
                     loadNews();
                  }
             }
@@ -1091,12 +1118,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. 初始載入 "首頁" 的所有功能
     updateDatetime();
     updateWeather(); 
-    loadStocks(); // [修改] 配合你的原始程式碼，使用 loadStocks()
-    loadNews();   // [修改] 配合你的原始程式碼，使用 loadNews()
+    loadStocks();
+    loadNews();
     
     // 3. 綁定首頁上的所有按鈕
     // (天氣)
     document.getElementById('locationSelector').onchange = updateWeather;
+    // (搜尋)
+    document.getElementById('searchBtn').onclick = () => {
+      const val=document.getElementById('searchInput').value.trim();
+      if(!val) return;
+      if(val.includes('.') && !val.includes(' ')) {
+        window.open(val.startsWith('http') ? val : 'https://' + val, '_blank');
+      } else {
+        window.open('https://www.google.com/search?q=' + encodeURIComponent(val), '_blank');
+      }
+    };
+    document.getElementById('searchInput').addEventListener('keypress', e =>{
+      if(e.key === 'Enter') document.getElementById('searchBtn').click();
+    });
     // (新聞)
     document.getElementById('tab-tw').onclick = () => switchNewsTab('tw');
     document.getElementById('tab-jp').onclick = () => switchNewsTab('jp');
@@ -1105,6 +1145,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // (股票)
     document.getElementById('stockTab_tw').onclick = () => switchStockMarket('tw');
     document.getElementById('stockTab_us').onclick = () => switchStockMarket('us');
+    document.getElementById('stockAddBtn').onclick = () => {
+      const input=document.getElementById('stockInput');
+      let symbol=input.value.trim().toUpperCase();
+      if(!symbol) return alert('請輸入股票代碼');
+      if (stockCurrentMarket === 'tw') {
+          const twSymbol = symbol.match(/\d+/);
+          if (twSymbol) { symbol = twSymbol[0]; }
+      }
+      const list=stockWatchlist[stockCurrentMarket];
+      if(list.includes(symbol)) return alert('股票已在清單');
+      if(list.length >= 7) return alert('最多只能追蹤7支股票');
+      list.push(symbol);
+      input.value = '';
+      loadStocks();
+    };
     // (地圖)
     document.getElementById('mapSearchBtn').onclick = searchGoogleMaps;
     document.getElementById('mapSearchInput').addEventListener('keypress', e => {
