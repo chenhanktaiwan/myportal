@@ -5,1494 +5,1304 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>個人入口網站 - [V5 最終還原版]</title>
 <style>
-  /* [修改] 緊湊版 CSS (保留) */
-  * {margin:0;padding:0;box-sizing:border-box;}
-  body {
-    font-family:'Microsoft JhengHei','PingFang TC',sans-serif;
-    background:linear-gradient(135deg,#dde9e7 0,#c9dbd9 100%);
-    color:#526c67;
-    min-height:100vh;
-    padding:20px;
-    padding-top: 70px;  
-  }
-  .container {max-width:1400px;margin:0 auto;}
- 
-  /* [已還原] 你的天氣區塊 CSS (使用緊湊版) */
-  .header {
-    background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
-    padding: 20px 32px; /* [修改] 減少垂直 padding */
-    border-radius:24px;
-    color:white;
-    margin-bottom: 24px;
-    box-shadow:0 8px 30px rgba(123,168,163,0.25);
-    
-    /* --- [新功能] 修改為 Flex 排版 --- */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    /* --- [新功能] 結束 --- */
-  }
-  
-  /* [刪除] .header-top 已不需要 */
-  
-  .greeting-section {
-      font-weight:700; 
-      font-size: 24px;
-      flex-shrink: 0; /* [修改] 確保 "歡迎" 文字不被壓縮 */
-  }
-  .datetime {margin-top:6px; font-weight:500; font-size:14px; opacity:0.9;}
-  
-  .location-selector {
-    background:rgba(255 255 255 / 26%);
-    border:2px solid rgba(255 255 255 / 38%);
-    border-radius:10px;
-    font-size:13px;
-    color:white;
-    padding: 5px 10px;
-    cursor:pointer;
-    backdrop-filter:blur(12px);
-    transition:background 0.3s,border 0.3s;
-  }
-  .location-selector:hover, .location-selector:focus {
-    background:rgba(255 255 255 / 34%);
-    border-color:rgba(255 255 255 / 60%);
-    outline:none;
-  }
-  
-  /* --- [修改] 天氣區塊重排 --- */
-  .weather-forecast-horizontal {
-    display:grid;
-    gap: 10px; /* [修改] 縮小 gap */
-    grid-template-columns:repeat(7,1fr);
-    flex: 1; /* [新] 讓天氣區塊佔據中間的彈性空間 */
-  }
-  .weather-day-h {
-    background:rgba(255 255 255 / 23%);
-    border-radius:14px;
-    padding: 10px 8px 8px; /* [修改] 縮小 padding */
-    border:2px solid rgba(255 255 255 / 12%);
-    text-align:center;
-  }
-  .weather-date-h {font-size:12px; font-weight:700; margin-bottom:4px;}
-  .weather-emoji-h {font-size:28px; margin-bottom:2px; display:block; user-select:none;}
-  .weather-temp-h {font-size:14px; font-weight:700;}
-  .weather-rain-h {font-size:11px; margin-top:3px; color:#def1f0aa;}
-  .weather-desc-h {font-size:11px; margin-top:1px; color:#d0e2e0aa;}
-  .weather-loading {
-    grid-column:span 7;
-    text-align:center;
-    padding:10px 0; /* [修改] 縮小 padding */
-    color:white;
-    font-weight:700;
-    font-size: 14px; /* [修改] 縮小字體 */
-  }
-  /* --- [修改] 天氣區塊結束 --- */
- 
-  /* 搜尋列 (緊湊版) */
-  .search-section {
-    display:flex;  
-    gap:10px;
-    margin-bottom: 20px;  
-  }
-  .search-input {
-    flex:1;
-    font-size: 14px;  
-    border-radius:12px;  
-    padding: 10px 16px;  
-    border:2px solid #a3bbb9;
-    transition:all 0.3s ease;
-    font-weight:400;
-  }
-  .search-input:focus {
-    outline:none;
-    border-color:#7ba8a3;
-    box-shadow:0 0 0 4px rgba(123 168 163 / 0.2);
-  }
-  .search-btn {
-    background-color:#7ba8a3;
-    border-radius:12px;  
-    border:none;
-    color:white;
-    font-size: 14px;  
-    font-weight:700;
-    cursor:pointer;
-    padding: 10px 20px;  
-    transition:background-color 0.35s ease;
-  }
-  .search-btn:hover {background-color:#618577;}
+  /* [修改] 緊湊版 CSS (保留) */
+  * {margin:0;padding:0;box-sizing:border-box;}
+  body {
+    font-family:'Microsoft JhengHei','PingFang TC',sans-serif;
+    background:linear-gradient(135deg,#dde9e7 0,#c9dbd9 100%);
+    color:#526c67;
+    min-height:100vh;
+    padding:20px;
+    padding-top: 70px; 
+  }
+  .container {max-width:1400px;margin:0 auto;}
+ 
+  /* [已還原] 你的天氣區塊 CSS (使用緊湊版) */
+  .header {
+    background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
+    /* [修改] 調整 padding 以容納新版面 */
+    padding: 20px 32px; 
+    border-radius:24px;
+    color:white;
+    margin-bottom: 24px;
+    box-shadow:0 8px 30px rgba(123,168,163,0.25);
+  }
+  .header-top {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    /* [修改] 移除 margin-bottom 因為 7 天預報已移入 */
+    margin-bottom: 0; 
+    gap:20px;
+  }
+  .greeting-section {
+    font-weight:700; 
+    font-size: 24px;
+    /* [修改] 確保歡迎詞不會被過度壓縮 */
+    flex-shrink: 0; 
+    min-width: 250px;
+  }
+  .datetime {margin-top:6px; font-weight:500; font-size:14px; opacity:0.9;}
+  .location-selector {
+    background:rgba(255 255 255 / 26%);
+    border:2px solid rgba(255 255 255 / 38%);
+    border-radius:10px;
+    font-size:13px;
+    color:white;
+    padding: 5px 10px;
+    cursor:pointer;
+    backdrop-filter:blur(12px);
+    transition:background 0.3s,border 0.3s;
+    /* [修改] 確保選擇器不會被壓縮 */
+    flex-shrink: 0; 
+  }
+  .location-selector:hover, .location-selector:focus {
+    background:rgba(255 255 255 / 34%);
+    border-color:rgba(255 255 255 / 60%);
+    outline:none;
+  }
+  
+  /* [修改] 7 天預報的新樣式 */
+  .weather-forecast-horizontal {
+    display:grid;
+    gap: 8px; /* (原 12px) */
+    grid-template-columns:repeat(7,1fr);
+    /* [修改] 讓它填滿中間空間 */
+    flex: 1;
+    margin: 0 20px;
+  }
+  .weather-day-h {
+    background:rgba(255 255 255 / 23%);
+    border-radius:12px; /* (原 14px) */
+    padding: 10px 5px; /* (原 12px 10px 10px) */
+    border:2px solid rgba(255 255 255 / 12%);
+    text-align:center;
+    min-width: 0; /* 允許 grid 縮小 */
+  }
+  .weather-date-h {
+    font-size:12px; /* (原 13px) */
+    font-weight:700; 
+    margin-bottom:4px; /* (原 6px) */
+  }
+  .weather-emoji-h {
+    font-size:28px; /* (原 36px) */
+    margin-bottom:2px; /* (原 4px) */
+    display:block; 
+    user-select:none;
+  }
+  .weather-temp-h {
+    font-size:14px; /* (原 16px) */
+    font-weight:700;
+  }
+  .weather-rain-h {
+    font-size:11px; /* (原 12px) */
+    margin-top:2px; /* (原 4px) */
+    color:#def1f0aa;
+    opacity: 0.9;
+  }
+  /* [修改] 隱藏文字描述以節省空間 */
+  .weather-desc-h {
+    display: none;
+  }
+  .weather-loading {
+    grid-column:span 7;
+    text-align:center;
+    padding:22px 0;
+    color:white;
+    font-weight:700;
+  }
+ 
+  /* 搜尋列 (緊湊版) */
+  .search-section {
+    display:flex; 
+    gap:10px;
+    margin-bottom: 20px; 
+  }
+  .search-input {
+    flex:1;
+    font-size: 14px; 
+    border-radius:12px; 
+    padding: 10px 16px; 
+    border:2px solid #a3bbb9;
+    transition:all 0.3s ease;
+    font-weight:400;
+  }
+  .search-input:focus {
+    outline:none;
+    border-color:#7ba8a3;
+    box-shadow:0 0 0 4px rgba(123 168 163 / 0.2);
+  }
+  .search-btn {
+    background-color:#7ba8a3;
+    border-radius:12px; 
+    border:none;
+    color:white;
+    font-size: 14px; 
+    font-weight:700;
+    cursor:pointer;
+    padding: 10px 20px; 
+    transition:background-color 0.35s ease;
+  }
+  .search-btn:hover {background-color:#618577;}
 
-  /* 卡片區 (緊湊版) */
-  .info-section {
-    display:flex;
-    gap: 20px;  
-    flex-wrap:wrap;
-  }
-  .news-card {
-    flex:1;
-    min-width:400px;  
-    max-width:720px;
-    background:white;
-    border-radius:20px;
-    box-shadow:0 8px 32px #a6b7b68e;
-    padding: 16px 20px;  
-  }
-  .section-header {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;  
-    flex-wrap:wrap;
-    gap:10px;
-  }
-  .section-title {
-    display:flex;
-    gap:8px;
-    font-weight:700;
-    font-size: 18px;  
-    color:#578f89;
-    align-items:center;
-  }
-  .section-icon {
-    background:linear-gradient(135deg,#7ba8a3,#9dbfbb);
-    border-radius:8px;
-    color:white;
-    width: 28px;  
-    height: 28px;  
-    display:grid;
-    place-items:center;
-    font-weight:900;
-    font-size: 15px;  
-  }
-  .news-tabs {
-    display:flex;
-    gap: 8px;  
-  }
-  .news-tab {
-    border-radius:10px;  
-    background:#f3fbfb;
-    color:#578f89;
-    font-weight:600;
-    font-size: 13px;  
-    padding: 5px 14px;  
-    border:2px solid #cee2df;
-    cursor:pointer;
-    transition:background-color 0.3s ease,border-color 0.3s ease;
-    user-select:none;
-  }
-  .news-tab.active,.news-tab:hover {
-    background:#7ba8a3;
-    border-color:#7ba8a3;
-    color:white;
-  }
-  .refresh-btn {
-    font-weight:600;
-    background:#7ba8a3;
-    color:white;
-    border:none;
-    border-radius:10px;  
-    padding: 5px 14px;  
-    cursor:pointer;
-    font-size: 13px;  
-    transition:background-color 0.3s ease;
-  }
-  .refresh-btn:disabled {opacity:0.5; cursor:not-allowed;}
-  .news-list {
-    list-style:none;
-    max-height: 400px;  
-    overflow-y:auto;
-    padding:0;
-  }
-  .news-item {
-    border-left:4px solid #86b4a9;
-    margin-bottom: 6px;  
-    background:#f1f7f5;
-    border-radius:10px;
-    padding: 10px 14px;  
-    font-weight:600;
-    color:#3a6259;
-    cursor:pointer;
-    transition:background 0.3s ease;
-  }
-  .news-item:hover {
-    background:#9ac2b9;
-    color:white;
-  }
-  .news-item-title {
-    font-size: 14px;  
-    margin-bottom: 4px;  
-  }
-  .news-item-meta {
-    margin-top:4px;
-    font-weight:400;
-    font-size:12px;
-    color:#58716b;
-    display:flex;
-    justify-content:space-between;
-  }
-  .news-loading {text-align:center;padding:20px;color:#7a9794;font-weight:600;}
-  /* 股票卡 (緊湊版) */
-  .stock-card {
-    flex-basis:360px;  
-    background:white;
-    border-radius:20px;
-    padding: 16px 20px;  
-    box-shadow:0 8px 30px #a2b8b39e;
-    display:flex;
-    flex-direction:column;
-    gap: 12px;  
-  }
-  .stock-tabs {
-    display:flex;
-    gap:10px;
-    margin-top: 2px;
-  }
-  .stock-tab {
-    padding: 6px 20px;  
-    border-radius:10px;
-    border:2px solid #a6cdc5;
-    background:#ccede9;
-    font-size: 15px;  
-    font-weight:700;
-    color:#3e7e72;
-    cursor:pointer;
-    transition:all 0.28s ease;
-    user-select:none;
-  }
-  .stock-tab.active, .stock-tab:hover {
-    border-color:#7ba8a3;
-    background:#7ba8a3;
-    color:white;
-  }
-  .stock-search {
-    display:flex;
-    gap: 8px;  
-  }
-  .stock-search-input {
-    padding: 10px 14px;  
-    border-radius:12px;
-    font-size: 14px;  
-    font-weight:600;
-    border:2px solid #a1d1c4;
-    background:#dbece8;
-    color:#376655;
-    flex:1;
-    transition:border-color 0.3s ease;
-  }
-  .stock-search-input:focus {
-    outline:none;
-    border-color:#7ba8a3;
-  }
-  .stock-add-btn {
-    background:#7ba8a3;
-    border-radius:12px;
-    padding: 10px 20px;  
-    cursor:pointer;
-    font-size: 14px;s
-    font-weight:700;
-    color:white;
-    border:none;
-    transition:background-color 0.3s ease;
-  }
-  .stock-add-btn:hover {
-    background:#628775;
-  }
-  .stock-list {
-    max-height:400px;
-    overflow-y:auto;
-    display:flex;
-    flex-direction:column;
-    gap: 8px;  
-  }
-  .stock-item {
-    background:#cee3db;
-    border-radius:12px;
-    padding: 10px 14px;  
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:10px;
-    cursor:pointer;
-    transition:background-color 0.3s ease;
-    font-weight:700;
-    color:#3c786c;
-  }
-  .stock-item:hover {
-    background:#7ba8a3;
-    color:white;
-  }
-  .stock-info {
-    display:flex;
-    flex-direction:column;
-    gap: 3px;  
-    text-align:left;
-    min-width: 6rem;
-  }
-  .stock-symbol {
-    font-size: 1.1rem;  
-  }
-  .stock-name {
-    font-weight:400;
-    font-size: 0.8rem;  
-    color:#4a655c;
-  }
-  .stock-price-info {
-    text-align:right;
-    min-width:7rem;
-  }
-  .stock-price {
-    font-size: 1.2rem;  
-  }
-  .stock-change {
-    font-size: 0.85rem;  
-  }
-  .stock-up {
-    color:#e2646a;
-section }
-  .stock-down {
-    color:#2e7052;
-  }
-  .stock-neutral {
-    color:#50766e;
-  }
+  /* 卡片區 (緊湊版) (不變) */
+  .info-section {
+    display:flex;
+    gap: 20px; 
+    flex-wrap:wrap;
+  }
+  .news-card {
+    flex:1;
+    min-width:400px; 
+    max-width:720px;
+    background:white;
+    border-radius:20px;
+    box-shadow:0 8px 32px #a6b7b68e;
+    padding: 16px 20px; 
+  }
+  .section-header {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px; 
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .section-title {
+    display:flex;
+    gap:8px;
+    font-weight:700;
+    font-size: 18px; 
+    color:#578f89;
+    align-items:center;
+  }
+  .section-icon {
+    background:linear-gradient(135deg,#7ba8a3,#9dbfbb);
+    border-radius:8px;
+    color:white;
+    width: 28px; 
+    height: 28px; 
+    display:grid;
+    place-items:center;
+    font-weight:900;
+    font-size: 15px; 
+  }
+  .news-tabs {
+    display:flex;
+    gap: 8px; 
+  }
+  .news-tab {
+    border-radius:10px; 
+    background:#f3fbfb;
+    color:#578f89;
+    font-weight:600;
+    font-size: 13px; 
+    padding: 5px 14px; 
+    border:2px solid #cee2df;
+    cursor:pointer;
+    transition:background-color 0.3s ease,border-color 0.3s ease;
+    user-select:none;
+  }
+  .news-tab.active,.news-tab:hover {
+    background:#7ba8a3;
+    border-color:#7ba8a3;
+    color:white;
+  }
+  .refresh-btn {
+    font-weight:600;
+    background:#7ba8a3;
+    color:white;
+    border:none;
+    border-radius:10px; 
+    padding: 5px 14px; 
+    cursor:pointer;
+    font-size: 13px; 
+    transition:background-color 0.3s ease;
+  }
+  .refresh-btn:disabled {opacity:0.5; cursor:not-allowed;}
+  .news-list {
+    list-style:none;
+    max-height: 400px; 
+    overflow-y:auto;
+    padding:0;
+  }
+  .news-item {
+    border-left:4px solid #86b4a9;
+    margin-bottom: 6px; 
+    background:#f1f7f5;
+    border-radius:10px;
+    padding: 10px 14px; 
+    font-weight:600;
+    color:#3a6259;
+    cursor:pointer;
+    transition:background 0.3s ease;
+  }
+  .news-item:hover {
+    background:#9ac2b9;
+    color:white;
+  }
+  .news-item-title {
+    font-size: 14px; 
+    margin-bottom: 4px; 
+  }
+  .news-item-meta {
+    margin-top:4px;
+    font-weight:400;
+    font-size:12px;
+    color:#58716b;
+    display:flex;
+    justify-content:space-between;
+  }
+  .news-loading {text-align:center;padding:20px;color:#7a9794;font-weight:600;}
+  /* 股票卡 (緊湊版) (不變) */
+  .stock-card {
+    flex-basis:360px; 
+    background:white;
+    border-radius:20px;
+    padding: 16px 20px; 
+    box-shadow:0 8px 30px #a2b8b39e;
+    display:flex;
+    flex-direction:column;
+    gap: 12px; 
+  }
+  .stock-tabs {
+    display:flex;
+    gap:10px;
+    margin-top: 2px;
+  }
+  .stock-tab {
+    padding: 6px 20px; 
+    border-radius:10px;
+    border:2px solid #a6cdc5;
+    background:#ccede9;
+    font-size: 15px; 
+    font-weight:700;
+    color:#3e7e72;
+    cursor:pointer;
+    transition:all 0.28s ease;
+    user-select:none;
+  }
+  .stock-tab.active, .stock-tab:hover {
+    border-color:#7ba8a3;
+    background:#7ba8a3;
+    color:white;
+  }
+  .stock-search {
+    display:flex;
+    gap: 8px; 
+  }
+  .stock-search-input {
+    padding: 10px 14px; 
+    border-radius:12px;
+    font-size: 14px; 
+    font-weight:600;
+    border:2px solid #a1d1c4;
+    background:#dbece8;
+    color:#376655;
+    flex:1;
+    transition:border-color 0.3s ease;
+  }
+  .stock-search-input:focus {
+    outline:none;
+    border-color:#7ba8a3;
+  }
+  .stock-add-btn {
+    background:#7ba8a3;
+    border-radius:12px;
+    padding: 10px 20px; 
+    cursor:pointer;
+    font-size: 14px; 
+    font-weight:700;
+    color:white;
+    border:none;
+    transition:background-color 0.3s ease;
+  }
+  .stock-add-btn:hover {
+    background:#628775;
+  }
+  .stock-list {
+    max-height:400px;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap: 8px; 
+  }
+  .stock-item {
+    background:#cee3db;
+    border-radius:12px;
+    padding: 10px 14px; 
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    cursor:pointer;
+    transition:background-color 0.3s ease;
+    font-weight:700;
+    color:#3c786c;
+  }
+  .stock-item:hover {
+    background:#7ba8a3;
+    color:white;
+  }
+  .stock-info {
+    display:flex;
+    flex-direction:column;
+    gap: 3px; 
+    text-align:left;
+    min-width: 6rem;
+  }
+  .stock-symbol {
+    font-size: 1.1rem; 
+  }
+  .stock-name {
+    font-weight:400;
+    font-size: 0.8rem; 
+    color:#4a655c;
+  }
+  .stock-price-info {
+    text-align:right;
+    min-width:7rem;
+  }
+  .stock-price {
+    font-size: 1.2rem; 
+  }
+  .stock-change {
+    font-size: 0.85rem; 
+  }
+  .stock-up {
+    color:#e2646a;
+  }
+  .stock-down {
+    color:#2e7052;
+  }
+  .stock-neutral {
+    color:#50766e;
+  }
 
-  /* 你的 CSS 樣式 (已修改為 "緊湊" 版本) */
-  .main-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));  
-    gap: 20px;  
-    margin-top: 20px;  
-  }
-  .card {
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 8px 30px #a2b8b36e;
-    padding: 16px 20px;  
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .card-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;  
-    font-weight: 700;
-    font-size: 16px;  
-    color: #578f89;
-    border-bottom: 2px solid #e0ebea;
-    padding-bottom: 8px;  
-  }
-  .card-icon {
-    font-size: 15px;  
-  }
-  .project-item {
-    background: #f1f7f5;
-    border-radius: 12px;
-    padding: 12px 16px;  
-    cursor: pointer;
-    transition: background 0.3s, box-shadow 0.3s;
-  }
-  .project-item:hover {
-    background: #e6f0ee;
-    box-shadow: 0 4px 12px #b8cac7;
-  }
-  .project-name { font-weight: 700; color: #3a6259; margin-bottom: 4px; font-size: 15px; }  
-  .project-desc { font-size: 13px; color: #58716b; }  
-  .tool-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;  
-    background: #f1f7f5;
-    padding: 10px;  
-    border-radius: 12px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  .tool-item:hover { background: #e6f0ee; }
-  .tool-icon {
-    width: 36px;  
-    height: 36px;  
-    border-radius: 10px;
-    display: grid;
-    place-items: center;
-    background: #cce3db;
-    color: #3e7e72;
-    font-weight: 700;
-  }
-  .tool-info { flex: 1; }
-  .tool-name { font-weight: 700; color: #3a6259; font-size: 15px; }  
-  .tool-url { font-size: 13px; color: #58716b; }  
-  .link-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;  
-  }
-  .quick-link {
-    background: #f1f7f5;
-    padding: 10px 14px;  
-    border-radius: 12px;
-    font-weight: 600;
-    color: #3a6259;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  .quick-link:hover { background: #e6f0ee; }
-  .bookmark-section { display: flex; flex-direction: column; gap: 8px; }  
-  .bookmark-category {
-    font-weight: 700;
-    color: #3e7e72;
-    margin-top: 6px;  
-  }
-  .bookmark-link {
-    padding-left: 10px;  
-    border-left: 3px solid #cce3db;
-    font-weight: 600;
-    color: #3a6259;
-    cursor: pointer;
-  }
-  .bookmark-link:hover { color: #7ba8a3; }
+  /* 你的 CSS 樣式 (已修改為 "緊湊" 版本) (不變) */
+  .main-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+    gap: 20px; 
+    margin-top: 20px; 
+  }
+  .card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px #a2b8b36e;
+    padding: 16px 20px; 
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .card-title {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+    font-weight: 700;
+    font-size: 16px; 
+    color: #578f89;
+    border-bottom: 2px solid #e0ebea;
+    padding-bottom: 8px; 
+  }
+  .card-icon {
+    font-size: 15px; 
+  }
+  .project-item {
+    background: #f1f7f5;
+    border-radius: 12px;
+    padding: 12px 16px; 
+    cursor: pointer;
+    transition: background 0.3s, box-shadow 0.3s;
+  }
+  .project-item:hover {
+    background: #e6f0ee;
+    box-shadow: 0 4px 12px #b8cac7;
+  }
+  .project-name { font-weight: 700; color: #3a6259; margin-bottom: 4px; font-size: 15px; } 
+  .project-desc { font-size: 13px; color: #58716b; } 
+  .tool-item {
+    display: flex;
+    align-items: center;
+    gap: 12px; 
+    background: #f1f7f5;
+    padding: 10px; 
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .tool-item:hover { background: #e6f0ee; }
+  .tool-icon {
+    width: 36px; 
+    height: 36px; 
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: #cce3db;
+    color: #3e7e72;
+    font-weight: 700;
+  }
+  .tool-info { flex: 1; }
+  .tool-name { font-weight: 700; color: #3a6259; font-size: 15px; } 
+  .tool-url { font-size: 13px; color: #58716b; } 
+  .link-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px; 
+  }
+  .quick-link {
+    background: #f1f7f5;
+    padding: 10px 14px; 
+    border-radius: 12px;
+    font-weight: 600;
+    color: #3a6259;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  .quick-link:hover { background: #e6f0ee; }
+  .bookmark-section { display: flex; flex-direction: column; gap: 8px; } 
+  .bookmark-category {
+    font-weight: 700;
+    color: #3e7e72;
+    margin-top: 6px; 
+  }
+  .bookmark-link {
+    padding-left: 10px; 
+    border-left: 3px solid #cce3db;
+    font-weight: 600;
+    color: #3a6259;
+    cursor: pointer;
+  }
+  .bookmark-link:hover { color: #7ba8a3; }
 
-  /* 地圖 CSS (緊湊版) */
-  .map-card-full {
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 8px 32px #a6b7b68e;
-    padding: 16px 20px;  
-    margin-top: 20px;  
-  }
-  .map-card-full .section-header {
-    gap: 16px;  
-  }
-  .map-search-box {
-    display: flex;
-    flex: 1;  
-    gap: 10px;
-    min-width: 250px;  
-    max-width: 600px;  
-  }
-  .map-content {
-    margin-top: 12px;s
-  }
-  .map-content iframe {
-    border-radius: 12px;
-    border: 2px solid #cee2df;  
-    width: 100%;
-    height: 350px;  
-  }
+  /* 地圖 CSS (緊湊版) (不變) */
+  .map-card-full {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px #a6b7b68e;
+    padding: 16px 20px; 
+    margin-top: 20px; 
+  }
+  .map-card-full .section-header {
+    gap: 16px; 
+  }
+  .map-search-box {
+    display: flex;
+    flex: 1; 
+    gap: 10px;
+    min-width: 250px; 
+    max-width: 600px; 
+  }
+  .map-content {
+    margin-top: 12px; 
+  }
+  .map-content iframe {
+    border-radius: 12px;
+    border: 2px solid #cee2df; 
+    width: 100%;
+    height: 350px; 
+  }
 
-  /* --- [新功能] 置頂導覽列 和 分頁 CSS (緊湊版) --- */
-  .portal-nav-sticky {
-    position: sticky;
-    top: 20px; /* 配合 body 的 padding */
-    z-index: 1000;
-   
-    background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
-    padding: 12px 24px; /* [修改] */
-    border-radius: 20px; /* [修改] */
-    box-shadow: 0 8px 30px rgba(123, 168, 163, 0.35);
-   
-    max-width: 1400px;  
-    margin: -50px auto 0 auto;
-    top: 20px;
-   
-    /* [已還原] 導覽列左右對齊 */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
- 
-  .portal-tabs {
-    display: flex;
-    gap: 10px; /* [修改] */
-    justify-content: flex-start; /* [修改] 靠左 */
-  }
- 
-  .portal-tab-btn {
-    font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
-    border-radius: 10px; /* [修改] */
-    background: rgba(255, 255, 255, 0.23);
-    border: 2px solid rgba(255, 255, 255, 0.12);
-    color: white;
-    font-weight: 700;
-    font-size: 15px; /* [修改] */
-    padding: 6px 16px; /* [修改] */
-    cursor: pointer;
-    transition: background 0.3s ease, border-color 0.3s ease;
-    user-select: none;
-  }
- 
-  .portal-tab-btn.active, .portal-tab-btn:hover {
-    background: white;
-    border-color: white;
-    color: #7ba8a3; /* 點選後變為主題綠色 */
-  }
- 
-  /* [已還原] 導覽列右側資訊 */
-  .nav-info-right {
-    display: flex;
-    align-items: center;
-    gap: 16px;  
-    color: white;
-  }
-  .nav-datetime {
-    font-size: 13px;  
-    font-weight: 500;
-    opacity: 0.9;
-  }
-  .nav-weather {
-    font-size: 14px;  
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
-  .nav-weather-emoji {
-    font-size: 20px;s
-  }
- 
-  /* [修改] 首頁 location-selector (在導覽列中) */
-  .nav-info-right .location-selector {
-    padding: 4px 8px; /* [修改] 更緊湊 */
-    font-size: 13px;
-  }
+  /* --- [新功能] 置頂導覽列 和 分頁 CSS (緊湊版) --- (不變) */
+  .portal-nav-sticky {
+    position: sticky;
+    top: 20px; /* 配合 body 的 padding */
+    z-index: 1000;
+   
+    background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
+    padding: 12px 24px; /* [修改] */
+    border-radius: 20px; /* [修改] */
+    box-shadow: 0 8px 30px rgba(123, 168, 163, 0.35);
+   
+    max-width: 1400px; 
+    margin: -50px auto 0 auto;
+    top: 20px;
+   
+    /* [已還原] 導覽列左右對齊 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+ 
+  .portal-tabs {
+    display: flex;
+    gap: 10px; /* [修改] */
+    justify-content: flex-start; /* [修改] 靠左 */
+  }
+ 
+  .portal-tab-btn {
+    font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
+    border-radius: 10px; /* [修改] */
+    background: rgba(255, 255, 255, 0.23);
+    border: 2px solid rgba(255, 255, 255, 0.12);
+    color: white;
+    font-weight: 700;
+    font-size: 15px; /* [修改] */
+    padding: 6px 16px; /* [修改] */
+    cursor: pointer;
+    transition: background 0.3s ease, border-color 0.3s ease;
+    user-select: none;
+  }
+ 
+  .portal-tab-btn.active, .portal-tab-btn:hover {
+    background: white;
+    border-color: white;
+    color: #7ba8a3; /* 點選後變為主題綠色 */
+  }
+ 
+  /* [已還原] 導覽列右側資訊 */
+  .nav-info-right {
+    display: flex;
+    align-items: center;
+    gap: 16px; 
+    color: white;
+  }
+  .nav-datetime {
+    font-size: 13px; 
+    font-weight: 500;
+    opacity: 0.9;
+  }
+  .nav-weather {
+    font-size: 14px; 
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .nav-weather-emoji {
+    font-size: 20px; 
+  }
+ 
+  /* [修改] 首頁 location-selector (在導覽列中) */
+  .nav-info-right .location-selector {
+    padding: 4px 8px; /* [修改] 更緊湊 */
+    font-size: 13px;
+  }
 
-  /* 分頁內容 */
-  .page-content {
-    display: none;
-    margin-top: 20px; /* [修改] */
-  }
- 
-  .page-content.active {
-    display: block;
-  }
-  /* --- [新功能] CSS 結束 --- */
+  /* 分頁內容 */
+  .page-content {
+    display: none;
+    margin-top: 20px; /* [修改] */
+  }
+ 
+  .page-content.active {
+    display: block;
+  }
+  /* --- [新功能] CSS 結束 --- */
 
-
-  /* ================================================
-     ▼▼▼ 修改點 1 (CSS)：在這裡加入新的 CSS 規則 ▼▼▼
-     ================================================
-   */
-
-  /* --- [新功能] 工作捷徑 CSS --- */
-  .shortcut-grid {
-      display: grid;
-      /* auto-fill: 盡可能多放，保持固定寬度
-         minmax(90px, 1fr): 每個項目最小 90px，最大 1fr (均分)
-       */
-      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
-      gap: 20px; /* 項目之間的間距 */
-      padding: 10px 0;
-  }
- 
-  .shortcut-item, .shortcut-add-btn {
-      display: flex;
-      flex-direction: column; /* 垂直排列 (圖示在上, 文字在下) */
-      align-items: center;    /* 水平置中 */
-      gap: 8px;              /* 圖示和文字的間距 */
-      cursor: pointer;
-      text-decoration: none;
-      color: #3a6259;      /* 繼承卡片文字顏色 */
-      transition: transform 0.2s ease;
-  }
- 
-  .shortcut-item:hover {
-      transform: translateY(-3px); /* 滑鼠懸停時輕微上移 */
-  }
- 
-  .shortcut-icon {
-      width: 64px;
-      height: 64px;
-      border-radius: 16px; /* 圓角白底 */
-      background: white;
-      box-shadow: 0 4px 12px rgba(162, 184, 179, 0.5);
-      display: grid;
-      place-items: center;
-      overflow: hidden; /* 確保圖片也在圓角內 */
-      border: 2px solid white;  
-  }
- 
-  .shortcut-icon img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover; /* 確保圖示填滿 */
-  }
-
-  /* [Fallback] 圖片載入失敗時的文字 */
-  .shortcut-icon .fallback-initial {
-      font-size: 28px;
-      font-weight: 700;
-      color: #7ba8a3;
-      user-select: none;
-  }
- 
-  .shortcut-name {
-      font-size: 13px;
-      font-weight: 600;
-      text-align: center;
-      /* 處理長文字，最多顯示 2 行 */
-      word-break: break-all;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-  }
- 
-  /* "新增" 按鈕的特殊樣式 */
-  .shortcut-add-btn .shortcut-icon {
-      background: #f1f7f5; /* 使用卡片內的淺色背景 */
-      border: 2px dashed #a3bbb9; /* 虛線邊框 */
-      box-shadow: none;
-      color: #7a9794;
-      transition: all 0.3s ease;
-  }
- 
-  .shortcut-add-btn .shortcut-icon-add {
-      font-size: 32px;
-      font-weight: 300;
-  }
- 
-  .shortcut-add-btn:hover .shortcut-icon {
-      background: #e6f0ee;
-      border-color: #7ba8a3;
-      color: #7ba8a3;
-  }
-  /* --- [新功能] CSS 結束 --- */
-
+  /* ================================================
+    ▼▼▼ [還原] 移除上次修改的 mini-icon 樣式 ▼▼▼
+    ================================================
+    (這裡現在是空的，因為新的樣式已經合併到上面的 CSS 規則中)
+  */
 
 </style>
 </head>
 <body>
 <div class="container">
 
-  <div class="portal-nav-sticky">
-    <div class="portal-tabs">
-        <button class="portal-tab-btn active" data-page="home">首頁</button>
-        <button class="portal-tab-btn" data-page="personal">個人</button>
-        <button class="portal-tab-btn" data-page="news">新聞</button>
-        <button class="portal-tab-btn" data-page="map">地圖</button>
-        <button class="portal-tab-btn" data-page="work">工作</button>
-    </div>
-   
-    <div class="nav-info-right">
-        <select id="locationSelectorNav" class="location-selector" aria-label="選擇城市">
-          <option value="25.0330,121.5654">台北市</option>
-          <option value="24.1477,120.6736">台中市</option>
-          <option value="22.6273,120.3014">高雄市</option>
-          <option value="25.0375,121.4252">新北市</option>
-          <option value="24.8138,120.9675">新竹市</option>
-          <option value="24.9936,121.3010">桃園市</option>
-          <option value="22.9998,120.2269">台南市</option>
-        </select>
-        <div id="nav-weather" class="nav-weather">--°</div>
-        <div id="nav-datetime" class="nav-datetime">載入中...</div>
-    </div>
-  </div>
+  <div class="portal-nav-sticky">
+    <div class="portal-tabs">
+        <button class="portal-tab-btn active" data-page="home">首頁</button>
+        <button class="portal-tab-btn" data-page="personal">個人</button>
+        <button class="portal-tab-btn" data-page="news">新聞</button>
+        <button class="portal-tab-btn" data-page="map">地圖</button>
+        <button class="portal-tab-btn" data-page="work">工作</button>
+    </div>
+   
+    <div class="nav-info-right">
+        <select id="locationSelectorNav" class="location-selector" aria-label="選擇城市">
+          <option value="25.0330,121.5654">台北市</option>
+          <option value="24.1477,120.6736">台中市</option>
+          <option value="22.6273,120.3014">高雄市</option>
+          <option value="25.0375,121.4252">新北市</option>
+          <option value="24.8138,120.9675">新竹市</option>
+          <option value="24.9936,121.3010">桃園市</option>
+          <option value="22.9998,120.2269">台南市</option>
+        </select>
+        <div id="nav-weather" class="nav-weather">--°</div>
+        <div id="nav-datetime" class="nav-datetime">載入中...</div>
+    </div>
+  </div>
 
 
-  <div id="page-home" class="page-content active">
- 
-    <div class="header">
-      <div class="greeting-section">
-        <div class="greeting">您好！歡迎回來 👋</div>
-        <div class="datetime" id="datetime"></div>
-      </div>
-      
-      <div class="weather-forecast-horizontal" id="weatherRow">
-        <div class="weather-loading">載入天氣資料中...</div>
-      </div>
-      
-      <select id="locationSelectorMain" class="location-selector" aria-label="選擇城市">
-        <option value="25.0330,121.5654">台北市</option>
-        <option value="24.1477,120.6736">台中市</option>
-        <option value="22.6273,120.3014">高雄市</option>
-        <option value="25.0375,121.4252">新北市</option>
-        <option value="24.8138,120.9675">新竹市</option>
-image         <option value="24.9936,121.3010">桃園市</option>
-        <option value="22.9998,120.2269">台南市</option>
-      </select>
-    </div>
-   
-    <div class="search-section">
-      <input id="searchInput" class="search-input" placeholder="搜尋 Google 或輸入網址..."/>
-      <button id="searchBtn" class="search-btn">搜尋</button>
-    </div>
+  <div id="page-home" class="page-content active">
+ 
+    <div class="header">
+      <div class="header-top">
+        
+        <div class="greeting-section">
+          <div class="greeting">您好！歡迎回來 👋</div>
+          <div class="datetime" id="datetime"></div>
+        </div>
+        
+        <div class="weather-forecast-horizontal" id="weatherRow">
+          <div class="weather-loading">載入天氣資料中...</div>
+        </div>
 
-    <div class="info-section">
-      <section class="news-card">
-        <div class="section-header">
-          <div class="section-title">
-            <div class="section-icon">📰</div>
-            今日新聞
-          </div>
-          <div class="news-tabs">
-            <button id="tab-tw" class="news-tab active">台灣</button>
-            <button id="tab-jp" class="news-tab">日本</button>
-            <button id="tab-intl" class="news-tab">國際</button>
-            <button id="refreshNewsBtn" class="refresh-btn">重新整理</button>
-          </div>
-        </div>
-        <ul id="newsList" class="news-list"></ul>
-      </section>
-      <section class="stock-card">
-        <div class="section-header">
-          <div class="section-title">股票追蹤</div>
-          <div class="stock-tabs">
-            <button id="stockTab_tw" class="stock-tab active">台股</button>
-            <button id="stockTab_us" class="stock-tab">美股</button>
-          </div>
-        </div>
-        <div class="stock-search">
-          <input id="stockInput" class="stock-search-input" placeholder="輸入股票代碼（例：2330 / AAPL）" />
-          <button id="stockAddBtn" class="stock-add-btn">加入</button>
-        </div>
-        <div id="stocksList" class="stock-list">
-          <div class="stocks-loading">載入股票資料中...</div>
-        </div>
-      </section>
-    </div>
+        <select id="locationSelectorMain" class="location-selector" aria-label="選擇城市">
+          <option value="25.0330,121.5654">台北市</option>
+          <option value="24.1477,120.6736">台中市</option>
+          <option value="22.6273,120.3014">高雄市</option>
+          <option value="25.0375,121.4252">新北市</option>
+          <option value="24.8138,120.9675">新竹市</option>
+          <option value="24.9936,121.3010">桃園市</option>
+          <option value="22.9998,120.2269">台南市</option>
+        </select>
+      </div>
+      </div>
+   
+    <div class="search-section">
+      <input id="searchInput" class="search-input" placeholder="搜尋 Google 或輸入網址..."/>
+      <button id="searchBtn" class="search-btn">搜尋</button>
+    </div>
 
-    <div class="map-card-full">
-        <div class="section-header">
-            <div class="section-title">
-                <div class="section-icon">🗺️</div>
-                Google 地圖
-            </div>
-            <div class="map-search-box">
-                <input id="mapSearchInput" class="search-input" placeholder="搜尋地點或地址...">
-                <button id="mapSearchBtn" class="search-btn">搜尋</button>
-            </div>
-        </div>
-        <div class="map-content">
-                        <iframe id="mapFrame"
-                src="https://maps.google.com.tw/maps?q=101&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
-            </iframe>
-        </div>
-    </div>
+    <div class="info-section">
+      <section class="news-card">
+        <div class="section-header">
+          <div class="section-title">
+            <div class="section-icon">📰</div>
+            今日新聞
+          </div>
+          <div class="news-tabs">
+            <button id="tab-tw" class="news-tab active">台灣</button>
+            <button id="tab-jp" class="news-tab">日本</button>
+            <button id="tab-intl" class="news-tab">國際</button>
+            <button id="refreshNewsBtn" class="refresh-btn">重新整理</button>
+          </div>
+        </div>
+        <ul id="newsList" class="news-list"></ul>
+      </section>
+      <section class="stock-card">
+        <div class="section-header">
+          <div class="section-title">股票追蹤</div>
+          <div class="stock-tabs">
+            <button id="stockTab_tw" class="stock-tab active">台股</button>
+            <button id="stockTab_us" class="stock-tab">美股</button>
+          </div>
+        </div>
+        <div class="stock-search">
+          <input id="stockInput" class="stock-search-input" placeholder="輸入股票代碼（例：2330 / AAPL）" />
+          <button id="stockAddBtn" class="stock-add-btn">加入</button>
+        </div>
+        <div id="stocksList" class="stock-list">
+          <div class="stocks-loading">載入股票資料中...</div>
+        </div>
+      </section>
+    </div>
 
-    <div class="main-content">
-        <div class="card">
-            <div class="card-title">
-                <div class="card-icon">📊</div>
-                我的專案
-            </div>
-            <div class="project-item" onclick="openLink('#')">
-                <div class="project-name">銷售數據管理系統</div>
-                <div class="project-desc">OCR 辨識 | 數據分析 | 視覺化儀表板</div>
-            </div>
-            <div class="project-item" onclick="openLink('#')">
-                <div class="project-name">數據分析頁面</div>
-                <div class="project-desc">期間對比 | 品項分析 | 趨勢圖表</div>
-            </div>
-            <div class="project-item" onclick="openLink('#')">
-                <div class="project-name">上傳管理系統</div>
-                <div class="project-desc">圖片上傳 | OCR 處理 | 數據整合</div>
-            </div>
-        </div>
+    <div class="map-card-full">
+        <div class="section-header">
+            <div class="section-title">
+                <div class="section-icon">🗺️</div>
+                Google 地圖
+            </div>
+            <div class="map-search-box">
+                <input id="mapSearchInput" class="search-input" placeholder="搜尋地點或地址...">
+                <button id="mapSearchBtn" class="search-btn">搜尋</button>
+            </div>
+        </div>
+        <div class="map-content">
+            <iframe id="mapFrame"
+                src="https://maps.google.com/maps?q=台北101&t=&z=15&ie=UTF8&iwloc=&output=embed"
+                frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+            </iframe>
+        </div>
+    </div>
 
-        <div class="card">
-            <div class="card-title">
-                <div class="card-icon">🔧</div>
-                常用工具
-            </div>
-            <div class="tool-item" onclick="openLink('https://pages.cloudflare.com/')">
-                <div class="tool-icon">CF</div>
-                <div class="tool-info">
-                    <div class="tool-name">Cloudflare Pages</div>
-                    <div class="tool-url">頁面部署管理</div>
-                </div>
-            </div>
-            <div class="tool-item" onclick="openLink('https://gemini.google.com/')">
-                <div class="tool-icon">AI</div>
-                <div class="tool-info">
-                    <div class="tool-name">Gemini AI</div>
-                    <div class="tool-url">AI 助理服務</div>
-                </div>
-            </div>
-            <div class="tool-item" onclick="openLink('https://github.com/')">
-                <div class="tool-icon">GH</div>
-                <div class="tool-info">
-                    <div class="tool-name">GitHub</div>
-                    <div class="tool-url">程式碼版本控制</div>
-                </div>
-            </div>
-            <div class="tool-item" onclick="openLink('https://www.canva.com/')">
-                <div class="tool-icon">🎨</div>
-                <div class="tool-info">
-                    <div class="tool-name">Canva</div>
-                    <div class="tool-url">圖形設計工具</div>
-                </div>
-            </div>
-        </div>
+    <div class="main-content">
+        <div class="card">
+            <div class="card-title">
+                <div class="card-icon">📊</div>
+                我的專案
+            </div>
+            <div class="project-item" onclick="openLink('#')">
+                <div class="project-name">銷售數據管理系統</div>
+                <div class="project-desc">OCR 辨識 | 數據分析 | 視覺化儀表板</div>
+            </div>
+            <div class="project-item" onclick="openLink('#')">
+                <div class="project-name">數據分析頁面</div>
+                <div class="project-desc">期間對比 | 品項分析 | 趨勢圖表</div>
+            </div>
+            <div class="project-item" onclick="openLink('#')">
+                <div class="project-name">上傳管理系統</div>
+                <div class="project-desc">圖片上傳 | OCR 處理 | 數據整合</div>
+            </div>
+        </div>
 
-        <div class="card">
-            <div class="card-title">
-                <div class="card-icon">🔗</div>
-                快速連結
-            </div>
-            <div class="link-grid">
-                <div class="quick-link" onclick="openLink('https.google.com.tw')">Google 搜尋</div>
-                <div class="quick-link" onclick="openLink('https://mail.google.com')">Gmail</div>
-                <div class="quick-link" onclick="openLink('https://drive.google.com')">Google Drive</div>
-                <div class="quick-link" onclick="openLink('https://translate.google.com')">Google 翻譯</div>
-                <div class="quick-link" onclick="openLink('https://www.youtube.com')">YouTube</div>
-                <div class="quick-link" onclick="openLink('https://maps.google.com.tw')">Google 地圖</div>
-            </div>
-        </div>
+        <div class="card">
+            <div class="card-title">
+                <div class="card-icon">🔧</div>
+                常用工具
+            </div>
+            <div class="tool-item" onclick="openLink('https://pages.cloudflare.com/')">
+                <div class="tool-icon">CF</div>
+                <div class="tool-info">
+                    <div class="tool-name">Cloudflare Pages</div>
+                    <div class="tool-url">頁面部署管理</div>
+                </div>
+            </div>
+            <div class="tool-item" onclick="openLink('https://gemini.google.com/')">
+                <div class="tool-icon">AI</div>
+                <div class="tool-info">
+                    <div class="tool-name">Gemini AI</div>
+                    <div class="tool-url">AI 助理服務</div>
+                </div>
+            </div>
+            <div class="tool-item" onclick="openLink('https://github.com/')">
+                <div class="tool-icon">GH</div>
+                <div class="tool-info">
+                    <div class="tool-name">GitHub</div>
+                    <div class="tool-url">程式碼版本控制</div>
+                </div>
+            </div>
+            <div class="tool-item" onclick="openLink('https://www.canva.com/')">
+                <div class="tool-icon">🎨</div>
+                <div class="tool-info">
+                    <div class="tool-name">Canva</div>
+                    <div class="tool-url">圖形設計工具</div>
+                </div>
+            </div>
+        </div>
 
-        <div class="card">
-            <div class="card-title">
-                <div class="card-icon">💻</div>
-                開發資源
-            </div>
-            <div class="bookmark-section">
-                <div class="bookmark-category">前端開發</div>
-                <div class="bookmark-link" onclick="openLink('https://developer.mozilla.org/')">MDN Web Docs</div>
-                <div class="bookmark-link" onclick="openLink('https://stackoverflow.com/')">Stack Overflow</div>
-                <div class="bookmark-link" onclick="openLink('https://codepen.io/')">CodePen</div>
-               
-                <div class="bookmark-category">設計靈感</div>
-                <div class="bookmark-link" onclick="openLink('https://dribbble.com/')">Dribbble</div>
-                <div class="bookmark-link" onclick="openLink('https://www.behance.net/')">Behance</div>
-                <div class="bookmark-link" onclick="openLink('https://unsplash.com/')">Unsplash</div>
-            </div>
-        </div>
+        <div class="card">
+            <div class="card-title">
+                <div class="card-icon">🔗</div>
+                快速連結
+            </div>
+            <div class="link-grid">
+                <div class="quick-link" onclick="openLink('https://www.google.com.tw')">Google 搜尋</div>
+                <div class="quick-link" onclick="openLink('https://mail.google.com')">Gmail</div>
+                <div class="quick-link" onclick="openLink('https://drive.google.com')">Google Drive</div>
+                <div class="quick-link" onclick="openLink('https://translate.google.com')">Google 翻譯</div>
+                <div class="quick-link" onclick="openLink('https://www.youtube.com')">YouTube</div>
+                <div class="quick-link" onclick="openLink('https://maps.google.com.tw')">Google 地圖</div>
+            </div>
+        </div>
 
-        <div class="card">
-            <div class="card-title">
-                <div class="card-icon">🎬</div>
-                娛樂與生活
-            </div>
-            <div class="bookmark-section">
-                <div class="bookmark-link" onclick="openLink('https://www.sbs.com.au/ondemand/')">SBS On Demand</div>
-                <div class="bookmark-link" onclick="openLink('https://www.netflix.com/')">Netflix</div>
-                <div class="bookmark-link" onclick="openLink('https://www.tripadvisor.com.tw/')">TripAdvisor</div>
-                <div class="bookmark-link" onclick="openLink('https://www.books.com.tw/')">博客來</div>
-            </div>
-        </div>
-  </div> 
-  <div id="page-personal" class="page-content">
-      <div class="card">
-          <h2>個人 (建置中)</h2>
-          <p>此頁面暫時留空。你可以在這裡放你的個人資料或設定。</p>
-      </div>
-  </div>
+        <div class="card">
+            <div class="card-title">
+                <div class="card-icon">💻</div>
+                開發資源
+            </div>
+            <div class="bookmark-section">
+                <div class="bookmark-category">前端開發</div>
+                <div class="bookmark-link" onclick="openLink('https://developer.mozilla.org/')">MDN Web Docs</div>
+                <div class="bookmark-link" onclick="openLink('https://stackoverflow.com/')">Stack Overflow</div>
+                <div class="bookmark-link" onclick="openLink('https://codepen.io/')">CodePen</div>
+               
+                <div class="bookmark-category">設計靈感</div>
+                <div class="bookmark-link" onclick="openLink('https://dribbble.com/')">Dribbble</div>
+                <div class="bookmark-link" onclick="openLink('https://www.behance.net/')">Behance</div>
+                <div class="bookmark-link" onclick="openLink('https://unsplash.com/')">Unsplash</div>
+            </div>
+        </div>
 
-
-  <div id="page-news" class="page-content">
-      <div class="card">
-          <h2>新聞 (建置中)</h2>
-          <p>此頁面暫時留空。你可以在這裡建置更完整的新聞瀏覽功能。</p>
-      </div>
-  </div>
+        <div class="card">
+            <div class="card-title">
+                <div class="card-icon">🎬</div>
+                娛樂與生活
+            </div>
+            <div class="bookmark-section">
+                <div class="bookmark-link" onclick="openLink('https://www.sbs.com.au/ondemand/')">SBS On Demand</div>
+                <div class="bookmark-link" onclick="openLink('https://www.netflix.com/')">Netflix</div>
+                <div class="bookmark-link" onclick="openLink('https://www.tripadvisor.com.tw/')">TripAdvisor</div>
+                <div class="bookmark-link" onclick="openLink('https://www.books.com.tw/')">博客來</div>
+            </div>
+        </div>
+  </div> 
+  <div id="page-personal" class="page-content">
+      <div class="card">
+          <h2>個人 (建置中)</h2>
+          <p>此頁面暫時留空。你可以在這裡放你的個人資料或設定。</p>
+      </div>
+  </div>
 
 
-  <div id="page-map" class="page-content">
-        <div class="card">
-          <h2>地圖 (建置中)</h2>
-          <p>此頁面暫時留空。你可以在這裡建置更完整的地圖功能。</p>
-      </div>
-  </div>
+  <div id="page-news" class="page-content">
+      <div class="card">
+          <h2>新聞 (建置中)</h2>
+          <p>此頁面暫時留空。你可以在這裡建置更完整的新聞瀏覽功能。</p>
+      </div>
+  </div>
 
- 
-  <div id="page-work" class="page-content">
-      <div class="card">
-          <div class="card-title">
-              <div class="card-icon">🚀</div>
-              工作捷徑
-          </div>
-          <div class="shortcut-grid" id="workShortcutGrid">
-              </div>
-          <p style="text-align:center; font-size:12px; color:#58716b; margin-top:10px;">
-              提示：在捷徑上按一下滑鼠右鍵即可刪除。
-          </p>
-      </div>
-     
-      </div>
-  </div> 
 
+  <div id="page-map" class="page-content">
+        <div class="card">
+          <h2>地圖 (建置中)</h2>
+          <p>此頁面暫時留空。你可以在這裡建置更完整的地圖功能。</p>
+      </div>
+  </div>
+
+ 
+  <div id="page-work" class="page-content">
+      <div class="card">
+          <h2>工作 (建置中)</h2>
+          <p>此頁面暫時留空。你可以在這裡放你的待辦事項或工作相關連結。</p>
+      </div>
+  </div>
+
+</div> 
 <script>
 // [保留] 你的股票 API 金鑰 (Alpha Vantage)
 const ALPHA_VANTAGE_API_KEY = 'K09FCGY2Y90L99V0';
 
-// [新增] 全域變數，用於儲存捷徑資料
-let workShortcuts = [];
-
-// 日期
+// 日期 (不變)
 function updateDatetime() {
-  const now = new Date();
- 
-  // [已還原] 更新首頁的大日期
-  const targetMain = document.getElementById('datetime');
-  if (targetMain) {
-      targetMain.textContent = now.toLocaleDateString('zh-TW',{
-        year:'numeric', month:'long', day:'numeric',weekday:'long',hour:'2-digit',minute:'2-digit'
-      });
-  }
- 
-  // [已還原] 更新導覽列的小日期
-  const targetNav = document.getElementById('nav-datetime');
-  if (targetNav) {
-      targetNav.textContent = now.toLocaleDateString('zh-TW', {
-        month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'
-      });
-  }
+  const now = new Date();
+ 
+  // [已還原] 更新首頁的大日期
+  const targetMain = document.getElementById('datetime');
+  if (targetMain) {
+      targetMain.textContent = now.toLocaleDateString('zh-TW',{
+        year:'numeric', month:'long', day:'numeric',weekday:'long',hour:'2-digit',minute:'2-digit'
+      });
+  }
+ 
+  // [已還原] 更新導覽列的小日期
+  const targetNav = document.getElementById('nav-datetime');
+  if (targetNav) {
+      targetNav.textContent = now.toLocaleDateString('zh-TW', {
+        month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'
+      });
+  }
 }
 
-// 天氣呼叫API
+// 天氣呼叫API (不變)
 const weatherCodes = {
-  0:{emoji:'☀️',desc:'晴天'},1:{emoji:'🌤️',desc:'晴朗'},2:{emoji:'⛅',desc:'多雲'},3:{emoji:'☁️',desc:'陰天'},
-  45:{emoji:'🌫️',desc:'霧'},51:{emoji:'🌦️',desc:'小雨'},55:{emoji:'🌧️',desc:'大雨'},61:{emoji:'🌧️',desc:'小雨'},63:{emoji:'🌧️',desc:'中雨'},
-  65:{emoji:'⛈️',desc:'大雨'},80:{emoji:'🌦️',desc:'陣雨'},81:{emoji:'🌧️',desc:'陣雨'},82:{emoji:'⛈️',desc:'大陣雨'},95:{emoji:'⛈️',desc:'雷雨'},
-  99:{emoji:'⛈️',desc:'強雷雨'}
+  0:{emoji:'☀️',desc:'晴天'},1:{emoji:'🌤️',desc:'晴朗'},2:{emoji:'⛅',desc:'多雲'},3:{emoji:'☁️',desc:'陰天'},
+  45:{emoji:'🌫️',desc:'霧'},51:{emoji:'🌦️',desc:'小雨'},55:{emoji:'🌧️',desc:'大雨'},61:{emoji:'🌧️',desc:'小雨'},63:{emoji:'🌧️',desc:'中雨'},
+  65:{emoji:'⛈️',desc:'大雨'},80:{emoji:'🌦️',desc:'陣雨'},81:{emoji:'🌧️',desc:'陣雨'},82:{emoji:'⛈️',desc:'大陣雨'},95:{emoji:'⛈️',desc:'雷雨'},
+  99:{emoji:'⛈️',desc:'強雷雨'}
 };
+
+// 
+// ====================================================
+// ▼▼▼ 修改點 2 (JavaScript)：還原 updateWeather 函式 ▼▼▼
+// (移除了上次新增的 miniIconsContainer 相關邏輯)
+// ====================================================
+//
 function updateWeather(sourceSelectorId){
-  const selectorNav = document.getElementById('locationSelectorNav');
-  const selectorMain = document.getElementById('locationSelectorMain');
-  const targetRow = document.getElementById('weatherRow'); 
-  const targetNav = document.getElementById('nav-weather'); 
- 
-  if (!selectorNav || !selectorMain || !targetRow || !targetNav) return; 
- 
-  // [新功能] 同步兩個選擇器
-  let v;
-  if (sourceSelectorId === 'locationSelectorNav') {
-      v = selectorNav.value.split(',');
-      selectorMain.value = selectorNav.value; // 同步
-  } else {
-      v = selectorMain.value.split(',');
-      selectorNav.value = selectorMain.value; // 同步
-  }
+  const selectorNav = document.getElementById('locationSelectorNav');
+  const selectorMain = document.getElementById('locationSelectorMain');
+  const targetRow = document.getElementById('weatherRow'); 
+  const targetNav = document.getElementById('nav-weather'); 
+ 
+  if (!selectorNav || !selectorMain || !targetRow || !targetNav) return; 
+ 
+  // [新功能] 同步兩個選擇器 (不變)
+  let v;
+  if (sourceSelectorId === 'locationSelectorNav') {
+      v = selectorNav.value.split(',');
+      selectorMain.value = selectorNav.value; // 同步
+  } else {
+      v = selectorMain.value.split(',');
+      selectorNav.value = selectorMain.value; // 同步
+  }
 
-  targetRow.innerHTML = '<div class="weather-loading">載入天氣資料中...</div>';
-  targetNav.innerHTML = '...'; 
+  targetRow.innerHTML = '<div class="weather-loading">載入天氣資料中...</div>';
+  targetNav.innerHTML = '...'; 
 
-  fetch(`https://api.open-meteo.com/v1/forecast?latitude=${v[0]}&longitude=${v[1]}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia/Taipei&forecast_days=7`)
-  .then(r=>r.json()).then(d=>{
-   
-    // 1. [已還原] 填入 7 天天氣預報
-    let html='';
-    const wd=['週日','週一','週二','週三','週四','週五','週六'];
-    for(let i=0;i<7;i++){
-      const date= new Date (d.daily.time[i]);
-      const dayName = i===0 ?'今天':wd[date.getDay()];
-      const code = d.daily.weathercode[i];
-      const w = weatherCodes[code] || { emoji:'🌤️', desc:'多雲'};
-      const tMax = Math.round(d.daily.temperature_2m_max[i]);
-      const tMin = Math.round(d.daily.temperature_2m_min[i]);
-      const rainProb = d.daily.precipitation_probability_max[i] || 0;
-      // [修改] 調整 HTML 結構以符合縮小的 CSS
-      html+=`<div class="weather-day-h"><div class="weather-date-h">${dayName}</div><span class="weather-emoji-h">${w.emoji}</span><div class="weather-temp-h">${tMin}°-${tMax}°</div><div class="weather-rain-h">💧${rainProb}%</div><div class="weather-desc-h">${w.desc}</div></div>`;
-    }
-    targetRow.innerHTML = html;
-   
-    // 2. [已還原] 填入導覽列當前天氣
-    if (d.current_weather) {
-        const cw = d.current_weather;
-        const w_nav = weatherCodes[cw.weathercode] || { emoji:'🌤️', desc:'多雲'};
-        const tMax_nav = Math.round(d.daily.temperature_2m_max[0]);
-        const tMin_nav = Math.round(d.daily.temperature_2m_min[0]);
-        targetNav.innerHTML = `<span class="nav-weather-emoji">${w_nav.emoji}</span> ${Math.round(cw.temperature)}° <span style="font-weight:400;opacity:0.8;">(${tMin_nav}°-${tMax_nav}°)</span>`;
-    }
+  fetch(`https://api.open-meteo.com/v1/forecast?latitude=${v[0]}&longitude=${v[1]}&current_weather=true&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia/Taipei&forecast_days=7`)
+  .then(r=>r.json()).then(d=>{
+   
+    // 1. [已還原] 填入 7 天天氣預報
+    let html='';
+    const wd=['週日','週一','週二','週三','週四','週五','週六'];
+    
+    // [還原] 移除 miniIconsContainer 相關邏輯
 
-  }).catch(() => {
-    targetRow.innerHTML='<div class="weather-loading">天氣資料載入失敗</div>';
-    targetNav.innerHTML = '天氣失敗';
-  });
+    for(let i=0;i<7;i++){
+      const date= new Date (d.daily.time[i]);
+      const dayName = i===0 ?'今天':wd[date.getDay()];
+      const code = d.daily.weathercode[i];
+      const w = weatherCodes[code] || { emoji:'🌤️', desc:'多雲'};
+      const tMax = Math.round(d.daily.temperature_2m_max[i]);
+      const tMin = Math.round(d.daily.temperature_2m_min[i]);
+      const rainProb = d.daily.precipitation_probability_max[i] || 0;
+      
+      // [還原] 只保留你原始的 html 建立邏輯
+      html+=`<div class="weather-day-h"><div class="weather-date-h">${dayName}</div><span class="weather-emoji-h">${w.emoji}</span><div class="weather-temp-h">${tMin}° - ${tMax}°</div><div class="weather-rain-h">💧 ${rainProb}%</div><div class="weather-desc-h">${w.desc}</div></div>`;
+
+      // [還原] 移除 miniIcon 相關邏輯
+    }
+    targetRow.innerHTML = html; // [不變] 照常填入 (現在可見的) 區塊
+   
+    // 2. [已還原] 填入導覽列當前天氣 (不變)
+    if (d.current_weather) {
+        const cw = d.current_weather;
+        const w_nav = weatherCodes[cw.weathercode] || { emoji:'🌤️', desc:'多雲'};
+        const tMax_nav = Math.round(d.daily.temperature_2m_max[0]);
+        const tMin_nav = Math.round(d.daily.temperature_2m_min[0]);
+        targetNav.innerHTML = `<span class="nav-weather-emoji">${w_nav.emoji}</span> ${Math.round(cw.temperature)}° <span style="font-weight:400;opacity:0.8;">(${tMin_nav}°-${tMax_nav}°)</span>`;
+    }
+
+  }).catch(() => {
+    targetRow.innerHTML='<div class="weather-loading">天氣資料載入失敗</div>';
+    targetNav.innerHTML = '天氣失敗';
+  });
 }
+// ▲▲▲ JavaScript 修改結束 ▲▲▲
 
-// 搜尋 (完整保留你原本的程式碼)
+
+// 搜尋 (完整保留你原本的程式碼) (不變)
 document.getElementById('searchBtn').onclick = () => {
-  const val=document.getElementById('searchInput').value.trim();
-  if(!val) return;
-  if(val.includes('.') && !val.includes(' ')) {
-    window.open(val.startsWith('http') ? val : 'https://' + val, '_blank');
-  } else {
-    window.open('https://www.google.com/search?q=' + encodeURIComponent(val), '_blank');
-  }
+  const val=document.getElementById('searchInput').value.trim();
+  if(!val) return;
+  if(val.includes('.') && !val.includes(' ')) {
+    window.open(val.startsWith('http') ? val : 'https://' + val, '_blank');
+  } else {
+    window.open('https://www.google.com/search?q=' + encodeURIComponent(val), '_blank');
+  }
 };
 document.getElementById('searchInput').addEventListener('keypress', e =>{
-  if(e.key === 'Enter') document.getElementById('searchBtn').click();
+  if(e.key === 'Enter') document.getElementById('searchBtn').click();
 });
 
-// 地圖 (已修正)
+// 地圖 (完整保留你原本的程式碼) (不變)
 function searchGoogleMaps() {
-  const input = document.getElementById('mapSearchInput');
-  if (!input) return; 
-  const query = input.value.trim();
-  if (!query) return;
+  const input = document.getElementById('mapSearchInput');
+  if (!input) return; 
+  const query = input.value.trim();
+  if (!query) return;
 
-  const mapFrame = document.getElementById('mapFrame');
-  if (!mapFrame) return;
-  // [!!! 修正 !!!] 還原 newSrc 並修正為 https 和正確的樣板字串
-  const newSrc = `https://maps.google.com.tw/maps?q=${encodeURIComponent(query)}&t=&z=15&ie=UTF8&iwloc=&output=embed`; 
-  mapFrame.src = newSrc;
+  const mapFrame = document.getElementById('mapFrame');
+  if (!mapFrame) return;
+  const newSrc = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+  mapFrame.src = newSrc;
 }
 
-// 新聞 (已修正 CORS)
+// 新聞 (已修正 CORS) (不變)
 const RSS_FEEDS = {
-    tw: [
-        'https://news.ltn.com.tw/rss/all.xml',       // 自由時報 (首選)
-        'https://www.cna.com.tw/rsspolitics.xml',  // 中央通訊社 (備援)
-    ],
-    jp: [
-        'https://www3.nhk.or.jp/rss/news/cat0.xml',    // NHK (首選)
-        'https://www.asahi.com/rss/asahi/newsheadlines.rdf' // 朝日新聞 (備援)
-    ],
-    intl: [
-        'http://feeds.bbci.co.uk/news/world/rss.xml' // BBC News
-    ]
+    tw: [
+        'https://news.ltn.com.tw/rss/all.xml',       // 自由時報 (首選)
+        'https://www.cna.com.tw/rsspolitics.xml',  // 中央通訊社 (備援)
+    ],
+    jp: [
+        'https://www3.nhk.or.jp/rss/news/cat0.xml',    // NHK (首選)
+        'https://www.asahi.com/rss/asahi/newsheadlines.rdf' // 朝日新聞 (備援)
+    ],
+    intl: [
+        'http://feeds.bbci.co.uk/news/world/rss.xml' // BBC News
+    ]
 };
-let currentNewsTab = 'tw'; 
+let currentNewsTab = 'tw'; 
 function switchNewsTab(tab){
-  currentNewsTab = tab;
-  document.querySelectorAll('#page-home .news-tab').forEach(btn => btn.classList.remove('active'));
-  document.getElementById('tab-'+tab).classList.add('active');
-  loadNews(); 
+  currentNewsTab = tab;
+  document.querySelectorAll('#page-home .news-tab').forEach(btn => btn.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  loadNews(); 
 }
 function cleanCData(str) {
-    if (str.startsWith('<![CDATA[') && str.endsWith(']]>')) {
-        return str.substring(9, str.length - 3);
-    }
-    return str.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
+    if (str.startsWith('<![CDATA[') && str.endsWith(']]>')) {
+        return str.substring(9, str.length - 3);
+    }
+    return str.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
 }
 function parseRSS(xmlText) {
-    const articles = [];
-    const maxArticles = 5;
-    let items = [...xmlText.matchAll(/<item>([\s\S]*?)<\/item>/g)];
-    if (items.length === 0) {
-         items.push(...xmlText.matchAll(/<item [^>]+>([\s\S]*?)<\/item>/g));
-    }
-    if (items.length === 0) {
-         items.push(...xmlText.matchAll(/<item[^>]+rdf:about="([^"]+)"[\s\S]*?<title>([\s\S]*?)<\/title>[\s\S]*?<\/item>/g));
-         for (let i = 0; i < items.length && i < maxArticles; i++) {
-             articles.push({
-                 title: cleanCData(items[i][2]),
-                 url: items[i][1],
-                 source: { name: '朝日新聞' }
-             });
-         }
-         return articles;
-    }
-    for (let i = 0; i < items.length && i < maxArticles; i++) {
-        const itemContent = items[i][1];
-        const titleMatch = itemContent.match(/<title>([\s\S]*?)<\/title>/);
-        const title = titleMatch ? cleanCData(titleMatch[1]) : '無標題';
-        const linkMatch = itemContent.match(/<link>([\s\S]*?)<\/link>/);
-        const link = linkMatch ? (linkMatch[1] || '#') : '#';
-        let sourceName = null;
-        const creatorMatch = itemContent.match(/<dc:creator>([\s\S]*?)<\/dc:creator>/);
-        sourceName = creatorMatch ? cleanCData(creatorMatch[1]) : 'N/A';
-        articles.push({ title: title, url: link.trim(), source: { name: sourceName } });
-    }
-    return articles;
+    const articles = [];
+    const maxArticles = 5;
+    let items = [...xmlText.matchAll(/<item>([\s\S]*?)<\/item>/g)];
+    if (items.length === 0) {
+         items.push(...xmlText.matchAll(/<item [^>]+>([\s\S]*?)<\/item>/g));
+    }
+    if (items.length === 0) {
+         items.push(...xmlText.matchAll(/<item[^>]+rdf:about="([^"]+)"[\s\S]*?<title>([\s\S]*?)<\/title>[\s\S]*?<\/item>/g));
+         for (let i = 0; i < items.length && i < maxArticles; i++) {
+             articles.push({
+                 title: cleanCData(items[i][2]),
+                 url: items[i][1],
+                 source: { name: '朝日新聞' }
+             });
+         }
+         return articles;
+    }
+    for (let i = 0; i < items.length && i < maxArticles; i++) {
+        const itemContent = items[i][1];
+        const titleMatch = itemContent.match(/<title>([\s\S]*?)<\/title>/);
+        const title = titleMatch ? cleanCData(titleMatch[1]) : '無標題';
+        const linkMatch = itemContent.match(/<link>([\s\S]*?)<\/link>/);
+        const link = linkMatch ? (linkMatch[1] || '#') : '#';
+        let sourceName = null;
+        const creatorMatch = itemContent.match(/<dc:creator>([\s\S]*?)<\/dc:creator>/);
+        sourceName = creatorMatch ? cleanCData(creatorMatch[1]) : 'N/A';
+        articles.push({ title: title, url: link.trim(), source: { name: sourceName } });
+    }
+    return articles;
 }
 async function loadNews(){
-  const list = document.getElementById('newsList');
-  if (!list) return; 
- 
-  list.innerHTML = '<li class="news-loading">載入新聞中…</li>';
-  const refreshBtn = document.getElementById('refreshNewsBtn');
-  if (refreshBtn) refreshBtn.disabled = true;
+  const list = document.getElementById('newsList');
+  if (!list) return; 
+ 
+  list.innerHTML = '<li class="news-loading">載入新聞中…</li>';
+  const refreshBtn = document.getElementById('refreshNewsBtn');
+  if (refreshBtn) refreshBtn.disabled = true;
 
-  const urlsToTry = RSS_FEEDS[currentNewsTab] || RSS_FEEDS['tw'];
-  let success = false;
+  const urlsToTry = RSS_FEEDS[currentNewsTab] || RSS_FEEDS['tw'];
+  let success = false;
 
-  for (const rssUrl of urlsToTry) {
-      try {
-          // [!!! 修正 !!!] 還原 proxyUrl
-          const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(rssUrl)}`;
-         
-          const res = await fetch(proxyUrl);
-          if (!res.ok) throw new Error(`代理伺服器錯誤 (狀態: ${res.status})`);
-         
-          // [!!! 修正 !!!] 還原 xmlText
-          const xmlText = await res.text(); 
-         
-          const articles = parseRSS(xmlText);
-         
-          if (articles && articles.length > 0) {
-              list.innerHTML = ''; 
-              articles.forEach(article => {
-                  let sourceName = article.source.name;
-                  if (sourceName === 'N/A' || !sourceName) {
-                      if (rssUrl.includes('cna.com')) sourceName = '中央通訊社';
-                      else if (rssUrl.includes('ltn.com')) sourceName = '自由時報';
-                      else if (rssUrl.includes('udn.com')) sourceName = '聯合新聞網';
-                      else if (rssUrl.includes('nhk.or.jp')) sourceName = 'NHK';
-                      else if (rssUrl.includes('bbci.co.uk')) sourceName = 'BBC News';
-                      else sourceName = 'RSS 來源';
-                  }
-                  list.insertAdjacentHTML('beforeend', `
-                      <li class="news-item" onclick="window.open('${article.url}','_blank')">
-                          <div class="news-item-title">${article.title || '無標題'}</div>
-                          <div class="news-item-meta">
-                              <span>${sourceName}</span>
-                          </div>
-                      </li>`);
-              });
-              success = true;
-              break; 
-          } else {
-              throw new Error('RSS 內容為空或無法解析');
-          }
-      } catch(e) {
-          console.warn(`RSS 来源 ${rssUrl} 失敗: ${e.message}`);
-      }
-  }
-  if (!success) {
-      list.innerHTML = `<li class="news-loading">新聞載入失敗: 所有備援來源均嘗試失敗。</li>`;
-  }
-  if (refreshBtn) refreshBtn.disabled = false;
+  for (const rssUrl of urlsToTry) {
+      try {
+          // [修改] 更換為 allorigins 代理
+          const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
+         
+          const res = await fetch(proxyUrl);
+          if (!res.ok) throw new Error(`代理伺服器錯誤 (狀態: ${res.status})`);
+         
+          const data = await res.json(); // allorigins 回傳 JSON
+          const xmlText = data.contents;  // 實際的 XML/RSS 內容
+         
+          const articles = parseRSS(xmlText);
+         
+          if (articles && articles.length > 0) {
+              list.innerHTML = ''; 
+              articles.forEach(article => {
+                  let sourceName = article.source.name;
+                  if (sourceName === 'N/A' || !sourceName) {
+                      if (rssUrl.includes('cna.com')) sourceName = '中央通訊社';
+                      else if (rssUrl.includes('ltn.com')) sourceName = '自由時報';
+                      else if (rssUrl.includes('udn.com')) sourceName = '聯合新聞網';
+                      else if (rssUrl.includes('nhk.or.jp')) sourceName = 'NHK';
+                      else if (rssUrl.includes('bbci.co.uk')) sourceName = 'BBC News';
+                      else sourceName = 'RSS 來源';
+                  }
+                  list.insertAdjacentHTML('beforeend', `
+                      <li class="news-item" onclick="window.open('${article.url}','_blank')">
+                          <div class="news-item-title">${article.title || '無標題'}</div>
+                          <div class="news-item-meta">
+                              <span>${sourceName}</span>
+                          </div>
+                      </li>`);
+              });
+              success = true;
+              break; 
+          } else {
+              throw new Error('RSS 內容為空或無法解析');
+          }
+      } catch(e) {
+          console.warn(`RSS 來源 ${rssUrl} 失敗: ${e.message}`);
+      }
+  }
+  if (!success) {
+      list.innerHTML = `<li class="news-loading">新聞載入失敗: 所有備援來源均嘗試失敗。</li>`;
+  }
+  if (refreshBtn) refreshBtn.disabled = false;
 }
 
-// 股票區 (已修正 CORS)
+// 股票區 (已修正 CORS) (不變)
 const stockWatchlist = {
-  tw: ['2330','2317','2454','2603','0050'],
-  us: ['AAPL','GOOGL','TSLA','NVDA','MSFT']
+  tw: ['2330','2317','2454','2603','0050'],
+  us: ['AAPL','GOOGL','TSLA','NVDA','MSFT']
 };
 let stockCurrentMarket = 'tw';
 function switchStockMarket(market){
-  stockCurrentMarket=market;
-  document.querySelectorAll('.stock-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById('stockTab_' + market).classList.add('active');
-  loadStocks();
+  stockCurrentMarket=market;
+  document.querySelectorAll('.stock-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('stockTab_' + market).classList.add('active');
+  loadStocks();
 }
 async function loadStocks(){
-  const container = document.getElementById('stocksList');
-  if (!container) return; 
- 
-  const watchlist = stockWatchlist[stockCurrentMarket];
-  container.innerHTML = '<div class="stocks-loading">載入股票資料中…</div>';
-  if(stockCurrentMarket==='tw'){
-    container.innerHTML = '';
-    for(const symbol of watchlist){
-      try{
-        // [!!! 修正 !!!] 還原 twseUrl
-        const twseUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${symbol}.tw&json=1&delay=0`;
-        const proxyUrl = `https://corsproxy.io/?${encodeURIComponent(twseUrl)}`;
-       
-        const res = await fetch(proxyUrl);
-        // [!!! 修正 !!!] 還原 textData
-        const textData = await res.text();
-        const data = JSON.parse(textData); 
-       
-        if(data.msgArray && data.msgArray.length > 0) {
-          const st = data.msgArray[0];
-          const price = parseFloat(st.z) || 0;
-          const prevClose = parseFloat(st.y) || price;
-          const change = price - prevClose;
-          const changePercent = prevClose!==0 ? (change/prevClose)*100 : 0;
-          const c = change>0 ? 'stock-up' : change<0 ? 'stock-down' : 'stock-neutral';
-          container.insertAdjacentHTML('beforeend', `
-            <div class="stock-item">
-              <div class="stock-info">
-                <div class="stock-symbol">${symbol}</div>
-                <div class="stock-name">${st.n||symbol}</div>
-              </div>
-              <div class="stock-price-info">
-                <div class="stock-price ${c}">$${price.toFixed(2)}</div>
-                <div class="stock-change ${c}">${change>0?'+':''}${change.toFixed(2)} (${changePercent>0?'+':''}${changePercent.toFixed(2)}%)</div>
-              </div>
-            </div>`);
-        } else {
-          container.insertAdjacentHTML('beforeend', `<div class="stock-item">無法取得 ${symbol} 資訊</div>`);
-        }
-      }catch(e){
-        console.error(`載入 ${symbol} 失敗:`, e);
-        container.insertAdjacentHTML('beforeend', `<div class="stock-item">載入 ${symbol} 失敗</div>`);
-      }
-    }
-  } else {
-    // (Alpha Vantage (美股) 不需要代理，保持原樣)
-    container.innerHTML = '';
-    for(const symbol of watchlist){
-      try{
-        const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`;
-        const response = await fetch(url);
-        const data = await response.json();
-        if(data['Global Quote']){
-          const q = data['Global Quote'];
-          const price = parseFloat(q["05. price"]) || 0;
-          const change = parseFloat(q["09. change"]) || 0;
-          const changePercent = parseFloat(q["10. change percent"]?.replace('%','')) || 0;
-          const c = change > 0 ? 'stock-up' : change < 0 ? 'stock-down' : 'stock-neutral';
-          container.insertAdjacentHTML('beforeend', `
-            <div class="stock-item">
-              <div class="stock-info">
-                <div class="stock-symbol">${symbol}</div>
-                <div class="stock-name">${q["01. symbol"]||symbol}</div>
-              </div>
-              <div class="stock-price-info">
-                <div class="stock-price ${c}">$${price.toFixed(2)}</div>
-indented               <div class="stock-change ${c}">${change>0?'+':''}${change.toFixed(2)} (${changePercent>0?'+':''}${changePercent.toFixed(2)}%)</div>
-              </div>
-            </div>`);
-        } else {
-          container.insertAdjacentHTML('beforeend', `<div class="stock-item">無法取得 ${symbol} 資訊 (API 限制)</div>`);
-        }
-      }catch(e){
-        container.insertAdjacentHTML('beforeend', `<div class="stock-item">載入 ${symbol} 失敗</div>`);
-      }
-      await delay(1400); 
-    }
-  }
+  const container = document.getElementById('stocksList');
+  if (!container) return; 
+ 
+  const watchlist = stockWatchlist[stockCurrentMarket];
+  container.innerHTML = '<div class="stocks-loading">載入股票資料中…</div>';
+  if(stockCurrentMarket==='tw'){
+    container.innerHTML = '';
+    for(const symbol of watchlist){
+      try{
+        // [修改] 更換為 allorigins 代理
+        const twseUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${symbol}.tw&json=1&delay=0`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(twseUrl)}`;
+       
+        const res = await fetch(proxyUrl);
+        const jsonData = await res.json(); // allorigins 回傳 JSON
+        const data = JSON.parse(jsonData.contents); // 取得內部的 JSON
+       
+        if(data.msgArray && data.msgArray.length > 0) {
+          const st = data.msgArray[0];
+          const price = parseFloat(st.z) || 0;
+          const prevClose = parseFloat(st.y) || price;
+          const change = price - prevClose;
+          const changePercent = prevClose!==0 ? (change/prevClose)*100 : 0;
+          const c = change>0 ? 'stock-up' : change<0 ? 'stock-down' : 'stock-neutral';
+          container.insertAdjacentHTML('beforeend', `
+            <div class="stock-item">
+              <div class="stock-info">
+                <div class="stock-symbol">${symbol}</div>
+                <div class="stock-name">${st.n||symbol}</div>
+              </div>
+              <div class="stock-price-info">
+                <div class="stock-price ${c}">$${price.toFixed(2)}</div>
+                <div class="stock-change ${c}">${change>0?'+':''}${change.toFixed(2)} (${changePercent>0?'+':''}${changePercent.toFixed(2)}%)</div>
+              </div>
+            </div>`);
+        } else {
+          container.insertAdjacentHTML('beforeend', `<div class="stock-item">無法取得 ${symbol} 資訊</div>`);
+        }
+      }catch(e){
+        console.error(`載入 ${symbol} 失敗:`, e);
+        container.insertAdjacentHTML('beforeend', `<div class="stock-item">載入 ${symbol} 失敗</div>`);
+      }
+    }
+  } else {
+    // (Alpha Vantage (美股) 不需要代理，保持原樣)
+    container.innerHTML = '';
+    for(const symbol of watchlist){
+      try{
+        const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${ALPHA_VANTAGE_API_KEY}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        if(data['Global Quote']){
+          const q = data['Global Quote'];
+          const price = parseFloat(q["05. price"]) || 0;
+          const change = parseFloat(q["09. change"]) || 0;
+          const changePercent = parseFloat(q["10. change percent"]?.replace('%','')) || 0;
+          const c = change > 0 ? 'stock-up' : change < 0 ? 'stock-down' : 'stock-neutral';
+          container.insertAdjacentHTML('beforeend', `
+            <div class="stock-item">
+              <div class="stock-info">
+                <div class="stock-symbol">${symbol}</div>
+                <div class="stock-name">${q["01. symbol"]||symbol}</div>
+              </div>
+              <div class="stock-price-info">
+                <div class="stock-price ${c}">$${price.toFixed(2)}</div>
+                <div class="stock-change ${c}">${change>0?'+':''}${change.toFixed(2)} (${changePercent>0?'+':''}${changePercent.toFixed(2)}%)</div>
+              </div>
+            </div>`);
+        } else {
+          container.insertAdjacentHTML('beforeend', `<div class="stock-item">無法取得 ${symbol} 資訊 (API 限制)</div>`);
+        }
+      }catch(e){
+        container.insertAdjacentHTML('beforeend', `<div class="stock-item">載入 ${symbol} 失敗</div>`);
+      }
+      await delay(1400); 
+    }
+  }
 }
-function delay(ms){return new Promise(r=>setTimeout(r,ms));} 
-
-// [已修正] 移除 'stockAddBtn.onclick' 內的 'twseUrlrl' 錯字 (這個函式內根本不需要這個變數)
+function delay(ms){return new Promise(r=>setTimeout(r,ms));} 
 document.getElementById('stockAddBtn').onclick = () => {
-  const input=document.getElementById('stockInput');
-  let symbol=input.value.trim().toUpperCase();
-  if(!symbol) return alert('請輸入股票代碼');
-  if (stockCurrentMarket === 'tw') {
-      const twSymbol = symbol.match(/\d+/);
-      if (twSymbol) { symbol = twSymbol[0]; }
-  }
-  const list=stockWatchlist[stockCurrentMarket];
-  if(list.includes(symbol)) return alert('股票已在清單');
-  if(list.length >= 7) return alert('最多只能追蹤7支股票');
-  list.push(symbol);
-  input.value = '';
-  loadStocks();
+  const input=document.getElementById('stockInput');
+  let symbol=input.value.trim().toUpperCase();
+  if(!symbol) return alert('請輸入股票代碼');
+  if (stockCurrentMarket === 'tw') {
+      const twSymbol = symbol.match(/\d+/);
+      if (twSymbol) { symbol = twSymbol[0]; }
+  }
+  const list=stockWatchlist[stockCurrentMarket];
+  if(list.includes(symbol)) return alert('股票已在清單');
+  if(list.length >= 7) return alert('最多只能追蹤7支股票');
+  list.push(symbol);
+  input.value = '';
+  loadStocks();
 };
 
-// [保留] 你的 openLink 函式
+// [保留] 你的 openLink 函式 (不變)
 function openLink(url) {
-    window.open(url, '_blank');
+    window.open(url, '_blank');
 }
 
-</script>
 
-<script>
-// --- [新功能] 工作捷徑 ---
-const WORK_SHORTCUT_KEY = 'myportal_workShortcuts_v1'; // 用於 localStorage 的 Key
-
-/**
- * 從 localStorage 載入捷徑資料，如果沒有就用預設值
- */
-function loadWorkShortcuts() {
-    const savedShortcuts = localStorage.getItem(WORK_SHORTCUT_KEY);
-    if (savedShortcuts) {
-        workShortcuts = JSON.parse(savedShortcuts);
-    } else {
-        // 預設值 (你可以自行修改)
-        workShortcuts = [
-            { name: 'Google', url: 'https://google.com' },
-            { name: 'GitHub', url: 'https://github.com' },
-            { name: 'Cloudflare', url: 'https://dash.cloudflare.com/' }
-        ];
-    }
-    renderWorkShortcuts();
-}
-
-/**
- * 將捷徑資料渲染到 #workShortcutGrid 容器中
- */
-function renderWorkShortcuts() {
-    const grid = document.getElementById('workShortcutGrid');
-    if (!grid) return; // 如果找不到容器，就中斷
-    grid.innerHTML = ''; // 清空現有內容
-
-    // 1. 渲染儲存的捷徑
-    workShortcuts.forEach((shortcut, index) => {
-        // 我們使用 Google 的服務來自動抓取網站的 favicon
-        const faviconUrl = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${shortcut.url}&size=64`;
-       
-        // 如果圖示載入失敗，顯示名稱的第一個字
-        const fallbackInitial = (shortcut.name[0] || '?').toUpperCase();
-
-        const itemHtml = `
-            <a class="shortcut-item" href="${shortcut.url}" target="_blank" 
-               title="${shortcut.name}\n(右鍵點擊可刪除)"
-               oncontextmenu="event.preventDefault(); removeWorkShortcut(${index});">
-               
-                <div class="shortcut-icon">
-                    <img 
-                        src="${faviconUrl}" 
-                        alt="${shortcut.name} icon"
-                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
-indented               >
-                    <div class="fallback-initial" style="display:none;">${fallbackInitial}</div>
-                </div>
-                <div class="shortcut-name">${shortcut.name}</div>
-            </a>
-        `;
-        grid.insertAdjacentHTML('beforeend', itemHtml);
-    });
-
-    // 2. 渲染 "新增" 按鈕
-    const addButtonHtml = `
-        <div class="shortcut-add-btn" onclick="addWorkShortcut()">
-            <div class="shortcut-icon">
-                <div class="shortcut-icon-add">+</div>
-            </div>
-            <div class="shortcut-name">新增捷徑</div>
-        </div>
-    `;
-    grid.insertAdjacentHTML('beforeend', addButtonHtml);
-}
-
-/**
- * 將目前的捷徑陣列儲存到 localStorage
- */
-function saveWorkShortcuts() {
-    localStorage.setItem(WORK_SHORTCUT_KEY, JSON.stringify(workShortcuts));
-}
-
-/**
- * 彈出視窗以新增捷徑
- */
-function addWorkShortcut() {
-    const name = prompt("請輸入捷徑名稱：");
-    if (!name) return; // 使用者按下取消
-
-    let url = prompt("請輸入網站 URL：", "https://");
-    if (!url) return; // 使用者按下取消
-   
-    // 簡單的 URL 修正，確保有 http:// 或 https://
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-        url = 'https://' + url;
-    }
-
-    workShortcuts.push({ name: name, url: url });
-    saveWorkShortcuts();
-    renderWorkShortcuts(); // 重新渲染畫面
-}
-
-/**
- * 移除指定 index 的捷徑
- */
-function removeWorkShortcut(index) {
-    if (!workShortcuts[index]) return; // 安全檢查
-   
-    const name = workShortcuts[index].name;
-    if (confirm(`您確定要刪除 "${name}" 這個捷徑嗎？`)) {
-        workShortcuts.splice(index, 1); // 從陣列中移除
-        saveWorkShortcuts();
-        renderWorkShortcuts(); // 重新渲染畫面
-    }
-}
-// --- [新功能] 工作捷徑 結束 ---
-</script>
-
-
-<script>
-// [新功能] 分頁切換的 JS 邏輯
+// [新功能] 分頁切換的 JS 邏輯 (不變)
 function initTabNavigation() {
-    const tabs = document.querySelectorAll('.portal-tab-btn');
-    const pages = document.querySelectorAll('.page-content');
+    const tabs = document.querySelectorAll('.portal-tab-btn');
+    const pages = document.querySelectorAll('.page-content');
 
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            const pageName = tab.dataset.page; // e.g., "home"
-           
-            // 1. 更新按鈕狀態
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-           
-            // 2. 切換頁面內容
-            pages.forEach(page => {
-                if (page.id === 'page-' + pageName) {
-                    // [!!! 修正 !!!] 還原 page.classList.add
-                    page.classList.add('active'); 
-                } else {
-                    // [!!! 修正 !!!] 還原 page.classList.remove
-                    page.classList.remove('active'); 
-                }
-            });
-           
-            // 3. [修改] 當切換回 "首頁" 時，才執行功能
-s           if (pageName === 'home') {
-                 // 檢查首頁功能是否需要重新載入
-                 const weatherRow = document.getElementById('weatherRow');
-                 if (!weatherRow || !weatherRow.innerHTML.includes('weather-day-h')) {
-                   updateWeather('locationSelectorNav'); // [修改] 觸發
-                 }
-                 const stockList = document.getElementById('stocksList');
-                 if (!stockList || !stockList.innerHTML.includes('stock-item')) {
-                   loadStocks();
-                 }
-                 const newsList = document.getElementById('newsList');
-                 if (!newsList || !newsList.innerHTML.includes('news-item')) {
-                   loadNews();
-                 }
-            }
-            // [新增] 當切換到 "工作" 頁時，載入捷徑
-            else if (pageName === 'work') {
-                 // 檢查是否已載入 (避免重複載入)
-s                 const grid = document.getElementById('workShortcutGrid');
-                 if (grid && grid.innerHTML.trim() === '') {
-                    loadWorkShortcuts();
-                 }
-            }
-    s   });
-    });
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            const pageName = tab.dataset.page; // e.g., "home"
+           
+            // 1. 更新按鈕狀態
+            tabs.forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+           
+            // 2. 切換頁面內容
+            pages.forEach(page => {
+                if (page.id === 'page-' + pageName) {
+                    page.style.display = 'block';
+                } else {
+                    page.style.display = 'none';
+                }
+            });
+           
+            // 3. [修改] 當切換回 "首頁" 時，才執行功能
+            if (pageName === 'home') {
+                 // 檢查首頁功能是否需要重新載入
+                 const weatherRow = document.getElementById('weatherRow');
+                 if (!weatherRow || !weatherRow.innerHTML.includes('weather-day-h')) {
+                   updateWeather('locationSelectorNav'); // [修改] 觸發
+                 }
+                 const stockList = document.getElementById('stocksList');
+                 if (!stockList || !stockList.innerHTML.includes('stock-item')) {
+                   loadStocks();
+                 }
+                 const newsList = document.getElementById('newsList');
+                 if (!newsList || !newsList.innerHTML.includes('news-item')) {
+                   loadNews();
+                 }
+            }
+        });
+    });
 }
 
 
-// --- 程式碼開始執行 ---
+// --- 程式碼開始執行 --- (不變)
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. 綁定分頁切換
-    initTabNavigation();
-   
-    // 2. 初始載入 "首頁" 的所有功能
-    updateDatetime();
-    updateWeather('locationSelectorNav'); // [修改] 初始載入
-    loadStocks();
-    loadNews();
-   
-    // [註] loadWorkShortcuts() 不在這裡呼叫，
-    // 改為在 initTabNavigation() 中點擊分頁時才呼叫
-   
-    // 3. 綁定首頁上的所有按鈕
-    // (天氣/導覽列) [修改] 綁定兩個選擇器
-D   document.getElementById('locationSelectorNav').onchange = () => updateWeather('locationSelectorNav');
-    document.getElementById('locationSelectorMain').onchange = () => updateWeather('locationSelectorMain');
-   
-    // (搜尋)
-    document.getElementById('searchBtn').onclick = () => {
-      const val=document.getElementById('searchInput').value.trim();
-A     if(!val) return;
-      if(val.includes('.') && !val.includes(' ')) {
-        window.open(val.startsWith('http') ? val : 'https://' + val, '_blank');
-      } else {
-        window.open('https://www.google.com/search?q=' + encodeURIComponent(val), '_blank');
-      }
-    };
-    document.getElementById('searchInput').addEventListener('keypress', e =>{
-      if(e.key === 'Enter') document.getElementById('searchBtn').click();
-    });
-    // (新聞)
-    document.getElementById('tab-tw').onclick = () => switchNewsTab('tw');
-    document.getElementById('tab-jp').onclick = () => switchNewsTab('jp');
-    document.getElementById('tab-intl').onclick = () => switchNewsTab('intl');
-    document.getElementById('refreshNewsBtn').onclick = loadNews;
-    // (股票)
-    document.getElementById('stockTab_tw').onclick = () => switchStockMarket('tw');
-style   document.getElementById('stockTab_us').onclick = () => switchStockMarket('us');
-    
-    // [已修正] 移除 'stockAddBtn.onclick' 內的 'twseUrlrl' 錯字 (這個函式內根本不需要這個變數)
-s   document.getElementById('stockAddBtn').onclick = () => {
-      const input=document.getElementById('stockInput');
-      let symbol=input.value.trim().toUpperCase();
-      if(!symbol) return alert('請輸入股票代碼');
-      if (stockCurrentMarket === 'tw') {
-          const twSymbol = symbol.match(/\d+/);
-          if (twSymbol) { symbol = twSymbol[0]; }
-      }
-      const list=stockWatchlist[stockCurrentMarket];
-      if(list.includes(symbol)) return alert('股票已在清單');
-      if(list.length >= 7) return alert('最多只能追蹤7支股票');
-      list.push(symbol);
-      input.value = '';
-      loadStocks();
-    };
-    // (地圖)
-    document.getElementById('mapSearchBtn').onclick = searchGoogleMaps;
-    document.getElementById('mapSearchInput').addEventListener('keypress', e => {
-      if (e.key === 'Enter') searchGoogleMaps();
-    });
+    // 1. 綁定分頁切換
+    initTabNavigation();
+   
+    // 2. 初始載入 "首頁" 的所有功能
+    updateDatetime();
+    updateWeather('locationSelectorNav'); // [修改] 初始載入
+    loadStocks();
+    loadNews();
+   
+    // 3. 綁定首頁上的所有按鈕
+    // (天氣/導覽列) [修改] 綁定兩個選擇器
+    document.getElementById('locationSelectorNav').onchange = () => updateWeather('locationSelectorNav');
+    document.getElementById('locationSelectorMain').onchange = () => updateWeather('locationSelectorMain');
+   
+    // (搜尋)
+    document.getElementById('searchBtn').onclick = () => {
+      const val=document.getElementById('searchInput').value.trim();
+      if(!val) return;
+      if(val.includes('.') && !val.includes(' ')) {
+        window.open(val.startsWith('http') ? val : 'https://' + val, '_blank');
+      } else {
+        window.open('https://www.google.com/search?q=' + encodeURIComponent(val), '_blank');
+      }
+    };
+    document.getElementById('searchInput').addEventListener('keypress', e =>{
+      if(e.key === 'Enter') document.getElementById('searchBtn').click();
+    });
+    // (新聞)
+    document.getElementById('tab-tw').onclick = () => switchNewsTab('tw');
+    document.getElementById('tab-jp').onclick = () => switchNewsTab('jp');
+    document.getElementById('tab-intl').onclick = () => switchNewsTab('intl');
+    document.getElementById('refreshNewsBtn').onclick = loadNews;
+    // (股票)
+    document.getElementById('stockTab_tw').onclick = () => switchStockMarket('tw');
+    document.getElementById('stockTab_us').onclick = () => switchStockMarket('us');
+    document.getElementById('stockAddBtn').onclick = () => {
+      const input=document.getElementById('stockInput');
+      let symbol=input.value.trim().toUpperCase();
+      if(!symbol) return alert('請輸入股票代碼');
+      if (stockCurrentMarket === 'tw') {
+          const twSymbol = symbol.match(/\d+/);
+          if (twSymbol) { symbol = twSymbol[0]; }
+      }
+      const list=stockWatchlist[stockCurrentMarket];
+      if(list.includes(symbol)) return alert('股票已在清單');
+      if(list.length >= 7) return alert('最多只能追蹤7支股票');
+      list.push(symbol);
+      input.value = '';
+      loadStocks();
+    };
+    // (地圖)
+    document.getElementById('mapSearchBtn').onclick = searchGoogleMaps;
+    document.getElementById('mapSearchInput').addEventListener('keypress', e => {
+      if (e.key === 'Enter') searchGoogleMaps();
+    });
 });
 </script>
 </body>
