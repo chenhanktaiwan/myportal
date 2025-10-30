@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>個人入口網站 - [已修正 RSS] + TWSE MCP & Alpha Vantage</title>
+<title>個人入口網站 - [已修正 RSS] + 地圖 + TWSE & Alpha Vantage</title>
 <style>
-  /* 你的 CSS 樣式 (完整保留，未做任何修改) */
+  /* 你的 CSS 樣式 (完整保留) */
   * {margin:0;padding:0;box-sizing:border-box;}
   body {
     font-family:'Microsoft JhengHei','PingFang TC',sans-serif;
@@ -423,6 +423,36 @@
     cursor: pointer;
   }
   .bookmark-link:hover { color: #7ba8a3; }
+
+  /* --- [新功能] Google 地圖 CSS --- */
+  .map-card-full {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 8px 32px #a6b7b68e;
+    padding: 28px 38px;
+    margin-top: 32px; /* 與上方 info-section 的間距 */
+  }
+  .map-card-full .section-header {
+    gap: 20px; /* 標題和搜尋框的間距 */
+  }
+  .map-search-box {
+    display: flex;
+    flex: 1; /* 自動填滿剩餘空間 */
+    gap: 10px;
+    min-width: 250px; /* 確保在小螢幕不會太窄 */
+    max-width: 600px; /* 限制最大寬度 */
+  }
+  .map-content {
+    margin-top: 20px;
+  }
+  .map-content iframe {
+    border-radius: 12px;
+    border: 2px solid #cee2df; /* 配合主題的邊框 */
+    width: 100%;
+    height: 500px;
+  }
+  /* --- [新功能] CSS 結束 --- */
+
 </style>
 </head>
 <body>
@@ -483,8 +513,24 @@
         <div class="stocks-loading">載入股票資料中...</div>
       </div>
     </section>
+  </div> <div class="map-card-full">
+      <div class="section-header">
+          <div class="section-title">
+              <div class="section-icon">🗺️</div>
+              Google 地圖
+          </div>
+          <div class="map-search-box">
+              <input id="mapSearchInput" class="search-input" placeholder="搜尋地點或地址...">
+              <button id="mapSearchBtn" class="search-btn">搜尋</button>
+          </div>
+      </div>
+      <div class="map-content">
+          <iframe id="mapFrame"
+              src="https://maps.google.com/maps?q=台北101&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
+          </iframe>
+      </div>
   </div>
-
   <div class="main-content">
       <div class="card">
           <div class="card-title">
@@ -585,10 +631,7 @@
               <div class="bookmark-link" onclick="openLink('https://www.books.com.tw/')">博客來</div>
           </div>
       </div>
-  </div>
-</div>
-
-<script>
+  </div> </div> <script>
 // [保留] 你的股票 API 金鑰 (Alpha Vantage)
 const ALPHA_VANTAGE_API_KEY = 'K09FCGY2Y90L99V0';
 
@@ -650,10 +693,32 @@ document.getElementById('searchInput').addEventListener('keypress', e =>{
 });
 
 // ========================================================
-// 新聞 (已修改為前端抓取 RSS)
+// [新功能] Google 地圖
+// ========================================================
+function searchGoogleMaps() {
+  const input = document.getElementById('mapSearchInput');
+  const query = input.value.trim();
+  if (!query) return;
+
+  const mapFrame = document.getElementById('mapFrame');
+  // 使用不需 API Key 的 q= 嵌入方式
+  const newSrc = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+  mapFrame.src = newSrc;
+}
+
+// 綁定地圖搜尋按鈕
+document.getElementById('mapSearchBtn').onclick = searchGoogleMaps;
+document.getElementById('mapSearchInput').addEventListener('keypress', e => {
+  if (e.key === 'Enter') searchGoogleMaps();
+});
+// ========================================================
+// (地圖功能結束)
 // ========================================================
 
-// [修改] 我們不再需要後端，所以使用你提供的 RSS 列表
+
+// ========================================================
+// 新聞 (使用前端 RSS 代理)
+// ========================================================
 const RSS_FEEDS = {
     tw: [
         'https://news.ltn.com.tw/rss/all.xml',       // 自由時報 (首選)
@@ -672,7 +737,6 @@ const RSS_FEEDS = {
 
 let currentNewsTab = 'tw'; // 預設
 
-// [保留] 你的切換函式
 function switchNewsTab(tab){
   currentNewsTab = tab;
   document.querySelectorAll('.news-tab').forEach(btn => btn.classList.remove('active'));
@@ -680,107 +744,75 @@ function switchNewsTab(tab){
   loadNews(); // 呼叫新的 loadNews
 }
 
-// 輔助函式：清理 CDATA
 function cleanCData(str) {
     if (str.startsWith('<![CDATA[') && str.endsWith(']]>')) {
         return str.substring(9, str.length - 3);
     }
-    return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+    return str.replace(/&/g, '&').replace(/</g, '<').replace(/>/g, '>');
 }
 
-// 輔助函式：解析 XML (在前端)
 function parseRSS(xmlText) {
     const articles = [];
     const maxArticles = 5;
-    
-    // 嘗試 <item>...</item>
     let items = [...xmlText.matchAll(/<item>([\s\S]*?)<\/item>/g)];
-    
-    // 備用方案: .rdf 格式 <item ...> ... </item>
     if (items.length === 0) {
          items.push(...xmlText.matchAll(/<item [^>]+>([\s\S]*?)<\/item>/g));
     }
-    
-    // 備用方案: .rdf 格式 <item ... /> (例如 Asahi)
     if (items.length === 0) {
          items.push(...xmlText.matchAll(/<item[^>]+rdf:about="([^"]+)"[\s\S]*?<title>([\s\S]*?)<\/title>[\s\S]*?<\/item>/g));
-         
-         // 處理 Asahi 的特殊格式
          for (let i = 0; i < items.length && i < maxArticles; i++) {
-             const link = items[i][1];
-             const title = cleanCData(items[i][2]);
              articles.push({
-                 title: title,
-                 url: link,
+                 title: cleanCData(items[i][2]),
+                 url: items[i][1],
                  source: { name: '朝日新聞' }
              });
          }
-         return articles; // Asahi 格式不同，提早回傳
+         return articles;
     }
-
-    // 標準 <item> 解析
     for (let i = 0; i < items.length && i < maxArticles; i++) {
         const itemContent = items[i][1];
-        
         const titleMatch = itemContent.match(/<title>([\s\S]*?)<\/title>/);
         const title = titleMatch ? cleanCData(titleMatch[1]) : '無標題';
-        
         const linkMatch = itemContent.match(/<link>([\s\S]*?)<\/link>/);
         const link = linkMatch ? (linkMatch[1] || '#') : '#';
-
-        const sourceMatch = itemContent.match(/<source [^>]+>([\s\S]*?)<\/source>/);
-        let sourceName = sourceMatch ? cleanCData(sourceMatch[1]) : null;
-        if (!sourceName) {
-             const creatorMatch = itemContent.match(/<dc:creator>([\s\S]*?)<\/dc:creator>/);
-             sourceName = creatorMatch ? cleanCData(creatorMatch[1]) : 'N/A';
-        }
-        
-        articles.push({
-            title: title,
-            url: link.trim(), // 清理 link
-            source: { name: sourceName }
-        });
+        let sourceName = null;
+        const creatorMatch = itemContent.match(/<dc:creator>([\s\S]*?)<\/dc:creator>/);
+        sourceName = creatorMatch ? cleanCData(creatorMatch[1]) : 'N/A';
+        articles.push({ title: title, url: link.trim(), source: { name: sourceName } });
     }
     return articles;
 }
 
-// [修改] loadNews 函式，改為在前端呼叫 CORS 代理
 async function loadNews(){
   const list = document.getElementById('newsList');
   list.innerHTML = '<li class="news-loading">載入新聞中…</li>';
   const refreshBtn = document.getElementById('refreshNewsBtn');
   if (refreshBtn) refreshBtn.disabled = true;
 
-  // 取得 RSS 列表
   const urlsToTry = RSS_FEEDS[currentNewsTab] || RSS_FEEDS['tw'];
-
   let success = false;
 
   for (const rssUrl of urlsToTry) {
       try {
-          // ** 使用 api.codetabs.com (你的股票功能也在用) 來代理**
           const proxyUrl = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(rssUrl)}`;
-          
           const res = await fetch(proxyUrl);
-          
-          if (!res.ok) {
-              throw new Error(`代理伺服器錯誤 (狀態: ${res.status})`);
-          }
+          if (!res.ok) throw new Error(`代理伺服器錯誤 (狀態: ${res.status})`);
 
           const xmlText = await res.text();
           const articles = parseRSS(xmlText);
 
           if (articles && articles.length > 0) {
-              list.innerHTML = ''; // 成功，清空列表
+              list.innerHTML = ''; 
               articles.forEach(article => {
-                  
-                  // 手動指定來源 (因為解析很困難)
-                  let sourceName = 'RSS 來源';
-                  if (rssUrl.includes('cna.com')) sourceName = '中央通訊社';
-                  if (rssUrl.includes('ltn.com')) sourceName = '自由時報';
-                  if (rssUrl.includes('udn.com')) sourceName = '聯合新聞網';
-                  if (rssUrl.includes('nhk.or.jp')) sourceName = 'NHK';
-                  if (rssUrl.includes('bbci.co.uk')) sourceName = 'BBC News';
+                  let sourceName = article.source.name;
+                  if (sourceName === 'N/A' || !sourceName) {
+                    if (rssUrl.includes('cna.com')) sourceName = '中央通訊社';
+                    else if (rssUrl.includes('ltn.com')) sourceName = '自由時報';
+                    else if (rssUrl.includes('udn.com')) sourceName = '聯合新聞網';
+                    else if (rssUrl.includes('nhk.or.jp')) sourceName = 'NHK';
+                    else if (rssUrl.includes('bbci.co.uk')) sourceName = 'BBC News';
+                    else sourceName = 'RSS 來源';
+                  }
                   
                   list.insertAdjacentHTML('beforeend', `
                     <li class="news-item" onclick="window.open('${article.url}','_blank')">
@@ -791,26 +823,21 @@ async function loadNews(){
                     </li>`);
               });
               success = true;
-              break; // 成功，跳出迴圈
+              break; 
           } else {
-              // 抓到了，但是是空的
               throw new Error('RSS 內容為空或無法解析');
           }
       } catch(e) {
           console.warn(`RSS 來源 ${rssUrl} 失敗: ${e.message}`);
-          // 失敗，迴圈會繼續嘗試下一個
       }
   }
 
-  // 迴圈跑完後
   if (!success) {
       list.innerHTML = `<li class="news-loading">新聞載入失敗: 所有備援來源均嘗試失敗。</li>`;
   }
-
   if (refreshBtn) refreshBtn.disabled = false;
 }
 
-// [保留] 你的按鈕綁定事件
 document.getElementById('tab-tw').onclick = () => switchNewsTab('tw');
 document.getElementById('tab-jp').onclick = () => switchNewsTab('jp');
 document.getElementById('tab-intl').onclick = () => switchNewsTab('intl');
@@ -936,7 +963,7 @@ function openLink(url) {
 }
 
 // 開始載入 (保留你原始的載入順序)
-switchNewsTab('tw'); // [修改] 確保新聞功能被正確初始化
+switchNewsTab('tw'); 
 switchStockMarket('tw');
 </script>
 </body>
