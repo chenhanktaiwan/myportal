@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>個人入口網站 - [緊湊版 v1]</title>
+<title>個人入口網站 - [緊湊版 V3]</title>
 <style>
-  /* 你的 CSS 樣式 (已修改為 "緊湊" 版本) */
+  /* [修改] 全面緊縮化 CSS */
   * {margin:0;padding:0;box-sizing:border-box;}
   body {
     font-family:'Microsoft JhengHei','PingFang TC',sans-serif;
@@ -13,36 +13,20 @@
     color:#526c67;
     min-height:100vh;
     padding:20px;
-    /* [修改] 為 "僅有標籤" 的 sticky header 預留空間 (減少) */
-    padding-top: 70px; 
+    /* [修改] 為 sticky header 預留空間 (減少) */
+    padding-top: 80px; 
   }
   .container {max-width:1400px;margin:0 auto;}
-  .header {
-    background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
-    /* [修改] 減少 padding 和 margin */
-    padding: 24px 32px;
-    border-radius:24px;
-    color:white;
-    margin-bottom: 24px;
-    box-shadow:0 8px 30px rgba(123,168,163,0.25);
-  }
-  .header-top {
-    display:flex;justify-content:space-between;align-items:center;
-    /* [修改] 減少 margin */
-    margin-bottom: 20px;
-    gap:20px;
-  }
-  /* [修改] 減少字體 */
-  .greeting-section {font-weight:700; font-size: 24px;}
-  .datetime {margin-top:6px; font-weight:500; font-size:14px; opacity:0.9;}
+  
+  /* [已刪除] .header 相關 CSS (天氣區塊已移至導覽列) */
+
   .location-selector {
     background:rgba(255 255 255 / 26%);
     border:2px solid rgba(255 255 255 / 38%);
-    border-radius:12px;
-    font-size:14px;
+    border-radius:10px; /* [修改] */
+    font-size:13px; /* [修改] */
     color:white;
-    /* [修改] 減少 padding */
-    padding: 7px 16px;
+    padding: 5px 10px; /* [修改] */
     cursor:pointer;
     backdrop-filter:blur(12px);
     transition:background 0.3s,border 0.3s;
@@ -52,45 +36,24 @@
     border-color:rgba(255 255 255 / 60%);
     outline:none;
   }
-  .weather-forecast-horizontal {
-    display:grid;
-    /* [修改] 減少 gap */
-    gap: 12px;
-    grid-template-columns:repeat(7,1fr);
-  }
-  .weather-day-h {
-    background:rgba(255 255 255 / 23%);
-    border-radius:14px;
-    /* [修改] 減少 padding */
-    padding: 12px 10px 10px;
-    border:2px solid rgba(255 255 255 / 12%);
-    text-align:center;
-  }
-  .weather-date-h {font-size:13px; font-weight:700; margin-bottom:6px;}
-  .weather-emoji-h {font-size:36px; margin-bottom:4px; display:block; user-select:none;}
-  .weather-temp-h {font-size:16px; font-weight:700;}
-  .weather-rain-h {font-size:12px; margin-top:4px; color:#def1f0aa;}
-  .weather-desc-h {font-size:12px; margin-top:1px; color:#d0e2e0cc;}
   .weather-loading {
-    grid-column:span 7;
     text-align:center;
-    padding:22px 0;
+    padding:10px 0;
     color:white;
     font-weight:700;
   }
   
-  /* [修改] 搜尋列間距 */
+  /* 搜尋列 */
   .search-section {
     display:flex; 
     gap:10px;
-    margin-bottom: 24px; /* [修改] 減少 */
+    margin-bottom: 20px; /* [修改] */
   }
   .search-input {
     flex:1;
-    /* [修改] 減少字體和 padding */
-    font-size: 15px;
-    border-radius:16px;
-    padding: 12px 18px;
+    font-size: 14px; /* [修改] */
+    border-radius:12px; /* [修改] */
+    padding: 10px 16px; /* [修改] */
     border:2px solid #a3bbb9;
     transition:all 0.3s ease;
     font-weight:400;
@@ -102,49 +65,45 @@
   }
   .search-btn {
     background-color:#7ba8a3;
-    border-radius:16px;
+    border-radius:12px; /* [修改] */
     border:none;
     color:white;
-    /* [修改] 減少字體和 padding */
-    font-size: 15px;
+    font-size: 14px; /* [修改] */
     font-weight:700;
     cursor:pointer;
-    padding: 12px 24px;
+    padding: 10px 20px; /* [修改] */
     transition:background-color 0.35s ease;
   }
   .search-btn:hover {background-color:#618577;}
 
-  /* 你的 CSS (保留) */
+  /* 卡片區 */
   .info-section {
     display:flex;
-    /* [修改] 減少 gap */
-    gap: 24px;
+    gap: 20px; /* [修改] */
     flex-wrap:wrap;
   }
   .news-card {
     flex:1;
-    min-width:430px;
+    min-width:400px; /* [修改] */
     max-width:720px;
     background:white;
     border-radius:20px;
     box-shadow:0 8px 32px #a6b7b68e;
-    /* [修改] 減少 padding */
-    padding: 20px 24px;
+    padding: 16px 20px; /* [修改] */
   }
   .section-header {
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:14px;
+    margin-bottom:10px; /* [修改] */
     flex-wrap:wrap;
-    gap:12px;
+    gap:10px;
   }
   .section-title {
     display:flex;
     gap:8px;
     font-weight:700;
-    /* [修改] 減少字體 */
-    font-size: 20px;
+    font-size: 18px; /* [修改] */
     color:#578f89;
     align-items:center;
   }
@@ -152,26 +111,24 @@
     background:linear-gradient(135deg,#7ba8a3,#9dbfbb);
     border-radius:8px;
     color:white;
-    /* [修改] 縮小圖示 */
-    width: 32px;
-    height: 32px;
+    width: 28px; /* [修改] */
+    height: 28px; /* [修改] */
     display:grid;
     place-items:center;
     font-weight:900;
-    font-size: 16px;
+    font-size: 15px; /* [修改] */
   }
   .news-tabs {
     display:flex;
-    gap:10px; /* [修改] 減少 */
+    gap: 8px; /* [修改] */
   }
   .news-tab {
-    border-radius:12px;
+    border-radius:10px; /* [修改] */
     background:#f3fbfb;
     color:#578f89;
     font-weight:600;
-    /* [修改] 減少字體和 padding */
-    font-size: 14px;
-    padding: 6px 18px;
+    font-size: 13px; /* [修改] */
+    padding: 5px 14px; /* [修改] */
     border:2px solid #cee2df;
     cursor:pointer;
     transition:background-color 0.3s ease,border-color 0.3s ease;
@@ -187,27 +144,25 @@
     background:#7ba8a3;
     color:white;
     border:none;
-    border-radius:12px;
-    /* [修改] 減少字體和 padding */
-    padding: 6px 18px;
+    border-radius:10px; /* [修改] */
+    padding: 5px 14px; /* [修改] */
     cursor:pointer;
-    font-size: 14px;
+    font-size: 13px; /* [修改] */
     transition:background-color 0.3s ease;
   }
   .refresh-btn:disabled {opacity:0.5; cursor:not-allowed;}
   .news-list {
     list-style:none;
-    max-height:480px;
+    max-height: 400px; /* [修改] */
     overflow-y:auto;
     padding:0;
   }
   .news-item {
     border-left:4px solid #86b4a9;
-    margin-bottom: 8px; /* [修改] 減少 */
+    margin-bottom: 6px; /* [修改] */
     background:#f1f7f5;
-    border-radius:12px;
-    /* [修改] 減少 padding */
-    padding: 12px 16px;
+    border-radius:10px;
+    padding: 10px 14px; /* [修改] */
     font-weight:600;
     color:#3a6259;
     cursor:pointer;
@@ -218,11 +173,11 @@
     color:white;
   }
   .news-item-title {
-    font-size:15px;
-    margin-bottom:6px;
+    font-size: 14px; /* [修改] */
+    margin-bottom: 4px; /* [修改] */
   }
   .news-item-meta {
-    margin-top:6px;
+    margin-top:4px;
     font-weight:400;
     font-size:12px;
     color:#58716b;
@@ -230,30 +185,28 @@
     justify-content:space-between;
   }
   .news-loading {text-align:center;padding:20px;color:#7a9794;font-weight:600;}
-  /* 股票卡 (你的 CSS 樣式) */
+  /* 股票卡 */
   .stock-card {
-    flex-basis:380px;
+    flex-basis:360px; /* [修改] */
     background:white;
     border-radius:20px;
-    /* [修改] 減少 padding 和 gap */
-    padding: 20px 24px;
+    padding: 16px 20px; /* [修改] */
     box-shadow:0 8px 30px #a2b8b39e;
     display:flex;
     flex-direction:column;
-    gap: 16px;
+    gap: 12px; /* [修改] */
   }
   .stock-tabs {
     display:flex;
-    gap:12px;
-    margin-top:4px;
+    gap:10px;
+    margin-top: 2px;
   }
   .stock-tab {
-    /* [修改] 減少 padding 和字體 */
-    padding: 7px 24px;
-    border-radius:12px;
+    padding: 6px 20px; /* [修改] */
+    border-radius:10px;
     border:2px solid #a6cdc5;
     background:#ccede9;
-    font-size: 16px;
+    font-size: 15px; /* [修改] */
     font-weight:700;
     color:#3e7e72;
     cursor:pointer;
@@ -267,13 +220,12 @@
   }
   .stock-search {
     display:flex;
-    gap:11px;
+    gap: 8px; /* [修改] */
   }
   .stock-search-input {
-    /* [修改] 減少 padding 和字體 */
-    padding: 12px 16px;
-    border-radius:16px;
-    font-size: 15px;
+    padding: 10px 14px; /* [修改] */
+    border-radius:12px;
+    font-size: 14px; /* [修改] */
     font-weight:600;
     border:2px solid #a1d1c4;
     background:#dbece8;
@@ -287,11 +239,10 @@
   }
   .stock-add-btn {
     background:#7ba8a3;
-    border-radius:18px;
-    /* [修改] 減少 padding 和字體 */
-    padding: 12px 24px;
+    border-radius:12px;
+    padding: 10px 20px; /* [修改] */
     cursor:pointer;
-    font-size: 15px;
+    font-size: 14px; /* [修改] */
     font-weight:700;
     color:white;
     border:none;
@@ -305,17 +256,16 @@
     overflow-y:auto;
     display:flex;
     flex-direction:column;
-    gap: 10px; /* [修改] 減少 */
+    gap: 8px; /* [修改] */
   }
   .stock-item {
     background:#cee3db;
-    border-radius:14px;
-    /* [修改] 減少 padding */
-    padding: 12px 16px;
+    border-radius:12px;
+    padding: 10px 14px; /* [修改] */
     display:flex;
     justify-content:space-between;
     align-items:center;
-    gap:15px;
+    gap:10px;
     cursor:pointer;
     transition:background-color 0.3s ease;
     font-weight:700;
@@ -328,16 +278,16 @@
   .stock-info {
     display:flex;
     flex-direction:column;
-    gap: 4px; /* [修改] 減少 */
+    gap: 3px; /* [修改] */
     text-align:left;
-    min-width: 6rem; /* [修改] 減少 */
+    min-width: 6rem;
   }
   .stock-symbol {
-    font-size: 1.15rem; /* [修改] 減少 */
+    font-size: 1.1rem; /* [修改] */
   }
   .stock-name {
     font-weight:400;
-    font-size:0.87rem;
+    font-size: 0.8rem; /* [修改] */
     color:#4a655c;
   }
   .stock-price-info {
@@ -345,10 +295,10 @@
     min-width:7rem;
   }
   .stock-price {
-    font-size: 1.25rem; /* [修改] 減少 */
+    font-size: 1.2rem; /* [修改] */
   }
   .stock-change {
-    font-size: 0.9rem; /* [修改] 減少 */
+    font-size: 0.85rem; /* [修改] */
   }
   .stock-up {
     color:#e2646a;
@@ -360,20 +310,18 @@
     color:#50766e;
   }
 
-  /* 你的 CSS 樣式 (完整保留) */
+  /* 你的 CSS 樣式 (已修改為 "緊湊" 版本) */
   .main-content {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    /* [修改] 減少 gap 和 margin */
-    gap: 24px;
-    margin-top: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* [修改] */
+    gap: 20px; /* [修改] */
+    margin-top: 20px; /* [修改] */
   }
   .card {
     background: white;
     border-radius: 20px;
     box-shadow: 0 8px 30px #a2b8b36e;
-    /* [修改] 減少 padding 和 gap */
-    padding: 20px 24px;
+    padding: 16px 20px; /* [修改] */
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -381,22 +329,20 @@
   .card-title {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px; /* [修改] */
     font-weight: 700;
-    /* [修改] 減少字體 */
-    font-size: 18px;
+    font-size: 16px; /* [修改] */
     color: #578f89;
     border-bottom: 2px solid #e0ebea;
-    padding-bottom: 10px; /* [修改] 減少 */
+    padding-bottom: 8px; /* [修改] */
   }
   .card-icon {
-    font-size: 16px; /* [修改] 減少 */
+    font-size: 15px; /* [修改] */
   }
   .project-item {
     background: #f1f7f5;
     border-radius: 12px;
-    /* [修改] 減少 padding */
-    padding: 12px 16px;
+    padding: 12px 16px; /* [修改] */
     cursor: pointer;
     transition: background 0.3s, box-shadow 0.3s;
   }
@@ -404,23 +350,22 @@
     background: #e6f0ee;
     box-shadow: 0 4px 12px #b8cac7;
   }
-  .project-name { font-weight: 700; color: #3a6259; margin-bottom: 6px; }
-  .project-desc { font-size: 14px; color: #58716b; }
+  .project-name { font-weight: 700; color: #3a6259; margin-bottom: 4px; font-size: 15px; } /* [修改] */
+  .project-desc { font-size: 13px; color: #58716b; } /* [修改] */
   .tool-item {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 12px; /* [修改] */
     background: #f1f7f5;
-    /* [修改] 減少 padding */
-    padding: 12px;
+    padding: 10px; /* [修改] */
     border-radius: 12px;
     cursor: pointer;
     transition: background 0.3s;
   }
   .tool-item:hover { background: #e6f0ee; }
   .tool-icon {
-    width: 40px; /* [修改] 減少 */
-    height: 40px; /* [修改] 減少 */
+    width: 36px; /* [修改] */
+    height: 36px; /* [修改] */
     border-radius: 10px;
     display: grid;
     place-items: center;
@@ -429,17 +374,16 @@
     font-weight: 700;
   }
   .tool-info { flex: 1; }
-  .tool-name { font-weight: 700; color: #3a6259; }
-  .tool-url { font-size: 14px; color: #58716b; }
+  .tool-name { font-weight: 700; color: #3a6259; font-size: 15px; } /* [修改] */
+  .tool-url { font-size: 13px; color: #58716b; } /* [修改] */
   .link-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 10px; /* [修改] 減少 */
+    gap: 8px; /* [修改] */
   }
   .quick-link {
     background: #f1f7f5;
-    /* [修改] 減少 padding */
-    padding: 10px 14px;
+    padding: 10px 14px; /* [修改] */
     border-radius: 12px;
     font-weight: 600;
     color: #3a6259;
@@ -447,14 +391,14 @@
     transition: background 0.3s;
   }
   .quick-link:hover { background: #e6f0ee; }
-  .bookmark-section { display: flex; flex-direction: column; gap: 8px; } /* [修改] 減少 */
+  .bookmark-section { display: flex; flex-direction: column; gap: 8px; } /* [修改] */
   .bookmark-category {
     font-weight: 700;
     color: #3e7e72;
-    margin-top: 8px;
+    margin-top: 6px; /* [修改] */
   }
   .bookmark-link {
-    padding-left: 12px;
+    padding-left: 10px; /* [修改] */
     border-left: 3px solid #cce3db;
     font-weight: 600;
     color: #3a6259;
@@ -462,17 +406,16 @@
   }
   .bookmark-link:hover { color: #7ba8a3; }
 
-  /* 你的地圖 CSS */
+  /* 地圖 CSS (緊湊版) */
   .map-card-full {
     background: white;
     border-radius: 20px;
     box-shadow: 0 8px 32px #a6b7b68e;
-    /* [修改] 減少 padding 和 margin */
-    padding: 20px 24px;
-    margin-top: 24px;
+    padding: 16px 20px; /* [修改] */
+    margin-top: 20px; /* [修改] */
   }
   .map-card-full .section-header {
-    gap: 20px; 
+    gap: 16px; /* [修改] */
   }
   .map-search-box {
     display: flex;
@@ -482,49 +425,51 @@
     max-width: 600px; 
   }
   .map-content {
-    margin-top: 16px; /* [修改] 減少 */
+    margin-top: 12px; /* [修改] */
   }
   .map-content iframe {
     border-radius: 12px;
     border: 2px solid #cee2df; 
     width: 100%;
-    /* [修改] 減少高度 */
-    height: 400px;
+    height: 350px; /* [修改] */
   }
 
-  /* --- [新功能] 置頂導覽列 和 分頁 CSS --- */
+  /* --- [新功能] 置頂導覽列 和 分頁 CSS (緊湊版) --- */
   .portal-nav-sticky {
     position: sticky;
     top: 20px; /* 配合 body 的 padding */
     z-index: 1000;
     
     background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
-    /* [修改] 減少 padding */
-    padding: 12px 24px;
-    border-radius: 24px;
+    padding: 12px 24px; /* [修改] */
+    border-radius: 20px; /* [修改] */
     box-shadow: 0 8px 30px rgba(123, 168, 163, 0.35);
     
     max-width: 1400px; 
     /* [修改] 調整 margin-top 以配合新的 body padding-top */
-    margin: -50px auto 0 auto;
+    margin: -60px auto 0 auto;
     top: 20px;
+    
+    /* [新功能] 導覽列左右對齊 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   
   .portal-tabs {
     display: flex;
-    gap: 10px; /* [修改] 減少 */
+    gap: 10px; /* [修改] */
   }
   
   .portal-tab-btn {
     font-family: 'Microsoft JhengHei', 'PingFang TC', sans-serif;
-    border-radius: 12px;
+    border-radius: 10px; /* [修改] */
     background: rgba(255, 255, 255, 0.23);
     border: 2px solid rgba(255, 255, 255, 0.12);
     color: white;
     font-weight: 700;
-    /* [修改] 減少字體和 padding */
-    font-size: 16px;
-    padding: 8px 20px;
+    font-size: 15px; /* [修改] */
+    padding: 6px 16px; /* [修改] */
     cursor: pointer;
     transition: background 0.3s ease, border-color 0.3s ease;
     user-select: none;
@@ -536,11 +481,33 @@
     color: #7ba8a3; /* 點選後變為主題綠色 */
   }
   
+  /* [新功能] 導覽列右側資訊 */
+  .nav-info-right {
+    display: flex;
+    align-items: center;
+    gap: 16px; /* [修改] */
+    color: white;
+  }
+  .nav-datetime {
+    font-size: 13px; /* [修改] */
+    font-weight: 500;
+    opacity: 0.9;
+  }
+  .nav-weather {
+    font-size: 14px; /* [修改] */
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .nav-weather-emoji {
+    font-size: 20px; /* [修改] */
+  }
+
   /* 分頁內容 */
   .page-content {
     display: none;
-    /* [修改] 減少 margin-top */
-    margin-top: 24px;
+    margin-top: 20px; /* [修改] */
   }
   
   .page-content.active {
@@ -561,17 +528,8 @@
         <button class="portal-tab-btn" data-page="map">地圖</button>
         <button class="portal-tab-btn" data-page="work">工作</button>
     </div>
-  </div>
-
-
-  <div id="page-home" class="page-content active">
-  
-    <div class="header">
-      <div class="header-top">
-        <div class="greeting-section">
-          <div class="greeting">您好！歡迎回來 👋</div>
-          <div class="datetime" id="datetime"></div>
-        </div>
+    
+    <div class="nav-info-right">
         <select id="locationSelector" class="location-selector" aria-label="選擇城市">
           <option value="25.0330,121.5654">台北市</option>
           <option value="24.1477,120.6736">台中市</option>
@@ -581,12 +539,14 @@
           <option value="24.9936,121.3010">桃園市</option>
           <option value="22.9998,120.2269">台南市</option>
         </select>
-      </div>
-      <div class="weather-forecast-horizontal" id="weatherRow">
-        <div class="weather-loading">載入天氣資料中...</div>
-      </div>
+        <div id="nav-weather" class="nav-weather">--°</div>
+        <div id="nav-datetime" class="nav-datetime">載入中...</div>
     </div>
-    
+  </div>
+
+
+  <div id="page-home" class="page-content active">
+  
     <div class="search-section">
       <input id="searchInput" class="search-input" placeholder="搜尋 Google 或輸入網址..."/>
       <button id="searchBtn" class="search-btn">搜尋</button>
@@ -640,8 +600,7 @@
         <div class="map-content">
             <iframe id="mapFrame"
                 src="https://maps.google.com/maps?q=台北101&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                frameborder="0" scrolling="no" marginheight="0" marginwidth="0"
-                height="400px">
+                frameborder="0" scrolling="no" marginheight="0" marginwidth="0">
             </iframe>
         </div>
     </div>
@@ -784,39 +743,46 @@ const ALPHA_VANTAGE_API_KEY = 'K09FCGY2Y90L99V0';
 // 日期 (完整保留你原本的程式碼)
 function updateDatetime() {
   const now = new Date();
-  document.getElementById('datetime').textContent = now.toLocaleDateString('zh-TW',{
-    year:'numeric', month:'long', day:'numeric',weekday:'long',hour:'2-digit',minute:'2-digit'
+  // [修改] 目標改為導覽列
+  const target = document.getElementById('nav-datetime');
+  if (!target) return;
+  target.textContent = now.toLocaleDateString('zh-TW',{
+    month:'long', day:'numeric', weekday:'long', hour:'2-digit', minute:'2-digit'
   });
 }
 
-// 天氣呼叫API (完整保留你原本的程式碼)
+// 天氣呼叫API
 const weatherCodes = {
   0:{emoji:'☀️',desc:'晴天'},1:{emoji:'🌤️',desc:'晴朗'},2:{emoji:'⛅',desc:'多雲'},3:{emoji:'☁️',desc:'陰天'},
   45:{emoji:'🌫️',desc:'霧'},51:{emoji:'🌦️',desc:'小雨'},55:{emoji:'🌧️',desc:'大雨'},61:{emoji:'🌧️',desc:'小雨'},63:{emoji:'🌧️',desc:'中雨'},
   65:{emoji:'⛈️',desc:'大雨'},80:{emoji:'🌦️',desc:'陣雨'},81:{emoji:'🌧️',desc:'陣雨'},82:{emoji:'⛈️',desc:'大陣雨'},95:{emoji:'⛈️',desc:'雷雨'},
   99:{emoji:'⛈️',desc:'強雷雨'}
 };
+
+// [修改] 天氣功能更新，只抓取 "今日" 天氣並放入導覽列
 function updateWeather(){
-  const v=document.getElementById('locationSelector').value.split(',');
-  const target=document.getElementById('weatherRow');
-  target.innerHTML='<div class="weather-loading">載入天氣資料中...</div>';
-  fetch(`https://api.open-meteo.com/v1/forecast?latitude=${v[0]}&longitude=${v[1]}&daily=weathercode,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=Asia/Taipei&forecast_days=7`)
+  const v = document.getElementById('locationSelector').value.split(',');
+  const target = document.getElementById('nav-weather');
+  if (!target) return;
+  
+  target.innerHTML = '...'; // 載入中
+  
+  // [修改] API 改為同時抓取 current 和 daily (forecast_days=1)
+  fetch(`https://api.open-meteo.com/v1/forecast?latitude=${v[0]}&longitude=${v[1]}&current_weather=true&daily=temperature_2m_max,temperature_2m_min&timezone=Asia/Taipei&forecast_days=1`)
   .then(r=>r.json()).then(d=>{
-    let html='';
-    const wd=['週日','週一','週二','週三','週四','週五','週六'];
-    for(let i=0;i<7;i++){
-      const date= new Date (d.daily.time[i]);
-      const dayName = i===0 ?'今天':wd[date.getDay()];
-      const code = d.daily.weathercode[i];
-      const w = weatherCodes[code] || { emoji:'🌤️', desc:'多雲'};
-      const tMax = Math.round(d.daily.temperature_2m_max[i]);
-      const tMin = Math.round(d.daily.temperature_2m_min[i]);
-      const rainProb = d.daily.precipitation_probability_max[i] || 0;
-      html+=`<div class="weather-day-h"><div class="weather-date-h">${dayName}</div><span class="weather-emoji-h">${w.emoji}</span><div class="weather-temp-h">${tMin}° - ${tMax}°</div><div class="weather-rain-h">💧 ${rainProb}%</div><div class="weather-desc-h">${w.desc}</div></div>`;
+    if (d && d.current_weather && d.daily) {
+        const cw = d.current_weather;
+        const daily = d.daily;
+        const w = weatherCodes[cw.weathercode] || { emoji:'🌤️', desc:'多雲'};
+        const tMax = Math.round(daily.temperature_2m_max[0]);
+        const tMin = Math.round(daily.temperature_2m_min[0]);
+        
+        target.innerHTML = `<span class="nav-weather-emoji">${w.emoji}</span> ${Math.round(cw.temperature)}° <span style="font-weight:400;opacity:0.8;">(${tMin}°-${tMax}°)</span>`;
+    } else {
+        throw new Error('天氣資料格式不符');
     }
-    target.innerHTML=html;
   }).catch(() => {
-    target.innerHTML='<div class="weather-loading">天氣資料載入失敗</div>';
+    target.innerHTML = '天氣失敗';
   });
 }
 
@@ -837,15 +803,17 @@ document.getElementById('searchInput').addEventListener('keypress', e =>{
 // 地圖 (完整保留你原本的程式碼)
 function searchGoogleMaps() {
   const input = document.getElementById('mapSearchInput');
+  if (!input) return; // 檢查元素是否存在
   const query = input.value.trim();
   if (!query) return;
 
   const mapFrame = document.getElementById('mapFrame');
+  if (!mapFrame) return;
   const newSrc = `https://maps.google.com/maps?q=${encodeURIComponent(query)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
   mapFrame.src = newSrc;
 }
 
-// 新聞 (完整保留你原本的程式碼)
+// 新聞 (已修正 CORS)
 const RSS_FEEDS = {
     tw: [
         'https://news.ltn.com.tw/rss/all.xml',       // 自由時報 (首選)
@@ -916,11 +884,17 @@ async function loadNews(){
 
   for (const rssUrl of urlsToTry) {
       try {
-          const proxyUrl = `https://api.codetabs.com/v1/proxy/?quest=${encodeURIComponent(rssUrl)}`;
+          // [修改] 更換為 allorigins 代理
+          const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(rssUrl)}`;
+          
           const res = await fetch(proxyUrl);
           if (!res.ok) throw new Error(`代理伺服器錯誤 (狀態: ${res.status})`);
-          const xmlText = await res.text();
+          
+          const data = await res.json(); // allorigins 回傳 JSON
+          const xmlText = data.contents;  // 實際的 XML/RSS 內容
+          
           const articles = parseRSS(xmlText);
+          
           if (articles && articles.length > 0) {
               list.innerHTML = ''; 
               articles.forEach(article => {
@@ -956,7 +930,7 @@ async function loadNews(){
   if (refreshBtn) refreshBtn.disabled = false;
 }
 
-// 股票區 (完整保留你原本的程式碼)
+// 股票區 (已修正 CORS)
 const stockWatchlist = {
   tw: ['2330','2317','2454','2603','0050'],
   us: ['AAPL','GOOGL','TSLA','NVDA','MSFT']
@@ -978,8 +952,14 @@ async function loadStocks(){
     container.innerHTML = '';
     for(const symbol of watchlist){
       try{
-        const res = await fetch(`https://api.codetabs.com/v1/proxy/?quest=https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${symbol}.tw&json=1&delay=0`);
-        const data = await res.json();
+        // [修改] 更換為 allorigins 代理
+        const twseUrl = `https://mis.twse.com.tw/stock/api/getStockInfo.jsp?ex_ch=tse_${symbol}.tw&json=1&delay=0`;
+        const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(twseUrl)}`;
+        
+        const res = await fetch(proxyUrl);
+        const jsonData = await res.json(); // allorigins 回傳 JSON
+        const data = JSON.parse(jsonData.contents); // 取得內部的 JSON
+        
         if(data.msgArray && data.msgArray.length > 0) {
           const st = data.msgArray[0];
           const price = parseFloat(st.z) || 0;
@@ -1002,10 +982,12 @@ async function loadStocks(){
           container.insertAdjacentHTML('beforeend', `<div class="stock-item">無法取得 ${symbol} 資訊</div>`);
         }
       }catch(e){
+        console.error(`載入 ${symbol} 失敗:`, e);
         container.insertAdjacentHTML('beforeend', `<div class="stock-item">載入 ${symbol} 失敗</div>`);
       }
     }
   } else {
+    // (Alpha Vantage (美股) 不需要代理，保持原樣)
     container.innerHTML = '';
     for(const symbol of watchlist){
       try{
@@ -1030,7 +1012,7 @@ async function loadStocks(){
               </div>
             </div>`);
         } else {
-          container.insertAdjacentHTML('beforeend', `<div class="stock-item">無法取得 ${symbol} 資訊</div>`);
+          container.insertAdjacentHTML('beforeend', `<div class="stock-item">無法取得 ${symbol} 資訊 (API 限制)</div>`);
         }
       }catch(e){
         container.insertAdjacentHTML('beforeend', `<div class="stock-item">載入 ${symbol} 失敗</div>`);
@@ -1062,9 +1044,7 @@ function openLink(url) {
 }
 
 
-// ========================================================
 // [新功能] 分頁切換的 JS 邏輯
-// ========================================================
 function initTabNavigation() {
     const tabs = document.querySelectorAll('.portal-tab-btn');
     const pages = document.querySelectorAll('.page-content');
@@ -1089,8 +1069,8 @@ function initTabNavigation() {
             // 3. [修改] 當切換回 "首頁" 時，才執行功能
             if (pageName === 'home') {
                  // 檢查首頁功能是否需要重新載入
-                 const weatherRow = document.getElementById('weatherRow');
-                 if (!weatherRow || !weatherRow.innerHTML.includes('weather-day-h')) {
+                 const weatherNav = document.getElementById('nav-weather');
+                 if (!weatherNav || weatherNav.innerHTML === '--°' || weatherNav.innerHTML === '天氣失敗') {
                     updateWeather();
                  }
                  const stockList = document.getElementById('stocksList');
@@ -1105,9 +1085,6 @@ function initTabNavigation() {
         });
     });
 }
-// ========================================================
-// (分頁 JS 結束)
-// ========================================================
 
 
 // --- 程式碼開始執行 ---
@@ -1121,8 +1098,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadStocks();
     loadNews();
     
-    // 3. 綁定首頁上的所有按鈕
-    // (天氣)
+    // 3. 綁定首頁上的所有按鈕 (及導覽列)
+    // (天氣/導覽列)
     document.getElementById('locationSelector').onchange = updateWeather;
     // (搜尋)
     document.getElementById('searchBtn').onclick = () => {
