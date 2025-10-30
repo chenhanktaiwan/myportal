@@ -20,28 +20,18 @@
   /* [已還原] 你的天氣區塊 CSS (使用緊湊版) */
   .header {
     background:linear-gradient(135deg,#7ba8a3 0,#9dbfbb 100%);
-    /* [修改] 調整 padding 以容納新版面 */
-    padding: 20px 32px; 
+    padding: 24px 32px;
     border-radius:24px;
     color:white;
     margin-bottom: 24px;
     box-shadow:0 8px 30px rgba(123,168,163,0.25);
   }
   .header-top {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    /* [修改] 移除 margin-bottom 因為 7 天預報已移入 */
-    margin-bottom: 0; 
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom: 20px;
     gap:20px;
   }
-  .greeting-section {
-    font-weight:700; 
-    font-size: 24px;
-    /* [修改] 確保歡迎詞不會被過度壓縮 */
-    flex-shrink: 0; 
-    min-width: 250px;
-  }
+  .greeting-section {font-weight:700; font-size: 24px;}
   .datetime {margin-top:6px; font-weight:500; font-size:14px; opacity:0.9;}
   .location-selector {
     background:rgba(255 255 255 / 26%);
@@ -53,57 +43,29 @@
     cursor:pointer;
     backdrop-filter:blur(12px);
     transition:background 0.3s,border 0.3s;
-    /* [修改] 確保選擇器不會被壓縮 */
-    flex-shrink: 0; 
   }
   .location-selector:hover, .location-selector:focus {
     background:rgba(255 255 255 / 34%);
     border-color:rgba(255 255 255 / 60%);
     outline:none;
   }
-  
-  /* [修改] 7 天預報的新樣式 */
   .weather-forecast-horizontal {
     display:grid;
-    gap: 8px; /* (原 12px) */
+    gap: 12px;
     grid-template-columns:repeat(7,1fr);
-    /* [修改] 讓它填滿中間空間 */
-    flex: 1;
-    margin: 0 20px;
   }
   .weather-day-h {
     background:rgba(255 255 255 / 23%);
-    border-radius:12px; /* (原 14px) */
-    padding: 10px 5px; /* (原 12px 10px 10px) */
+    border-radius:14px;
+    padding: 12px 10px 10px;
     border:2px solid rgba(255 255 255 / 12%);
     text-align:center;
-    min-width: 0; /* 允許 grid 縮小 */
   }
-  .weather-date-h {
-    font-size:12px; /* (原 13px) */
-    font-weight:700; 
-    margin-bottom:4px; /* (原 6px) */
-  }
-  .weather-emoji-h {
-    font-size:28px; /* (原 36px) */
-    margin-bottom:2px; /* (原 4px) */
-    display:block; 
-    user-select:none;
-  }
-  .weather-temp-h {
-    font-size:14px; /* (原 16px) */
-    font-weight:700;
-  }
-  .weather-rain-h {
-    font-size:11px; /* (原 12px) */
-    margin-top:2px; /* (原 4px) */
-    color:#def1f0aa;
-    opacity: 0.9;
-  }
-  /* [修改] 隱藏文字描述以節省空間 */
-  .weather-desc-h {
-    display: none;
-  }
+  .weather-date-h {font-size:13px; font-weight:700; margin-bottom:6px;}
+  .weather-emoji-h {font-size:36px; margin-bottom:4px; display:block; user-select:none;}
+  .weather-temp-h {font-size:16px; font-weight:700;}
+  .weather-rain-h {font-size:12px; margin-top:4px; color:#def1f0aa;}
+  .weather-desc-h {font-size:12px; margin-top:1px; color:#d0e2e0cc;}
   .weather-loading {
     grid-column:span 7;
     text-align:center;
@@ -145,7 +107,7 @@
   }
   .search-btn:hover {background-color:#618577;}
 
-  /* 卡片區 (緊湊版) (不變) */
+  /* 卡片區 (緊湊版) */
   .info-section {
     display:flex;
     gap: 20px; 
@@ -254,7 +216,7 @@
     justify-content:space-between;
   }
   .news-loading {text-align:center;padding:20px;color:#7a9794;font-weight:600;}
-  /* 股票卡 (緊湊版) (不變) */
+  /* 股票卡 (緊湊版) */
   .stock-card {
     flex-basis:360px; 
     background:white;
@@ -379,7 +341,7 @@
     color:#50766e;
   }
 
-  /* 你的 CSS 樣式 (已修改為 "緊湊" 版本) (不變) */
+  /* 你的 CSS 樣式 (已修改為 "緊湊" 版本) */
   .main-content {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
@@ -475,7 +437,7 @@
   }
   .bookmark-link:hover { color: #7ba8a3; }
 
-  /* 地圖 CSS (緊湊版) (不變) */
+  /* 地圖 CSS (緊湊版) */
   .map-card-full {
     background: white;
     border-radius: 20px;
@@ -503,7 +465,7 @@
     height: 350px; 
   }
 
-  /* --- [新功能] 置頂導覽列 和 分頁 CSS (緊湊版) --- (不變) */
+  /* --- [新功能] 置頂導覽列 和 分頁 CSS (緊湊版) --- */
   .portal-nav-sticky {
     position: sticky;
     top: 20px; /* 配合 body 的 padding */
@@ -590,11 +552,97 @@
   }
   /* --- [新功能] CSS 結束 --- */
 
+
   /* ================================================
-    ▼▼▼ [還原] 移除上次修改的 mini-icon 樣式 ▼▼▼
+    ▼▼▼ 修改點 1 (CSS)：在這裡加入新的 CSS 規則 ▼▼▼
     ================================================
-    (這裡現在是空的，因為新的樣式已經合併到上面的 CSS 規則中)
   */
+
+  /* --- [新功能] 工作捷徑 CSS --- */
+  .shortcut-grid {
+      display: grid;
+      /* auto-fill: 盡可能多放，保持固定寬度
+        minmax(90px, 1fr): 每個項目最小 90px，最大 1fr (均分)
+      */
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 20px; /* 項目之間的間距 */
+      padding: 10px 0;
+  }
+  
+  .shortcut-item, .shortcut-add-btn {
+      display: flex;
+      flex-direction: column; /* 垂直排列 (圖示在上, 文字在下) */
+      align-items: center;   /* 水平置中 */
+      gap: 8px;              /* 圖示和文字的間距 */
+      cursor: pointer;
+      text-decoration: none;
+      color: #3a6259;      /* 繼承卡片文字顏色 */
+      transition: transform 0.2s ease;
+  }
+  
+  .shortcut-item:hover {
+      transform: translateY(-3px); /* 滑鼠懸停時輕微上移 */
+  }
+  
+  .shortcut-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px; /* 圓角白底 */
+      background: white;
+      box-shadow: 0 4px 12px rgba(162, 184, 179, 0.5);
+      display: grid;
+      place-items: center;
+      overflow: hidden; /* 確保圖片也在圓角內 */
+      border: 2px solid white; 
+  }
+  
+  .shortcut-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; /* 確保圖示填滿 */
+  }
+
+  /* [Fallback] 圖片載入失敗時的文字 */
+  .shortcut-icon .fallback-initial {
+      font-size: 28px;
+      font-weight: 700;
+      color: #7ba8a3;
+      user-select: none;
+  }
+  
+  .shortcut-name {
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      /* 處理長文字，最多顯示 2 行 */
+      word-break: break-all;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+  }
+  
+  /* "新增" 按鈕的特殊樣式 */
+  .shortcut-add-btn .shortcut-icon {
+      background: #f1f7f5; /* 使用卡片內的淺色背景 */
+      border: 2px dashed #a3bbb9; /* 虛線邊框 */
+      box-shadow: none;
+      color: #7a9794;
+      transition: all 0.3s ease;
+  }
+  
+  .shortcut-add-btn .shortcut-icon-add {
+      font-size: 32px;
+      font-weight: 300;
+  }
+  
+  .shortcut-add-btn:hover .shortcut-icon {
+      background: #e6f0ee;
+      border-color: #7ba8a3;
+      color: #7ba8a3;
+  }
+  /* --- [新功能] CSS 結束 --- */
+
 
 </style>
 </head>
@@ -630,16 +678,10 @@
  
     <div class="header">
       <div class="header-top">
-        
         <div class="greeting-section">
           <div class="greeting">您好！歡迎回來 👋</div>
           <div class="datetime" id="datetime"></div>
         </div>
-        
-        <div class="weather-forecast-horizontal" id="weatherRow">
-          <div class="weather-loading">載入天氣資料中...</div>
-        </div>
-
         <select id="locationSelectorMain" class="location-selector" aria-label="選擇城市">
           <option value="25.0330,121.5654">台北市</option>
           <option value="24.1477,120.6736">台中市</option>
@@ -650,7 +692,10 @@
           <option value="22.9998,120.2269">台南市</option>
         </select>
       </div>
+      <div class="weather-forecast-horizontal" id="weatherRow">
+        <div class="weather-loading">載入天氣資料中...</div>
       </div>
+    </div>
    
     <div class="search-section">
       <input id="searchInput" class="search-input" placeholder="搜尋 Google 或輸入網址..."/>
@@ -837,17 +882,27 @@
  
   <div id="page-work" class="page-content">
       <div class="card">
-          <h2>工作 (建置中)</h2>
-          <p>此頁面暫時留空。你可以在這裡放你的待辦事項或工作相關連結。</p>
+          <div class="card-title">
+              <div class="card-icon">🚀</div>
+              工作捷徑
+          </div>
+          <div class="shortcut-grid" id="workShortcutGrid">
+              </div>
+          <p style="text-align:center; font-size:12px; color:#58716b; margin-top:10px;">
+              提示：在捷徑上按一下滑鼠右鍵即可刪除。
+          </p>
       </div>
-  </div>
-
-</div> 
+      
+      </div>
+  </div> 
 <script>
 // [保留] 你的股票 API 金鑰 (Alpha Vantage)
 const ALPHA_VANTAGE_API_KEY = 'K09FCGY2Y90L99V0';
 
-// 日期 (不變)
+// [新增] 全域變數，用於儲存捷徑資料
+let workShortcuts = [];
+
+// 日期
 function updateDatetime() {
   const now = new Date();
  
@@ -868,20 +923,13 @@ function updateDatetime() {
   }
 }
 
-// 天氣呼叫API (不變)
+// 天氣呼叫API
 const weatherCodes = {
   0:{emoji:'☀️',desc:'晴天'},1:{emoji:'🌤️',desc:'晴朗'},2:{emoji:'⛅',desc:'多雲'},3:{emoji:'☁️',desc:'陰天'},
   45:{emoji:'🌫️',desc:'霧'},51:{emoji:'🌦️',desc:'小雨'},55:{emoji:'🌧️',desc:'大雨'},61:{emoji:'🌧️',desc:'小雨'},63:{emoji:'🌧️',desc:'中雨'},
   65:{emoji:'⛈️',desc:'大雨'},80:{emoji:'🌦️',desc:'陣雨'},81:{emoji:'🌧️',desc:'陣雨'},82:{emoji:'⛈️',desc:'大陣雨'},95:{emoji:'⛈️',desc:'雷雨'},
   99:{emoji:'⛈️',desc:'強雷雨'}
 };
-
-// 
-// ====================================================
-// ▼▼▼ 修改點 2 (JavaScript)：還原 updateWeather 函式 ▼▼▼
-// (移除了上次新增的 miniIconsContainer 相關邏輯)
-// ====================================================
-//
 function updateWeather(sourceSelectorId){
   const selectorNav = document.getElementById('locationSelectorNav');
   const selectorMain = document.getElementById('locationSelectorMain');
@@ -890,7 +938,7 @@ function updateWeather(sourceSelectorId){
  
   if (!selectorNav || !selectorMain || !targetRow || !targetNav) return; 
  
-  // [新功能] 同步兩個選擇器 (不變)
+  // [新功能] 同步兩個選擇器
   let v;
   if (sourceSelectorId === 'locationSelectorNav') {
       v = selectorNav.value.split(',');
@@ -909,9 +957,6 @@ function updateWeather(sourceSelectorId){
     // 1. [已還原] 填入 7 天天氣預報
     let html='';
     const wd=['週日','週一','週二','週三','週四','週五','週六'];
-    
-    // [還原] 移除 miniIconsContainer 相關邏輯
-
     for(let i=0;i<7;i++){
       const date= new Date (d.daily.time[i]);
       const dayName = i===0 ?'今天':wd[date.getDay()];
@@ -920,15 +965,11 @@ function updateWeather(sourceSelectorId){
       const tMax = Math.round(d.daily.temperature_2m_max[i]);
       const tMin = Math.round(d.daily.temperature_2m_min[i]);
       const rainProb = d.daily.precipitation_probability_max[i] || 0;
-      
-      // [還原] 只保留你原始的 html 建立邏輯
       html+=`<div class="weather-day-h"><div class="weather-date-h">${dayName}</div><span class="weather-emoji-h">${w.emoji}</span><div class="weather-temp-h">${tMin}° - ${tMax}°</div><div class="weather-rain-h">💧 ${rainProb}%</div><div class="weather-desc-h">${w.desc}</div></div>`;
-
-      // [還原] 移除 miniIcon 相關邏輯
     }
-    targetRow.innerHTML = html; // [不變] 照常填入 (現在可見的) 區塊
+    targetRow.innerHTML = html;
    
-    // 2. [已還原] 填入導覽列當前天氣 (不變)
+    // 2. [已還原] 填入導覽列當前天氣
     if (d.current_weather) {
         const cw = d.current_weather;
         const w_nav = weatherCodes[cw.weathercode] || { emoji:'🌤️', desc:'多雲'};
@@ -942,10 +983,8 @@ function updateWeather(sourceSelectorId){
     targetNav.innerHTML = '天氣失敗';
   });
 }
-// ▲▲▲ JavaScript 修改結束 ▲▲▲
 
-
-// 搜尋 (完整保留你原本的程式碼) (不變)
+// 搜尋 (完整保留你原本的程式碼)
 document.getElementById('searchBtn').onclick = () => {
   const val=document.getElementById('searchInput').value.trim();
   if(!val) return;
@@ -959,7 +998,7 @@ document.getElementById('searchInput').addEventListener('keypress', e =>{
   if(e.key === 'Enter') document.getElementById('searchBtn').click();
 });
 
-// 地圖 (完整保留你原本的程式碼) (不變)
+// 地圖 (完整保留你原本的程式碼)
 function searchGoogleMaps() {
   const input = document.getElementById('mapSearchInput');
   if (!input) return; 
@@ -972,7 +1011,7 @@ function searchGoogleMaps() {
   mapFrame.src = newSrc;
 }
 
-// 新聞 (已修正 CORS) (不變)
+// 新聞 (已修正 CORS)
 const RSS_FEEDS = {
     tw: [
         'https://news.ltn.com.tw/rss/all.xml',       // 自由時報 (首選)
@@ -1080,7 +1119,7 @@ async function loadNews(){
               throw new Error('RSS 內容為空或無法解析');
           }
       } catch(e) {
-          console.warn(`RSS 來源 ${rssUrl} 失敗: ${e.message}`);
+          console.warn(`RSS 来源 ${rssUrl} 失敗: ${e.message}`);
       }
   }
   if (!success) {
@@ -1089,7 +1128,7 @@ async function loadNews(){
   if (refreshBtn) refreshBtn.disabled = false;
 }
 
-// 股票區 (已修正 CORS) (不變)
+// 股票區 (已修正 CORS)
 const stockWatchlist = {
   tw: ['2330','2317','2454','2603','0050'],
   us: ['AAPL','GOOGL','TSLA','NVDA','MSFT']
@@ -1197,13 +1236,127 @@ document.getElementById('stockAddBtn').onclick = () => {
   loadStocks();
 };
 
-// [保留] 你的 openLink 函式 (不變)
+// [保留] 你的 openLink 函式
 function openLink(url) {
     window.open(url, '_blank');
 }
 
 
-// [新功能] 分頁切換的 JS 邏輯 (不變)
+<script>
+// --- [新功能] 工作捷徑 ---
+const WORK_SHORTCUT_KEY = 'myportal_workShortcuts_v1'; // 用於 localStorage 的 Key
+
+/**
+ * 從 localStorage 載入捷徑資料，如果沒有就用預設值
+ */
+function loadWorkShortcuts() {
+    const savedShortcuts = localStorage.getItem(WORK_SHORTCUT_KEY);
+    if (savedShortcuts) {
+        workShortcuts = JSON.parse(savedShortcuts);
+    } else {
+        // 預設值 (你可以自行修改)
+        workShortcuts = [
+            { name: 'Google', url: 'https://google.com' },
+            { name: 'GitHub', url: 'https://github.com' },
+            { name: 'Cloudflare', url: 'https://dash.cloudflare.com/' }
+        ];
+    }
+    renderWorkShortcuts();
+}
+
+/**
+ * 將捷徑資料渲染到 #workShortcutGrid 容器中
+ */
+function renderWorkShortcuts() {
+    const grid = document.getElementById('workShortcutGrid');
+    if (!grid) return; // 如果找不到容器，就中斷
+    grid.innerHTML = ''; // 清空現有內容
+
+    // 1. 渲染儲存的捷徑
+    workShortcuts.forEach((shortcut, index) => {
+        // 我們使用 Google 的服務來自動抓取網站的 favicon
+        const faviconUrl = `https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=${shortcut.url}&size=64`;
+        
+        // 如果圖示載入失敗，顯示名稱的第一個字
+        const fallbackInitial = (shortcut.name[0] || '?').toUpperCase();
+
+        const itemHtml = `
+            <a class="shortcut-item" href="${shortcut.url}" target="_blank" 
+               title="${shortcut.name}\n(右鍵點擊可刪除)"
+               oncontextmenu="event.preventDefault(); removeWorkShortcut(${index});">
+                
+                <div class="shortcut-icon">
+                    <img 
+                        src="${faviconUrl}" 
+                        alt="${shortcut.name} icon"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+                    >
+                    <div class="fallback-initial" style="display:none;">${fallbackInitial}</div>
+                </div>
+                <div class="shortcut-name">${shortcut.name}</div>
+            </a>
+        `;
+        grid.insertAdjacentHTML('beforeend', itemHtml);
+    });
+
+    // 2. 渲染 "新增" 按鈕
+    const addButtonHtml = `
+        <div class="shortcut-add-btn" onclick="addWorkShortcut()">
+            <div class="shortcut-icon">
+                <div class="shortcut-icon-add">+</div>
+            </div>
+            <div class="shortcut-name">新增捷徑</div>
+        </div>
+    `;
+    grid.insertAdjacentHTML('beforeend', addButtonHtml);
+}
+
+/**
+ * 將目前的捷徑陣列儲存到 localStorage
+ */
+function saveWorkShortcuts() {
+    localStorage.setItem(WORK_SHORTCUT_KEY, JSON.stringify(workShortcuts));
+}
+
+/**
+ * 彈出視窗以新增捷徑
+ */
+function addWorkShortcut() {
+    const name = prompt("請輸入捷徑名稱：");
+    if (!name) return; // 使用者按下取消
+
+    let url = prompt("請輸入網站 URL：", "https://");
+    if (!url) return; // 使用者按下取消
+    
+    // 簡單的 URL 修正，確保有 http:// 或 https://
+    if (!url.startsWith('http://') && !url.startsWith('https://')) {
+        url = 'https://' + url;
+    }
+
+    workShortcuts.push({ name: name, url: url });
+    saveWorkShortcuts();
+    renderWorkShortcuts(); // 重新渲染畫面
+}
+
+/**
+ * 移除指定 index 的捷徑
+ */
+function removeWorkShortcut(index) {
+    if (!workShortcuts[index]) return; // 安全檢查
+    
+    const name = workShortcuts[index].name;
+    if (confirm(`您確定要刪除 "${name}" 這個捷徑嗎？`)) {
+        workShortcuts.splice(index, 1); // 從陣列中移除
+        saveWorkShortcuts();
+        renderWorkShortcuts(); // 重新渲染畫面
+    }
+}
+// --- [新功能] 工作捷徑 結束 ---
+</script>
+
+
+<script>
+// [新功能] 分頁切換的 JS 邏輯
 function initTabNavigation() {
     const tabs = document.querySelectorAll('.portal-tab-btn');
     const pages = document.querySelectorAll('.page-content');
@@ -1241,12 +1394,20 @@ function initTabNavigation() {
                    loadNews();
                  }
             }
+            // [新增] 當切換到 "工作" 頁時，載入捷徑
+            else if (pageName === 'work') {
+                // 檢查是否已載入 (避免重複載入)
+                const grid = document.getElementById('workShortcutGrid');
+                if (grid && grid.innerHTML.trim() === '') {
+                   loadWorkShortcuts();
+                }
+            }
         });
     });
 }
 
 
-// --- 程式碼開始執行 --- (不變)
+// --- 程式碼開始執行 ---
 document.addEventListener('DOMContentLoaded', () => {
     // 1. 綁定分頁切換
     initTabNavigation();
@@ -1256,6 +1417,9 @@ document.addEventListener('DOMContentLoaded', () => {
     updateWeather('locationSelectorNav'); // [修改] 初始載入
     loadStocks();
     loadNews();
+    
+    // [註] loadWorkShortcuts() 不在這裡呼叫，
+    // 改為在 initTabNavigation() 中點擊分頁時才呼叫
    
     // 3. 綁定首頁上的所有按鈕
     // (天氣/導覽列) [修改] 綁定兩個選擇器
