@@ -797,7 +797,7 @@
             <div class="tool-item" onclick="openLink('https://github.com/')">
                 <div class="tool-icon">GH</div>
                 <div class="tool-info">
-          _name">GitHub</div>
+                    <div class="tool-name">GitHub</div>
                     <div class="tool-url">程式碼版本控制</div>
                 </div>
             </div>
@@ -887,7 +887,7 @@
               工作捷徑
           </div>
           <div class="shortcut-grid" id="workShortcutGrid">
-                        </div>
+              </div>
           <p style="text-align:center; font-size:12px; color:#58716b; margin-top:10px;">
               提示：在捷徑上按一下滑鼠右鍵即可刪除。
           </p>
@@ -1022,7 +1022,7 @@ const RSS_FEEDS = {
         'https://www.asahi.com/rss/asahi/newsheadlines.rdf' // 朝日新聞 (備援)
     ],
     intl: [
-        'https://feeds.bbci.co.uk/news/world/rss.xml' // [修正 1] 改為 HTTPS
+        'http://feeds.bbci.co.uk/news/world/rss.xml' // BBC News
     ]
 };
 let currentNewsTab = 'tw'; 
@@ -1240,7 +1240,7 @@ document.getElementById('stockAddBtn').onclick = () => {
 function openLink(url) {
     window.open(url, '_blank');
 }
-</script>
+
 
 <script>
 // --- [新功能] 工作捷徑 ---
@@ -1371,13 +1371,9 @@ function initTabNavigation() {
            
             // 2. 切換頁面內容
             pages.forEach(page => {
-                // [修正] 修正 page.style.display 的切換方式
-                // 確保 .active class 被正確套用
                 if (page.id === 'page-' + pageName) {
-                    page.classList.add('active');
-                    page.style.display = 'block'; // 確保 .active 生效
+                    page.style.display = 'block';
                 } else {
-                    page.classList.remove('active');
                     page.style.display = 'none';
                 }
             });
@@ -1404,7 +1400,6 @@ function initTabNavigation() {
                 const grid = document.getElementById('workShortcutGrid');
                 if (grid && grid.innerHTML.trim() === '') {
                    loadWorkShortcuts();
-              S
                 }
             }
         });
@@ -1423,9 +1418,8 @@ document.addEventListener('DOMContentLoaded', () => {
     loadStocks();
     loadNews();
     
-    // [修正 2] 在頁面載入時，就主動載入工作捷徑
-    // 這樣點擊 "工作" 分頁時，內容就已經準備好了
-    loadWorkShortcuts();
+    // [註] loadWorkShortcuts() 不在這裡呼叫，
+    // 改為在 initTabNavigation() 中點擊分頁時才呼叫
    
     // 3. 綁定首頁上的所有按鈕
     // (天氣/導覽列) [修改] 綁定兩個選擇器
@@ -1434,7 +1428,7 @@ document.addEventListener('DOMContentLoaded', () => {
    
     // (搜尋)
     document.getElementById('searchBtn').onclick = () => {
-    t val=document.getElementById('searchInput').value.trim();
+      const val=document.getElementById('searchInput').value.trim();
       if(!val) return;
       if(val.includes('.') && !val.includes(' ')) {
         window.open(val.startsWith('http') ? val : 'https://' + val, '_blank');
@@ -1444,7 +1438,18 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     document.getElementById('searchInput').addEventListener('keypress', e =>{
       if(e.key === 'Enter') document.getElementById('searchBtn').click();
-trim().toUpperCase();
+    });
+    // (新聞)
+    document.getElementById('tab-tw').onclick = () => switchNewsTab('tw');
+    document.getElementById('tab-jp').onclick = () => switchNewsTab('jp');
+    document.getElementById('tab-intl').onclick = () => switchNewsTab('intl');
+    document.getElementById('refreshNewsBtn').onclick = loadNews;
+    // (股票)
+    document.getElementById('stockTab_tw').onclick = () => switchStockMarket('tw');
+    document.getElementById('stockTab_us').onclick = () => switchStockMarket('us');
+    document.getElementById('stockAddBtn').onclick = () => {
+      const input=document.getElementById('stockInput');
+      let symbol=input.value.trim().toUpperCase();
       if(!symbol) return alert('請輸入股票代碼');
       if (stockCurrentMarket === 'tw') {
           const twSymbol = symbol.match(/\d+/);
@@ -1452,96 +1457,17 @@ trim().toUpperCase();
       }
       const list=stockWatchlist[stockCurrentMarket];
       if(list.includes(symbol)) return alert('股票已在清單');
-Two-Step Authentication (2FA) in Firebase. This isn't a simple configuration flag; it requires setting up multi-factor authentication (MFA) using Firebase Authentication.
-
-Here is a conceptual overview and the steps you need to take to implement this.
-
-### Conceptual Overview
-
-Firebase's `auth/multi-factor-auth-required` error is triggered when a user (who has already enrolled in MFA) tries to sign in using only their primary factor (like email/password). Firebase stops the login and returns this error, signaling that a second factor (like a TOTP code or SMS) is required to complete the sign-in.
-
-The flow is generally:
-1.  **Enrollment (First-time setup):** The user, while already logged in, decides to enable 2FA. They are guided to set up a second factor (e.g., scanning a TOTP QR code with Google Authenticator).
-2.  **Sign-in (Subsequent logins):**
-    * User signs in with email and password.
-    * Firebase returns the `auth/multi-factor-auth-required` error.
-    * Your app catches this error and shows a new screen asking for the 2FA code.
-    * The user provides the code.
-    * Your app sends this code to Firebase to finalize the login.
-
-### Implementation Steps
-
-You will need to modify your React application (likely in your `Login` or `Auth` component) to handle this flow.
-
-#### Step 1: Enable Multi-Factor Authentication in Firebase
-
-First, you must enable this feature in your Firebase project:
-
-1.  Go to the **Firebase Console**.
-2.  Navigate to **Authentication** > **Settings** > **Sign-in method**.
-3.  Scroll down to **Advanced** and enable **Multi-factor Authentication**.
-4.  (Recommended) If you want to use SMS as a factor, you must have the Blaze (pay-as-you-go) plan enabled. For this guide, we will focus on **TOTP (Time-based One-Time Password)**, which uses apps like Google Authenticator and is free.
-
-#### Step 2: Handle 2FA Enrollment (Allow Users to Set it Up)
-
-A user must be **already logged in** to enroll in MFA. You would typically have this on a "Security" or "Profile" page.
-
-```javascript
-// Example: In your <SecurityPage> component
-import { getAuth, TotpMultiFactorGenerator, TotpSecret } from "firebase/auth";
-
-const auth = getAuth();
-
-// This function generates a new TOTP secret for the user
-const handleEnrollMFA = async () => {
-  const user = auth.currentUser;
-  if (!user) return;
-
-  try {
-    // 1. Generate a new secret
-    const multiFactorSession = await user.multiFactor.getSession();
-    const secret = await TotpMultiFactorGenerator.generateSecret(multiFactorSession);
-
-    // 2. Display this secret to the user (e.g., as a QR code)
-    // You'll need a library like 'qrcode.react' to generate the QR code
-    const qrCodeUrl = `otpauth://totp/YourAppName:${user.email}?secret=${secret.secretKey}&issuer=YourAppName`;
-    
-    // TODO: Show a modal/view with:
-    // - The QR code (using qrCodeUrl)
-    // - A text input for the user to enter the code from their authenticator app
-    // - The 'secret.secretKey' (as text) for manual entry
-
-    // 3. Store the secret and session for verification
-    // (e.g., in React state)
-    // setMfaSecret(secret);
-    // setQrCode(qrCodeUrl);
-    // setShowVerificationModal(true);
-
-  } catch (error) {
-    console.error("Error generating MFA secret:", error);
-  }
-};
-
-// This function verifies the code from the authenticator app and finalizes enrollment
-const handleVerifyAndEnroll = async (verificationCode) => {
-  const user = auth.currentUser;
-  // 'mfaSecret' is the TotpSecret object saved in state from the previous step
-  
-  try {
-    const multiFactorAssertion = TotpMultiFactorGenerator.assertionForEnrollment(
-      mfaSecret,
-      verificationCode
-    );
-    
-    // 4. Finalize enrollment
-    await user.multiFactor.enroll(multiFactorAssertion, "My TOTP Authenticator");
-
-    // Success!
-    // alert("2FA has been enabled!");
-    // setShowVerificationModal(false);
-
-  } catch (error) {
-    console.error("Error enrolling MFA:", error);
-    // Handle errors (e.g., invalid code)
-  }
-};
+      if(list.length >= 7) return alert('最多只能追蹤7支股票');
+      list.push(symbol);
+      input.value = '';
+      loadStocks();
+    };
+    // (地圖)
+    document.getElementById('mapSearchBtn').onclick = searchGoogleMaps;
+    document.getElementById('mapSearchInput').addEventListener('keypress', e => {
+      if (e.key === 'Enter') searchGoogleMaps();
+    });
+});
+</script>
+</body>
+</html>
